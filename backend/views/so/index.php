@@ -19,11 +19,14 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use backend\models\User;
 use backend\models\Customer;
 use backend\models\So;
 use backend\models\SoStatus;
 use backend\models\CustomerPriority;
+use backend\models\ProductGroup;
 use dosamigos\datepicker\DatePicker;
 
 
@@ -110,18 +113,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute'=>'id',
-                'contentOptions' => ['style' => 'width:50px'],
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             //'product_group_id',
             [
                 'attribute'=>'product_group_id',
                 'value'=>'productGroup.name',
+                'filter'=>Html::activeDropDownList($searchModel, 'product_group_id', ArrayHelper::map(ProductGroup::find()->asArray()->all(), 'id', 'name'), ['class'=>'form-control', 'prompt' => 'Alle']),
+
             ],
             [
                 'attribute'=>'order_received',
                 'value'=>'order_received',
-                'contentOptions' => ['style' => 'width:150px'],
-                'format' => ['date', 'php:d-m-Y'],
+                'contentOptions' => ['style' => 'width:80px; text-align: right;'],
+                'format' => ['date', 'php:d.m.y'],
                 'filter'=>DatePicker::widget([
                     'model' => $searchModel,
                     'attribute' => 'order_received',
@@ -145,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'surface',
             [
                 'attribute'=>'qty',
-                'contentOptions' => ['style' => 'width:50px'],
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             
             // 'value',
@@ -153,11 +158,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'created_by',
                 'value'=>'createdBy.username',
+                'filter'=>Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'form-control', 'prompt' => 'Alle']),
             ],
-            'customer_priority_id',
+            [
+                'attribute'=>'customer_priority_id',
+                'value'=>'customerPriority.id',
+                'filter'=>Html::activeDropDownList($searchModel, 'customer_priority_id', ArrayHelper::map(CustomerPriority::find()->asArray()->all(), 'id', 'id'), ['class'=>'form-control', 'prompt' => 'Alle']),
+            ],
             [
                 'attribute'=>'status_id',
                 'value'=>'soStatus.name',
+                'filter'=>Html::activeDropDownList($searchModel, 'status_id', ArrayHelper::map(SoStatus::find()->asArray()->all(), 'id', 'name'), ['class'=>'form-control', 'prompt' => 'Alle']),
             ],
             // 'created',
             // 'updated_by',

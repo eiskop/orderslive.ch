@@ -5,7 +5,9 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Formatter;
+use yii\helpers\ArrayHelper;
 use backend\models\Customer;
+use backend\models\User;
 use backend\models\Offer;
 use backend\models\OfferStatus;
 use backend\models\CustomerPriority;
@@ -81,12 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute'=>'id',
-                'contentOptions' => ['style' => 'width:50px'],
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             [
                 'attribute'=>'offer_received',
                 'value'=>'offer_received',
-                'contentOptions' => ['style' => 'width:100px'],
+                'contentOptions' => ['style' => 'width:80px; text-align: right;'],
                 'format' => ['date', 'php:d.m.y'],
                 'filter'=>DatePicker::widget([
                     'model' => $searchModel,
@@ -121,6 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'updated_by',
                 'value'=>'updatedBy.username',
+                'filter'=>Html::activeDropDownList($searchModel, 'updated_by', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'form-control', 'prompt' => 'Alle']),                
             ],        
             [
                 'attribute'=>'value',
@@ -135,15 +138,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>['decimal', '0'],
             ],  
             [
+                'attribute'=>'customer_priority_id',
+                'value'=>'customerPriority.id',
+                'filter'=>Html::activeDropDownList($searchModel, 'customer_priority_id', ArrayHelper::map(CustomerPriority::find()->asArray()->all(), 'id', 'id'), ['class'=>'form-control', 'prompt' => 'Alle']),
+
+            ],   
+            [
                 'attribute'=>'status_id',
                 'value'=>'status.name',
+                'filter'=>Html::activeDropDownList($searchModel, 'status_id', ArrayHelper::map(OfferStatus::find()->asArray()->all(), 'id', 'name'), ['class'=>'form-control', 'prompt' => 'Alle']),                
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
             ],            
          //   'customer_priority_id',
-            [
-                'attribute'=>'customer_priority_id',
-                'value'=>'customerPriority.id',
-            ],              
+          
 //            'confirmation_no',
             
             //'days_to_process',
