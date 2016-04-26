@@ -76,14 +76,14 @@ class SoSearch extends So
             'so.updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'customer_order_no', $this->customer_order_no])
-            ->andFilterWhere(['like', 'confirmation_no', $this->confirmation_no])
-            ->andFilterWhere(['like', 'surface', $this->surface])
-            ->andFilterWhere(['like', 'so_status.name', $this->status_id])
+        $query->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
+            ->andFilterWhere(['like', 'so.confirmation_no', $this->confirmation_no])
+            ->andFilterWhere(['like', 'so.surface', $this->surface])
+            ->andFilterWhere(['like', 'so.status_id', $this->status_id])
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
-            ->andFilterWhere(['like', 'product_group.name', $this->product_group_id])
+            ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
-            ->andFilterWhere(['like', 'user.username', $this->created_by]);
+            ->andFilterWhere(['like', 'so.created_by', $this->created_by]);
 
         return $dataProvider;
     }

@@ -83,11 +83,12 @@ class OfferSearch extends Offer
             //'offer.updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'customer_order_no', $this->customer_order_no])
+        $query->andFilterWhere(['like', 'offer.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id_2])
-            ->andFilterWhere(['like', 'offer_status.name', $this->status_id])
-            ->andFilterWhere(['like', 'user.username', $this->updated_by]);  
+            ->andFilterWhere(['like', 'offer.customer_priority_id', $this->customer_priority_id])
+            ->andFilterWhere(['like', 'offer.status_id', $this->status_id])
+            ->andFilterWhere(['like', 'offer.updated_by', $this->updated_by]);  
 
 /*       $query->andFilterWhere(['like', 'customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'confirmation_no', $this->confirmation_no])
