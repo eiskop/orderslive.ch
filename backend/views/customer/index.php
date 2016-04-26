@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use backend\models\Customer;
 use backend\models\CustomerGroup;
 use backend\models\So;
+use backend\models\SoSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CustomerSearch */
@@ -13,6 +14,7 @@ use backend\models\So;
 
 $this->title = 'Customers';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="customer-index">
 
@@ -48,7 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_by',
             // 'updated',
             // 'updated_by',
-
+            [
+                'attribute'=>'sos',
+                'value'=>function ($data, $c_id = 'id') {
+                    return So::find()->where(['customer_id'=>$c_id])->count();
+                },
+                
+            ],
             [  
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
