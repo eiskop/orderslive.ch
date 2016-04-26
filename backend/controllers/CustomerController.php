@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Customer;
 use backend\models\CustomerSearch;
+use backend\models\So;
+use backend\models\SoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -48,9 +50,15 @@ class CustomerController extends Controller
      */
     public function actionView($id)
     {
+
+        $searchModel = new SoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->where('customer_id = '.$id);
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);        
     }
 
     /**
