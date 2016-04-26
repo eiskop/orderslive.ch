@@ -179,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        if (Yii::$app->user->can('update-so')) 
+                        if (Yii::$app->user->can('update-so') OR Yii::$app->user->can('change-so')) 
                         {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                         'title' => Yii::t('app', 'Update'),                              
