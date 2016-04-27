@@ -37,6 +37,8 @@ use dosamigos\datepicker\DatePicker;
 $this->title = 'Aufträge';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
 <div class="so-index" >
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -66,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
         'filterModel' => $searchModel,
+
         'layout'=>"{pager} {summary} {items} {pager}",
         'rowOptions' => 
 
@@ -114,6 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'id',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+
             ],
             //'product_group_id',
             [
@@ -133,7 +137,8 @@ $this->params['breadcrumbs'][] = $this->title;
                  //   'template' => '{addon}{input}',
                         'clientOptions' => [
                             'autoclose' => true,
-                            'format' => 'yyyy-mm-dd'
+                            'format' => 'yyyy-mm-dd',
+
                         ]
                 ]),
             ],
