@@ -88,7 +88,7 @@ $db = new yii\db\Connection([
 date_default_timezone_set('Europe/Zurich');
 echo '<h2>Durchlaufzeit von '.date('d.m.Y', strtotime('11. April 2016')).' bis '.date('d.m.Y', time()).'</h2>';
 
-$res = $db->createCommand('SELECT customer_id, customer.name as customer_name, product_group.name as product_group_name, so.customer_priority_id, customer_priority.days_to_process, avg(UNIX_TIMESTAMP(so.updated)-UNIX_TIMESTAMP(order_received))/(60*60*24) as durchlaufzeit_tage, count(*) as aufträge FROM `so` 
+$res = $db->createCommand('SELECT customer_id, customer.name as customer_name, customer.city as city, customer.street as street, customer.zip_code as zip_code, product_group.name as product_group_name, so.customer_priority_id, customer_priority.days_to_process, avg(UNIX_TIMESTAMP(so.updated)-UNIX_TIMESTAMP(order_received))/(60*60*24) as durchlaufzeit_tage, count(*) as aufträge FROM `so` 
         LEFT JOIN customer on so.customer_id = customer.id  
     	LEFT JOIN product_group on so.product_group_id = product_group.id  
     	LEFT JOIN customer_priority on so.customer_priority_id = customer_priority.id  
@@ -171,6 +171,18 @@ foreach ($rows as $k=>$v) {
 	            'attribute' => 'customer_name',
 	            'contentOptions' => ['style' => 'width:250px'],
 			],
+            [
+                'header' => 'PLZ',
+                'attribute' => 'zip_code',
+            ],
+            [
+                'header' => 'Stadt',
+                'attribute' => 'city',
+            ],
+            [
+                'header' => 'Strasse',
+                'attribute' => 'street',
+            ],            
  		    [
 		    	'header' => 'Produkt',
 	            'attribute' => 'product_group_name',

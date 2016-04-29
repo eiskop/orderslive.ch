@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'updated_by',
                 'value'=>'updatedBy.username',
-                'filter'=>Html::activeDropDownList($searchModel, 'updated_by', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'form-control', 'prompt' => 'Alle']),                
+                'filter'=>Html::activeDropDownList($searchModel, 'updated_by', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'', 'prompt' => 'Alle']),                
             ],        
             [
                 'attribute'=>'value',
@@ -207,4 +207,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); 
 ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+
+</div>

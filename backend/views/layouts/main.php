@@ -27,7 +27,6 @@ AppAsset::register($this);
             overflow: -moz-scrollbars-vertical;
             overflow-y: scroll;
         }
-        
 
     </style>
 </head>
