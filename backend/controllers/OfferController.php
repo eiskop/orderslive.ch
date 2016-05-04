@@ -9,6 +9,8 @@ use backend\models\OfferItem;
 use backend\models\OfferItemSearch;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
+use backend\models\Change;
+use backend\models\ChangeSearch;
 use backend\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -61,10 +63,17 @@ class OfferController extends Controller
 		$searchModel = new OfferItemSearch();
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$dataProvider->query->where('offer_id = '.$id);
+
+		$searchModel2 = new ChangeSearch();
+		$dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
+		$dataProvider2->query->where(['change_object'=>'offer'])->andWhere(['change_object_id' => $id])->orderBy(['created'=>SORT_DESC])->all();		
+
 		return $this->render('view', [
 			'model' => $this->findModel($id),
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
+			'searchModel2' => $searchModel2,
+			'dataProvider2' => $dataProvider2,			
 		]);
 	}
 
@@ -80,6 +89,7 @@ class OfferController extends Controller
 		{
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
+			$modelChange = new Change();
 
 			if ($model->load(Yii::$app->request->post())) {
 
@@ -157,6 +167,7 @@ class OfferController extends Controller
 						}
 						if ($flag) {
 							$model->save(false);
+							$modelChange->save(false);
 							$transaction->commit();
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
@@ -171,7 +182,8 @@ class OfferController extends Controller
 			} else {
 				return $this->render('create', [
 					'model' => $model,
-					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem                    
+					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
+					'modelChange' => $modelChange                    
 				]);
 			}
 		}
@@ -193,6 +205,10 @@ class OfferController extends Controller
 		{
 			$model = $this->findModel($id);
 			$modelsOfferItem = $model->offerItems;
+			$modelChange = new Change();
+
+
+			$modelChange->load(Yii::$app->request->post());
 
 			if ($model->load(Yii::$app->request->post())) {
 
@@ -218,9 +234,16 @@ class OfferController extends Controller
 				}
 				$model->deadline += $count_weekend*60*60*24;
 
+
+				$modelChange->created_by = Yii::$app->user->id;
+				$modelChange->created = date('Y-m-d H:i:s');
+				$modelChange->change_object = 'offer';
+				$modelChange->change_object_id = $model->id;
+
 				// validate all models
 				$valid = $model->validate();
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
+
 
 				if ($valid) {
 					$transaction = \Yii::$app->db->beginTransaction();
@@ -250,6 +273,7 @@ class OfferController extends Controller
 						}
 						if ($flag) {
 							$model->save(false);
+							$modelChange->save(false);
 							$transaction->commit();
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
@@ -260,9 +284,11 @@ class OfferController extends Controller
 				return $this->redirect(['index']);
 			} else {
 				return $this->render('update', [
-					'model' => $model,
-					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem    
-				]);
+						'model' => $model,
+						'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
+						'modelChange' => $modelChange,
+					]
+				);
 			}
 		}
 		else {

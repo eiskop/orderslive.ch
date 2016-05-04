@@ -10,6 +10,7 @@ use backend\models\Offer;
 use backend\models\OfferStatus;
 use backend\models\OfferItem;
 use backend\models\OfferItemType;
+use backend\models\SelectMenu;
 
 
 /* @var $this yii\web\View */
@@ -17,7 +18,7 @@ use backend\models\OfferItemType;
 /* @var $searchModel backend\models\OfferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->id;
+$this->title = $model->id.' - '.$model->customer->name.', Komission: '.$model->customer_order_no;
 $this->params['breadcrumbs'][] = ['label' => 'Offers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -107,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],          
         ],
     ]) ?>
-
+<?php Pjax::begin(); ?> 
         <h2>Positionen für Offerte #<?= $model->id ?></h2>
         <hr />
         <?= GridView::widget([
@@ -138,5 +139,60 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'changed',
             ],
         ]); ?>
+
+    <h2>Änderungen für Offerte #<?= $model->id ?></h2>
+        <hr />
+           
+
+        <?= GridView::widget([
+        'dataProvider' => $dataProvider2,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute'=>'created',
+                'format' => ['date', 'php:d.m.y H:i'],
+            ],
+            [
+                'attribute'=>'change_time',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_time];
+                },
+            ],
+            [
+                'attribute'=>'change_type',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_type];
+                },
+            ],
+            [
+                'attribute'=>'change_reason',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_reason];
+                },
+            ],
+            [
+                'attribute'=>'duration_min',
+                'value'=>'duration_min',
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+            ],
+            [
+                'attribute'=>'responsible',
+                'value'=>'responsible0.username',
+            ],
+            'measure',
+            'comment',
+            [
+                'attribute'=>'created_by',
+                'value'=>'createdBy.username',
+            ],
+        ],
+    ]); ?>
+    <?php Pjax::end(); ?>
+</div>
+
+
 
 </div>

@@ -11,6 +11,8 @@ use backend\models\OfferStatus;
 use backend\models\Offer;
 use backend\models\OfferItem;
 use backend\models\OfferItemType;
+use backend\models\Change;
+use backend\models\SelectMenu;
 use backend\models\Model;
 use common\models\User;
 use kartik\select2\Select2;
@@ -135,8 +137,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>        
     </div>
 
-<div class="row">
 
+<div class="table">
   <div class="panel panel-default">
         <div class="panel-heading"><h4><i class="glyphicon glyphicon-list-alt"></i>Offerten Positonen</h4></div>
         <div class="panel-body">
@@ -204,7 +206,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                                 <button type="button" class="add-item btn btn-success btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-plus"></i></button>
                                 <button type="button" class="remove-item btn btn-danger btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-minus"></i></button>
                             </div>
-                        </div><!-- .row -->
+                        </div>
 
                     </div>
                 </div>
@@ -213,8 +215,66 @@ use wbraganca\dynamicform\DynamicFormWidget;
             <?php DynamicFormWidget::end(); ?>
         </div>
     </div>
-
 </div>    
+<div class="table">
+    <h2>Informationen zur Änderung</h2>
+    <div class="row">
+        <div class="col-md-4">                
+            <?= $form->field($modelChange, 'change_type')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
+                'prompt'=>'Select ',
+                'onchange'=>'
+                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
+                    $("select#select_menu-id").html(data);
+                });'
+
+            ]) ?>
+        </div>
+        <div class="col-md-4">                
+            <?= $form->field($modelChange, 'change_time')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
+                'prompt'=>'Select ',
+                'onchange'=>'
+                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
+                    $("select#select_menu-id").html(data);
+                });'
+
+            ]) ?>
+        </div>            
+        <div class="col-md-4">                
+            <?= $form->field($modelChange, 'change_reason')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
+                'prompt'=>'Select ',
+                'onchange'=>'
+                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
+                    $("select#select_menu-id").html(data);
+                });'
+
+            ]) ?>
+        </div>               
+    </div>
+   <div class="row">
+        <div class="col-md-6">                
+            <?= $form->field($modelChange, 'responsible')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+                'prompt'=>'Select ',
+                'onchange'=>'
+                $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
+                    $("select#user-id").html(data);
+                });'
+
+            ]) ?>
+        </div>
+        <div class="col-md-6">                
+            <?= $form->field($modelChange, "duration_min")->textInput(['maxlength' => true]) ?>
+        </div>            
+    </div>    
+    <div class="row">
+        <div class="col-md-6">                
+                <?= $form->field($modelChange, 'measure')->textArea(['rows' => '3']) ?>
+        </div>                       
+        <div class="col-md-6">
+            <?= $form->field($modelChange, 'comment')->textArea(['rows' => '3']) ?>
+        </div>
+    </div>  
+</div>
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -229,52 +289,6 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
         ');
     ?>
-
-<!--
-    <?= $form->field($model, 'offer_wir_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'processed_by_id')->textInput() ?>
-
-    <?= $form->field($model, 'followup_by_id')->textInput() ?>
-
-    <?= $form->field($model, 'product_group_id')->textInput() ?>
-
-    <?= $form->field($model, 'customer_id')->textInput() ?>
-
-    <?= $form->field($model, 'customer_contact')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'customer_id_2')->textInput() ?>
-
-    <?= $form->field($model, 'customer_order_no')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'confirmation_no')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'qty')->textInput() ?>
-
-    <?= $form->field($model, 'prio1')->textInput() ?>
-
-    <?= $form->field($model, 'status_id')->textInput() ?>
-
-    <?= $form->field($model, 'value')->textInput() ?>
-
-    <?= $form->field($model, 'offer_received')->textInput() ?>
-
-    <?= $form->field($model, 'customer_priority_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'days_to_process')->textInput() ?>
-
-    <?= $form->field($model, 'deadline')->textInput() ?>
-
-    <?= $form->field($model, 'comments')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
---!>
 
 
 </div>
