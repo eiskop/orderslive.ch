@@ -68,10 +68,11 @@ class Change extends \yii\db\ActiveRecord
             'responsible' => 'Verantwortlicher zur Umsetzung',
             'duration_min' => 'Aufwand Min',
             'comment' => 'Kommentar',
-            'created' => 'Created',
-            'created_by' => 'Created By',
-            'updated' => 'Updated',
-            'updated_by' => 'Updated By',
+            'created_by' => 'Ersteller',
+            'created' => 'Erstellt am',
+            'updated_by' => 'Geändert von',
+            'updated' => 'Geändert am',
+
         ];
     }
 
