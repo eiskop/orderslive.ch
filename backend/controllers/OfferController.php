@@ -183,7 +183,7 @@ class OfferController extends Controller
 				return $this->render('create', [
 					'model' => $model,
 					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
-					'modelChange' => $modelChange                    
+					'modelChange' => $modelChange,                   
 				]);
 			}
 		}
