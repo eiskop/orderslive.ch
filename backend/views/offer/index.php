@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute'=>'id',
+                'attribute'=>'offer_no',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             [
@@ -170,6 +170,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                     'title' => Yii::t('app', 'View'),                              
+                                 //  'data-pjax' => 'w0',
+                                    'data-method' => 'post',
                         ]);
                     },
                     'update' => function ($url, $model) {
@@ -186,14 +188,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                                         'title' => Yii::t('app', 'Delete'),
                                         'data-confirm' => 'Are you sure you want to delete this item?',
-                                        'data-method' => 'post'
+                                        'data-method' => 'post',
+
                             ]);
                         }
                     },                                           
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'view') {
-
                         return Url::to(['offer/view', 'id'=>$model->id]);
                     }
                     if ($action === 'update') {

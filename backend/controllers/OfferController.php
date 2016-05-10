@@ -84,7 +84,7 @@ class OfferController extends Controller
 	 */
 	public function actionCreate()
 	{
-		
+	
 		if (Yii::$app->user->can('create-offer')) 
 		{
 			$model = new Offer();
@@ -93,8 +93,18 @@ class OfferController extends Controller
 
 			if ($model->load(Yii::$app->request->post())) {
 
-
-
+				$max = Offer::find() // CREATE A OFFER NO
+			    ->select('max(offer_no)')->where(['LEFT(offer_no, 4)' =>date('y').date('m')]) // we need only one column
+			    ->scalar();
+			    if (!is_null($max)) {
+			    	$model->offer_no = $max+1;
+			    }
+			    else {
+			    	$model->offer_no = date('y').date('m').'0001';
+			    }	
+			    if ($model->followup_by_id != true) {
+					$model->followup_by_id = 0;
+			    }
 
 				$modelsOfferItem = Model::createMultiple(OfferItem::classname());
 				Model::loadMultiple($modelsOfferItem, Yii::$app->request->post());

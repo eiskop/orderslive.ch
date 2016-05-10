@@ -18,7 +18,7 @@ use backend\models\SelectMenu;
 /* @var $searchModel backend\models\OfferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->id.' - '.$model->customer->name.', Komission: '.$model->customer_order_no;
+$this->title = $model->offer_no.' - '.$model->customer->name.', Komission: '.$model->customer_order_no;
 $this->params['breadcrumbs'][] = ['label' => 'Offers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,11 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?php 
+            if (Yii::$app->user->can('create-offer')) 
+            {
+                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']);
+            }
+        
+        ?>
+        <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Löschen', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -41,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'offer_no',
             'offer_wir_id',
             [
                 'attribute'=>'processed_by_id',
@@ -108,8 +116,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],          
         ],
     ]) ?>
+
 <?php Pjax::begin(); ?> 
-        <h2>Positionen für Offerte #<?= $model->id ?></h2>
+        <h2>Positionen für Offerte #<?= $model->offer_no ?></h2>
         <hr />
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -139,8 +148,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'changed',
             ],
         ]); ?>
+<?php Pjax::end(); ?> 
 
-    <h2>Änderungen für Offerte #<?= $model->id ?></h2>
+<?php Pjax::begin(); ?> 
+    <h2>Änderungen für Offerte #<?= $model->offer_no ?></h2>
         <hr />
            
 
