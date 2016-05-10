@@ -1,4 +1,6 @@
 <?php
+//update `offer` set offer_no = CONCAT(right(year(offer_received), 2), Lpad(MONTH(offer_received), 2, '0'), Lpad(id, 4, '0'))
+
 
 namespace backend\models;
 
@@ -8,6 +10,7 @@ use Yii;
  * This is the model class for table "offer".
  *
  * @property integer $id
+ * @property integer $offer_no
  * @property string $offer_wir_id
  * @property integer $processed_by_id
  * @property integer $followup_by_id
@@ -58,9 +61,9 @@ class Offer extends \yii\db\ActiveRecord
     {
         return [
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
-            [['processed_by_id', 'followup_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by'], 'integer'],
+            [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no'], 'integer'],
             [['value'], 'number'],
-            [['offer_received','customer_id', 'customer_id_2', 'created', 'updated'], 'safe'],
+            [['offer_received','customer_id', 'customer_id_2', 'followup_by_id', 'created', 'updated'], 'safe'],
             [['comments', 'qty'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
@@ -68,7 +71,7 @@ class Offer extends \yii\db\ActiveRecord
             [['customer_priority_id'], 'string', 'max' => 1],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['processed_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['processed_by_id' => 'id']],
-            [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
+           // [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -84,6 +87,7 @@ class Offer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'offer_no' => 'OffertenNo',
             'offer_wir_id' => 'Offer Wirus ID',
             'processed_by_id' => 'Sachbearbeiter',
             'followup_by_id' => 'Nachverfolger',

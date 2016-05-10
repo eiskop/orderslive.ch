@@ -10,6 +10,7 @@ use backend\models\Offer;
 use backend\models\OfferStatus;
 use backend\models\OfferItem;
 use backend\models\OfferItemType;
+use backend\models\SelectMenu;
 
 
 /* @var $this yii\web\View */
@@ -17,7 +18,7 @@ use backend\models\OfferItemType;
 /* @var $searchModel backend\models\OfferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->id;
+$this->title = $model->offer_no.' - '.$model->customer->name.', Komission: '.$model->customer_order_no;
 $this->params['breadcrumbs'][] = ['label' => 'Offers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -26,11 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?php 
+            if (Yii::$app->user->can('create-offer')) 
+            {
+                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']);
+            }
+        
+        ?>
+        <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Löschen', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -40,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'offer_no',
             'offer_wir_id',
             [
                 'attribute'=>'processed_by_id',
@@ -108,7 +117,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-        <h2>Positionen für Offerte #<?= $model->id ?></h2>
+<?php Pjax::begin(); ?> 
+        <h2>Positionen für Offerte #<?= $model->offer_no ?></h2>
         <hr />
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -138,5 +148,62 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'changed',
             ],
         ]); ?>
+<?php Pjax::end(); ?> 
+
+<?php Pjax::begin(); ?> 
+    <h2>Änderungen für Offerte #<?= $model->offer_no ?></h2>
+        <hr />
+           
+
+        <?= GridView::widget([
+        'dataProvider' => $dataProvider2,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute'=>'created',
+                'format' => ['date', 'php:d.m.y H:i'],
+            ],
+            [
+                'attribute'=>'change_time',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_time];
+                },
+            ],
+            [
+                'attribute'=>'change_type',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_type];
+                },
+            ],
+            [
+                'attribute'=>'change_reason',
+                'value'=> function($data) {
+                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                    return $values[$data->change_reason];
+                },
+            ],
+            [
+                'attribute'=>'duration_min',
+                'value'=>'duration_min',
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+            ],
+            [
+                'attribute'=>'responsible',
+                'value'=>'responsible0.username',
+            ],
+            'measure',
+            'comment',
+            [
+                'attribute'=>'created_by',
+                'value'=>'createdBy.username',
+            ],
+        ],
+    ]); ?>
+    <?php Pjax::end(); ?>
+</div>
+
+
 
 </div>
