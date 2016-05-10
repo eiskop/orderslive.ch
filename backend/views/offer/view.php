@@ -151,7 +151,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::end(); ?> 
 
 <?php Pjax::begin(); ?> 
-    <h2>Änderungen für Offerte #<?= $model->offer_no ?></h2>
+<?php
+   $duration_sum = 0;
+    if (!empty($dataProvider2->getModels())) {
+        foreach ($dataProvider2->getModels() as $key => $val) {
+            $duration_sum += $val->duration_min;
+        }
+    }
+?>
+    <h2>Änderungen für Offerte #<?= $model->offer_no.' - '.$duration_sum.' Minuten' ?></h2>
         <hr />
            
 
