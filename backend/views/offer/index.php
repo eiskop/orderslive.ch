@@ -171,7 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                     'title' => Yii::t('app', 'View'),                              
                                  //  'data-pjax' => 'w0',
-                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
                         ]);
                     },
                     'update' => function ($url, $model) {
