@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\ReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Reports';
+$this->title = 'Berichte';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-index">
@@ -16,9 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Report', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
