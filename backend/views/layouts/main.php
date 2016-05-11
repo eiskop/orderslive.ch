@@ -69,7 +69,7 @@ AppAsset::register($this);
         if (Yii::$app->user->can('reports')) 
         {
             $menuItems[] = [
-                'label' => 'Rapporten', 
+                'label' => 'Berichte', 
                 'url' => ['/report/index']
             ];
             //echo Html::a('Kunden', ['create'], ['class' => 'btn btn-success']);

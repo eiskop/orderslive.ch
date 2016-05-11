@@ -25,8 +25,7 @@ $this->title = 'JELD-WEN Orders Live';
             ?>
             
             <a class="btn btn-lg btn-success" href="index.php?r=offer">Offertenliste</a>
-            <a class="btn btn-lg btn-success" href="index.php?r=offer/tvkellpax">??TV Kellpax??</a>
-            <a class="btn btn-lg btn-success" href="index.php?r=offer/tvwirus">??TV Wirus??</a>
+
         </p>
         <h2>Aufträge</h2>
         <p>
