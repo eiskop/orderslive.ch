@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description',
-            'created',
+       //     'created',
 
                         [  
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view}',
                 'buttons' => 
                 [
 
