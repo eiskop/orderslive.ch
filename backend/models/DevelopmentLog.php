@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $priority
+ * @property integer $completion_perc
  * @property string $task_name
  * @property string $task_description
  * @property integer $developer_id
@@ -43,10 +44,10 @@ class DevelopmentLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['priority', 'task_name', 'task_description', 'developer_id', 'estimated_start_time', 'estimated_completion_time', 'approved_by_id', 'approved_date', 'created', 'created_by', 'changed_by'], 'required'],
+            [['priority', 'task_name', 'task_description', 'developer_id', 'approved_by_id', 'approved_date'], 'required'],
             [['priority', 'developer_id', 'approved_by_id', 'created_by', 'changed_by'], 'integer'],
             [['task_description'], 'string'],
-            [['estimated_start_time', 'estimated_completion_time', 'approved_date', 'created', 'changed'], 'safe'],
+            [['estimated_start_time', 'estimated_completion_time', 'approved_date', 'created', 'changed', 'created_by', 'changed_by', 'estimated_start_time', 'estimated_completion_time', 'completion_perc'], 'safe'],
             [['task_name'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['developer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['developer_id' => 'id']],
@@ -63,6 +64,7 @@ class DevelopmentLog extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'priority' => Yii::t('app', 'Priority'),
+            'completion_perc' => Yii::t('app', 'Completion %'),
             'task_name' => Yii::t('app', 'Task Name'),
             'task_description' => Yii::t('app', 'Task Description'),
             'developer_id' => Yii::t('app', 'Developer ID'),

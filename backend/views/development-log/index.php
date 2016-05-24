@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'task_name',
             'task_description:ntext',
             'developer_id',
+            'completion_perc',
             // 'estimated_start_time',
             // 'estimated_completion_time',
             // 'approved_by_id',

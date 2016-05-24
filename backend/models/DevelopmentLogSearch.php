@@ -19,7 +19,7 @@ class DevelopmentLogSearch extends DevelopmentLog
     {
         return [
             [['id', 'priority', 'developer_id', 'approved_by_id', 'created_by', 'changed_by'], 'integer'],
-            [['task_name', 'task_description', 'estimated_start_time', 'estimated_completion_time', 'approved_date', 'created', 'changed'], 'safe'],
+            [['task_name', 'task_description', 'estimated_start_time', 'estimated_completion_time', 'approved_date', 'created', 'changed', 'completion_perc'], 'safe'],
         ];
     }
 
@@ -61,6 +61,7 @@ class DevelopmentLogSearch extends DevelopmentLog
         $query->andFilterWhere([
             'id' => $this->id,
             'priority' => $this->priority,
+            'completion_perc' => $this->completion_perc,
             'developer_id' => $this->developer_id,
             'estimated_start_time' => $this->estimated_start_time,
             'estimated_completion_time' => $this->estimated_completion_time,

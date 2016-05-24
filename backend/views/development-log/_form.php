@@ -28,13 +28,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'approved_date')->textInput() ?>
 
-    <?= $form->field($model, 'created')->textInput() ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'changed')->textInput() ?>
-
-    <?= $form->field($model, 'changed_by')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -24,6 +24,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'task_description') ?>
 
     <?= $form->field($model, 'developer_id') ?>
+    <?= $form->field($model, 'completion_perc') ?>
 
     <?php // echo $form->field($model, 'estimated_start_time') ?>
 
