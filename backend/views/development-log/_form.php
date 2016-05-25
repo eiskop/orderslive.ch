@@ -14,6 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'priority')->textInput() ?>
 
+    <?= $form->field($model, 'completion_perc')->textInput() ?>
+
     <?= $form->field($model, 'task_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'task_description')->textarea(['rows' => 6]) ?>

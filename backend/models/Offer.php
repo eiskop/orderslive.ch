@@ -5,6 +5,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\base\Model;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "offer".
@@ -43,12 +45,15 @@ use Yii;
  * @property CustomerPriority $customerPriority
  * @property User $createdBy
  * @property OfferItem[] $offerItems
+ * @property UploadedFile[] $uploadedFiles
  */
 class Offer extends \yii\db\ActiveRecord
 {
+    public $uploadedFiles;
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
         return 'offer';
@@ -63,7 +68,7 @@ class Offer extends \yii\db\ActiveRecord
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
             [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no'], 'integer'],
             [['value'], 'number'],
-            [['offer_received','customer_id', 'customer_id_2', 'followup_by_id', 'created', 'updated'], 'safe'],
+            [['offer_received','customer_id', 'customer_id_2', 'followup_by_id', 'created', 'updated', 'uploadedFiles'], 'safe'],
             [['comments', 'qty'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
@@ -77,6 +82,7 @@ class Offer extends \yii\db\ActiveRecord
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['customer_priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => CustomerPriority::className(), 'targetAttribute' => ['customer_priority_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
+            [['uploadedFiles'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
         ];
     }
 
@@ -111,6 +117,7 @@ class Offer extends \yii\db\ActiveRecord
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
             'updated' => 'Geändert am',
+            'uploadedFiles' => 'Dokumente hinzufügen',
         ];
     }
     /**
@@ -184,4 +191,53 @@ class Offer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(OfferItem::className(), ['offer_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+    * @var UploadedFile[]
+     */
+    public function upload()
+    {
+        function fixDb($str) {
+            return '"'.htmlentities($str).'"';
+        }
+    //  echo 'file upload model  is called';
+        if ($this->validate()) {
+            foreach ($this->uploadedFiles as $file) {
+                if (!file_exists('uploads/'.$this->id)) {
+                    mkdir('uploads/'.$this->id, octdec('0775'), true);
+                }
+                //echo '<pre>', var_dump($file), '</pre>';
+
+                if ($file->saveAs('uploads/'.$this->id.'/'.$file->baseName.'.'.$file->extension)) {
+                    $sql = 'INSERT INTO offer_upload SET '.
+                            'offer_id='.fixDb($this->id).', '.
+                            'file_path='.fixDb('uploads/'.$this->id.'/'.$file->baseName.'.'.$file->extension).', '.
+                            'file_name='.fixDb($file->name).', '.
+                            'file_extension='.fixDb($file->extension).', '.
+                            'file_type='.fixDb($file->type).', '.
+                            'file_size='.fixDb($file->size).', '.
+                            'created=NOW(), '.
+                            'created_by='.fixDb(Yii::$app->user->id);
+
+                    $command = Yii::$app->db->createCommand($sql);
+                    if (!$command->execute()) {
+                        unlink('uploads/'.$this->id.'/'.$file->baseName.'.'.$file->extension);
+                    }
+                    
+                }
+
+                
+                
+
+               
+            }
+        //  echo 'file upload model all files processed';
+      //    exit;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }    
 }

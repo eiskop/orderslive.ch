@@ -37,7 +37,7 @@ class DevelopmentLogController extends Controller
     {
         $searchModel = new DevelopmentLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->sort = ['defaultOrder' => ['priority' => 'ASC']];
+       // $dataProvider->sort = ['defaultOrder' => ['priority' => 'SORT_ASC']];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

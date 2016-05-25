@@ -47,6 +47,12 @@ class DevelopmentLogSearch extends DevelopmentLog
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'priority' => SORT_ASC,
+                    'task_name' => SORT_ASC, 
+                ]
+            ],
         ]);
 
         $this->load($params);

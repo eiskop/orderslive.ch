@@ -11,11 +11,15 @@ use backend\models\Customer;
 use backend\models\CustomerPriority;
 use backend\models\Change;
 use backend\models\ChangeSearch;
+use backend\models\OfferUpload;
+use backend\models\OfferUploadSearch;
 use backend\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * OfferController implements the CRUD actions for Offer model.
@@ -68,12 +72,18 @@ class OfferController extends Controller
 		$dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
 		$dataProvider2->query->where(['change_object'=>'offer'])->andWhere(['change_object_id' => $id])->orderBy(['created'=>SORT_DESC])->all();		
 
+		$searchModel3 = new OfferUploadSearch();
+		$dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
+		$dataProvider3->query->where(['offer_id'=>$id])->orderBy(['file_name'=>SORT_ASC])->all();		
+
 		return $this->render('view', [
 			'model' => $this->findModel($id),
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 			'searchModel2' => $searchModel2,
-			'dataProvider2' => $dataProvider2,			
+			'dataProvider2' => $dataProvider2,	
+			'searchModel3' => $searchModel3,
+			'dataProvider3' => $dataProvider3,			
 		]);
 	}
 
@@ -211,6 +221,7 @@ class OfferController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+
 		if (Yii::$app->user->can('change-offer') OR Yii::$app->user->can('update-offer')) 
 		{
 			$model = $this->findModel($id);
@@ -250,12 +261,20 @@ class OfferController extends Controller
 				$modelChange->change_object = 'offer';
 				$modelChange->change_object_id = $model->id;
 
+
 				// validate all models
 				$valid = $model->validate();
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
-
 				if ($valid) {
+		            // upload files
+		            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+	            
+		            if ($model->upload()) {
+		            	//upload successful
+		            }
+					//END: upload files
+					
 					$transaction = \Yii::$app->db->beginTransaction();
 					try {
 						if ($flag = $model->save(false)) {
@@ -318,6 +337,20 @@ class OfferController extends Controller
 
 		return $this->redirect(['index']);
 	}
+
+	public function actionUpload($id)
+	{
+	    $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+            if ($model->upload($id)) {
+                // file is uploaded successfully
+                return;
+            }
+        }
+        //return $this->render('upload', ['model' => $model]);
+	}	
 
 	/**
 	 * Finds the Offer model based on its primary key value.
