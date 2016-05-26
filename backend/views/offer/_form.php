@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\db\Query;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
 use backend\models\ProductGroup;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
@@ -11,6 +14,8 @@ use backend\models\OfferStatus;
 use backend\models\Offer;
 use backend\models\OfferItem;
 use backend\models\OfferItemType;
+use backend\models\OfferUpload;
+use backend\models\OfferUploadSearch;
 use backend\models\Change;
 use backend\models\SelectMenu;
 use backend\models\Model;
@@ -24,6 +29,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Offer */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
 ?>
 
 <div class="offer-form">
@@ -216,15 +223,38 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>
     </div>
 </div>
-<div class="table">
+<div>
     <h2>Dateien hinzufügen</h2>
-    <div class="row">
-        <div class="col-md-12">
-            
+    
              <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>
+    
+            <h2>Dateien</h2>
+            <hr />
+            <?php        
+                //data for Document list
+                
+                $query = (new yii\db\Query())
+                ->select('file_extension, file_name, file_path, title, description, created, created_by, user.username')
+                ->from('offer_upload')
+                ->leftJoin('user', 'offer_upload.created_by = user.id')
+                ->where(['offer_id'=>$model->id])->orderBy(['file_name'=>SORT_ASC]);
 
-        </div>
-    </div>
+                //$res = $query->all();    
+                //echo '<pre>', var_dump($dataProvider);
+                echo '<div class="table">';
+                foreach ($query->each() as $doc) {
+                    echo '<div class="row">';
+                    echo '<div class="col-md-1">'.$doc['file_extension'].'</div>';
+                    echo '<div class="col-md-2" style="white-space:nowrap;">'.$doc['file_name'].'</div>';
+                    echo '<div class="col-md-2">'.$doc['title'].'</div>';
+                    echo '<div class="col-md-4">'.$doc['description'].'</div>';
+                    echo '<div class="col-md-2">'.date('d.m.y H:i', strtotime($doc['created'])).'</div>';
+                    echo '<div class="col-md-1">'.$doc['username'].'</div>';
+                    echo '</div>';
+                }
+                echo '</div>';
+            
+            ?>
 </div>
 <div class="table">
     <h2>Informationen zur Änderung</h2>

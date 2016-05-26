@@ -97,6 +97,8 @@ class OfferController extends Controller
 	
 		if (Yii::$app->user->can('create-offer')) 
 		{
+
+
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
 			$modelChange = new Change();
@@ -336,6 +338,7 @@ class OfferController extends Controller
 						'model' => $model,
 						'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
 						'modelChange' => $modelChange,
+			
 					]
 				);
 			}
