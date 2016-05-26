@@ -30,8 +30,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
 
     <?php 
-        $form = ActiveForm::begin([ 'enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form']); 
-        
+        $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form', 'enctype' => 'multipart/form-data']]);   
+
         if ($_GET['r'] == 'offer/create') { // check if action is create ... so on update it wouldn't change the product group.
             $model->product_group_id = Yii::$app->user->identity->product_group_id;    
             $model->offer_received = date('d-m-Y', time());
@@ -216,6 +216,16 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>
     </div>
 </div>    
+<div class="table">
+    <h2>Dateien hinzufügen</h2>
+    <div class="row">
+        <div class="col-md-12">
+             <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>
+             <button>Submit</button>
+        </div>
+    </div>
+</div>
+<div class="table">
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

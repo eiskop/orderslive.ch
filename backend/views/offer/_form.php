@@ -223,9 +223,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
             
              <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>
 
-            <button>Submit</button>
         </div>
     </div>
+</div>
 <div class="table">
     <h2>Informationen zur Änderung</h2>
     <div class="row">

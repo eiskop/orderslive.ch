@@ -128,11 +128,17 @@ class OfferController extends Controller
 			   //     );
 				//}
 
+				//get uploaded files information
+				$model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+
 				// validate all models
+
 				$valid = $model->validate();
+
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
 				if ($valid) {
+
 					$model->created = date('Y-m-d H:i:s');
 					$model->created_by = Yii::$app->user->id;
 
@@ -187,8 +193,21 @@ class OfferController extends Controller
 						}
 						if ($flag) {
 							$model->save(false);
+
+				            // upload files
+//echo var_dump($model->uploadedFiles);
+//echo var_dump($model->errors);
+		            	
+				            if ($model->upload($model->id)) {
+				            	//upload successful
+				            }
+							//END: upload files
+
 							$modelChange->save(false);
 							$transaction->commit();
+
+
+
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
 					} catch (Exception $e) {
@@ -196,8 +215,6 @@ class OfferController extends Controller
 					}
 	//END:process offer lines                
 				}
-
-
 				return $this->redirect(['create', 'id' => $model->id]);
 			} else {
 				return $this->render('create', [
@@ -233,6 +250,14 @@ class OfferController extends Controller
 
 			if ($model->load(Yii::$app->request->post())) {
 
+	            // upload files
+	            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+            
+	            if ($model->upload($model->id)) {
+	            	//upload successful
+	            }
+				//END: upload files		
+
 				$oldIDs = ArrayHelper::map($modelsOfferItem, 'id', 'id');
 				$modelsOfferItem = Model::createMultiple(OfferItem::classname(), $modelsOfferItem);
 				Model::loadMultiple($modelsOfferItem, Yii::$app->request->post());
@@ -267,13 +292,7 @@ class OfferController extends Controller
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
 				if ($valid) {
-		            // upload files
-		            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
-	            
-		            if ($model->upload()) {
-		            	//upload successful
-		            }
-					//END: upload files
+
 					
 					$transaction = \Yii::$app->db->beginTransaction();
 					try {
@@ -304,6 +323,7 @@ class OfferController extends Controller
 							$model->save(false);
 							$modelChange->save(false);
 							$transaction->commit();
+					
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
 					} catch (Exception $e) {
