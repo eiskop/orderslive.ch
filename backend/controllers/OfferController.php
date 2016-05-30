@@ -9,12 +9,14 @@ use backend\models\OfferItem;
 use backend\models\OfferItemSearch;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
+use backend\models\CustomerDiscount;
 use backend\models\Change;
 use backend\models\ChangeSearch;
 use backend\models\OfferUpload;
 use backend\models\OfferUploadSearch;
 use backend\models\Model;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -376,6 +378,13 @@ class OfferController extends Controller
         }
         //return $this->render('upload', ['model' => $model]);
 	}	
+
+	public function actionGetProductDiscount($customer_id) 
+	{
+		$discount = CustomerDiscount::findOne(['customer_id'=>$customer_id, 'active'=>'1']);	
+		echo Json::encode($discount);
+
+	}
 
 	/**
 	 * Finds the Offer model based on its primary key value.

@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use backend\models\ProductGroup;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
+use backend\models\CustomerDiscount;
 use backend\models\OfferStatus;
 use backend\models\Offer;
 use backend\models\OfferItem;
@@ -205,11 +206,10 @@ use wbraganca\dynamicform\DynamicFormWidget;
                                     'prompt'=>'Select ',
                                     'onchange'=>'
                                     $.post("index.php?r=offer-item-type/index&id='.'"+$(this).val(), function (data) {
-                                        $("select#product-group-id").html(data);
+                                        $("select#product-group-id").html(data);                                        
                                     });'
 
                                 ]) ?>
-
                             </div>
                             <div class="col-sm-1">
                                 <?= $form->field($modelOfferItem, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
@@ -217,6 +217,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]value")->textInput(['maxlength' => true]) ?>
                             </div>
+                            <div class="col-sm-2">
+                                <?= $form->field($modelOfferItem, "[{$i}]base_discount_perc")->textInput(['maxlength' => true, 'readonly'=>true]) ?>
+                            </div>                            
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]project_discount_perc")->textInput(['maxlength' => true]) ?>
                             </div>
@@ -255,30 +258,35 @@ use wbraganca\dynamicform\DynamicFormWidget;
         <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
-    <?php ActiveForm::end(); 
-        $this->registerJs('
-            $(document).ready(function () {
-                $("#offer-customer_id").focus();
+    <?php ActiveForm::end(); ?>
 
-                $("#offeritem-0-offer_item_type_id").change(
-                    $.get("index.php?r=customer/index&id='.'"+$("#offer-customer_id").val(), 
-                        function (data) {
-                            $("offeritem-0-value_net").val(data);
+<?php
+$script = <<< JS
+        $(document).ready(function () {
+            $("#offer-customer_id").focus();
+            console.log($("#offer-customer_id").val());
+            $("[id^='offeritem']").change(
+
+                function() {
+                    var customer_id = $("#offer-customer_id").val();
+                    var offer_item_type_id = $(this).val();
+                  //  alert(customer_id + " " + offer_item_type_id);
+                    var item = $(this).attr("id").split("-"); 
+                    $.get("index.php?r=offer/get-product-discount", {customer_id : customer_id, offer_item_type_id: offer_item_type_id}, 
+                        function(data) {
+                            var data = $.parseJSON(data);
+                            $('#offeritem-'+item[1]+'-base_discount_perc').val(data.base_discount_perc);
+                            
                         }
-                    )
-                );
+                    );                    
+                }
+            );
 
-                $("#offer-customer_id").change(
-                    function() {
-                        console.log($("#offer-customer_id").val());
-                    }
-                );
+        });
+JS;
+$this->registerJs($script, \yii\web\View::POS_END);
 
-            });
-            
-
-        ', \yii\web\View::POS_READY);
-    ?>
+?>
 
 
 </div>
