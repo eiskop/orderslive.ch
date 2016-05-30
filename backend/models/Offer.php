@@ -26,6 +26,7 @@ use yii\web\UploadedFile;
  * @property integer $prio1
  * @property integer $status_id
  * @property double $value
+ * @property double $value_net
  * @property string $offer_received
  * @property string $customer_priority_id
  * @property integer $days_to_process
@@ -35,19 +36,20 @@ use yii\web\UploadedFile;
  * @property string $created
  * @property integer $updated_by
  * @property string $updated
- * @property OfferItem[] $offerItems
- * @property UploadedFile[] $uploadedFiles
  * @property integer $offer_id
  *
- * @property User $updatedBy
  * @property User $processedBy
  * @property User $followupBy
  * @property ProductGroup $productGroup
  * @property Customer $customer
+ * @property Customer $customerId2
  * @property OfferStatus $status
  * @property CustomerPriority $customerPriority
  * @property User $createdBy
- */
+ * @property User $updatedBy
+ * @property OfferItem[] $offerItems
+ * @property UploadedFile[] $uploadedFiles 
+*/
 class Offer extends \yii\db\ActiveRecord
 {
     public $uploadedFiles;
@@ -77,15 +79,17 @@ class Offer extends \yii\db\ActiveRecord
             [['customer_contact'], 'string', 'max' => 150],
             [['customer_order_no', 'confirmation_no'], 'string', 'max' => 30],
             [['customer_priority_id'], 'string', 'max' => 1],
+            [['offer_no'], 'unique'],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['processed_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['processed_by_id' => 'id']],
            // [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['customer_id_2'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id_2' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['customer_priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => CustomerPriority::className(), 'targetAttribute' => ['customer_priority_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
-            [['uploadedFiles'], 'file', 'skipOnEmpty' => false, 'maxFiles' => 10],
+            [['uploadedFiles'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
         ];
     }
 
@@ -163,6 +167,14 @@ class Offer extends \yii\db\ActiveRecord
         return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
     }
 
+   /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+   public function getCustomerId2() 
+   { 
+       return $this->hasOne(Customer::className(), ['id' => 'customer_id_2']); 
+   } 
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -194,6 +206,12 @@ class Offer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(OfferItem::className(), ['offer_id' => 'id']);
     }
+
+
+   public function getOfferUploads()
+   {
+       return $this->hasMany(OfferUpload::className(), ['offer_id' => 'id']);
+   }
 
     /**
      * @return \yii\db\ActiveQuery

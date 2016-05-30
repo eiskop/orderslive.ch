@@ -51,35 +51,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'offer_no',
-            'offer_wir_id',
-            [
-                'attribute'=>'processed_by_id',
-                'value'=>$model->processedBy->username,
-            ],             
-            [
-                'attribute'=>'followup_by_id',
-                'value'=>$model->followupBy->username,
-            ],   
-            [
-                'attribute'=>'customer_id',
-                'value'=>$model->customer->name,
-            ],            
-            'customer_contact',
-            [
-                'attribute'=>'customer_id_2',
-                'value'=>$model->customer->name,
-            ],               
-            'customer_order_no',
             'confirmation_no',
-            'prio1',
+            'offer_wir_id',
             [
                 'attribute'=>'status_id',
                 'value'=>$model->status->name,
-            ],             
+            ],       
             [
-                'attribute'=>'offer_received',
-                'value'=>date('d.m.Y', strtotime($model->offer_received)),
-            ],            
+                'attribute'=>'customer_id',
+                'value'=>$model->customer->name,
+            ],
+            'customer_order_no',
+            'customer_contact',
+            [
+                'attribute'=>'customer_id_2',
+                'value'=>$model->customerId2->name,
+            ],    
+            'prio1',
             'customer_priority_id',             
             [
                 'attribute'=>'qty',
@@ -97,7 +85,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'Rabatt %',
                 'value'=>number_format((100-$model->value_net/$model->value*100), 2, '.', ''),
             ],                           
-            'days_to_process',
+            
+            [
+                'attribute'=>'offer_received',
+                'value'=>date('d.m.Y', strtotime($model->offer_received)),
+            ],              
+            'days_to_process',            
             [
                 'attribute'=>'Termin für Erfassung',
                 'value'=>date('d.m.Y', $model->deadline),
@@ -110,12 +103,15 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'created_by',
                 'value'=>$model->createdBy->username,
-            ],
-            'updatedBy.username',
+            ],          
             [
                 'attribute'=>'updated',
                 'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
-            ],          
+            ],
+            [
+                'attribute'=>'updated_by',
+                'value'=>$model->updatedBy->username,
+            ],  
         ],
     ]) ?>
 

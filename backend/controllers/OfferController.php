@@ -281,7 +281,9 @@ class OfferController extends Controller
 					}
 				}
 				$model->deadline += $count_weekend*60*60*24;
-
+				if (is_null($model->customer_id_2)) {
+					$model->customer_id_2 = 0;
+				}
 
 				$modelChange->created_by = Yii::$app->user->id;
 				$modelChange->created = date('Y-m-d H:i:s');

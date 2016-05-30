@@ -117,6 +117,16 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>             
         </div>
         <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'customer_id_2')->dropDownList(ArrayHelper::map(Customer::find()->all(), 'id', 'nameAndStreet', 'name'), [
+                    'prompt'=>'Select Customer',
+                    'onchange'=>'
+                        $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
+                            $("select#customer-id").html(data);
+                        });'
+
+                ]) ?>
+            </div>
             <div class="col-md-3">
                 <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map(OfferStatus::find()->orderBy('name')->all(), 'id', 'name'), [
                     'onchange'=>'
@@ -324,10 +334,14 @@ use wbraganca\dynamicform\DynamicFormWidget;
         $this->registerJs('
             $(document).ready(function () {
                 $("#offer-customer_id").focus();
+                $("#offeritem-1-offer_item_type_id").change(
+                        alert($("#offer-customer_id").val());
+        
+                );
             });
             
 
-        ');
+        ', \yii\web\View::POS_READY);
     ?>
 
 

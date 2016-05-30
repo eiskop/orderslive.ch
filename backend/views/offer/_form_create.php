@@ -33,7 +33,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
         $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form', 'enctype' => 'multipart/form-data']]);   
 
         if ($_GET['r'] == 'offer/create') { // check if action is create ... so on update it wouldn't change the product group.
-            $model->product_group_id = Yii::$app->user->identity->product_group_id;    
+            $model->processed_by_id = Yii::$app->user->identity->id;    
             $model->offer_received = date('d-m-Y', time());
         }
         
@@ -110,6 +110,17 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>             
         </div>
         <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'customer_id_2')->dropDownList(ArrayHelper::map(Customer::find()->all(), 'id', 'nameAndStreet', 'name'), [
+                    'prompt'=>'Select Customer',
+                    'onchange'=>'
+                        $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
+                            $("select#customer-id").html(data);
+                        });'
+
+                ]) ?>
+            </div>
+
             <div class="col-md-3">
                 <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map(OfferStatus::find()->orderBy('name')->all(), 'id', 'name'), [
                     'onchange'=>'
@@ -137,6 +148,19 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>        
     </div>
 
+<?= Html::a('Your Link name','customer/index', [
+'title' => Yii::t('yii', 'Close'),
+    'onclick'=>"$('#control-label').dialog('open');//for jui dialog in my page
+     $.ajax({
+    type     :'POST',
+    cache    : false,
+    url  : 'customer/index',
+    success  : function(response) {
+        $('#control-label').html(response);
+    }
+    });return false;",
+                ]);
+?>
 
 <div class="table">
   <div class="panel panel-default">
@@ -235,10 +259,25 @@ use wbraganca\dynamicform\DynamicFormWidget;
         $this->registerJs('
             $(document).ready(function () {
                 $("#offer-customer_id").focus();
+
+                $("#offeritem-0-offer_item_type_id").change(
+                    $.get("index.php?r=customer/index&id='.'"+$("#offer-customer_id").val(), 
+                        function (data) {
+                            $("offeritem-0-value_net").val(data);
+                        }
+                    )
+                );
+
+                $("#offer-customer_id").change(
+                    function() {
+                        console.log($("#offer-customer_id").val());
+                    }
+                );
+
             });
             
 
-        ');
+        ', \yii\web\View::POS_READY);
     ?>
 
 
