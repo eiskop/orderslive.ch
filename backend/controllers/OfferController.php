@@ -141,6 +141,9 @@ class OfferController extends Controller
 
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
+				$model->product_group_id = 1;
+				$model->qty = 0;
+				
 				if ($valid) {
 
 					$model->created = date('Y-m-d H:i:s');
@@ -379,9 +382,9 @@ class OfferController extends Controller
         //return $this->render('upload', ['model' => $model]);
 	}	
 
-	public function actionGetProductDiscount($customer_id) 
+	public function actionGetProductDiscount($customer_id, $offer_item_type_id) 
 	{
-		$discount = CustomerDiscount::findOne(['customer_id'=>$customer_id, 'active'=>'1']);	
+		$discount = CustomerDiscount::findOne(['customer_id'=>$customer_id, 'offer_item_type_id'=>$offer_item_type_id, 'active'=>'1']);	
 		echo Json::encode($discount);
 
 	}

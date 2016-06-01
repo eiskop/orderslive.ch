@@ -149,19 +149,20 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>        
     </div>
 
-<?= Html::a('Your Link name','customer/index', [
+<?php 
+/*Html::a('Your Link name','index.php?r=customer/index', [
 'title' => Yii::t('yii', 'Close'),
-    'onclick'=>"$('#control-label').dialog('open');//for jui dialog in my page
+    'onclick'=>"
      $.ajax({
     type     :'POST',
     cache    : false,
-    url  : 'customer/index',
+    url  : 'index.php?r=customer/index',
     success  : function(response) {
-        $('#control-label').html(response);
-    }
+       console.log(response);
+           }
     });return false;",
                 ]);
-?>
+*/?>
 
 <div class="table">
   <div class="panel panel-default">
@@ -175,7 +176,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
                 'widgetBody' => '.container-items', // required: css class selector
                 'widgetItem' => '.item', // required: css class
-                'limit' => 100, // the maximum times, an element can be cloned (default 999)
+                'limit' => 10, // the maximum times, an element can be cloned (default 999)
                 'min' => 1, // 0 or 1 (default 1)
                 'insertButton' => '.add-item', // css class
                 'deleteButton' => '.remove-item', // css class
@@ -189,6 +190,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
                     'value_net',
                 ],
             ]); ?>
+            <div style="width: 100%; " class="container" >
+                <div class="btn btn-primary btn-md" style="margin:3px; float:right;" role="button" id="check_discount">Rabatt Prüfen und Rechnen</div>
+            </div>
             <div class="container-items"><!-- widgetContainer -->
             <?php foreach ($modelsOfferItem as $i => $modelOfferItem): ?>
                 <div class="item panel panel-default"><!-- widgetBody -->
@@ -263,25 +267,25 @@ use wbraganca\dynamicform\DynamicFormWidget;
 <?php
 $script = <<< JS
         $(document).ready(function () {
-            $("#offer-customer_id").focus();
-            console.log($("#offer-customer_id").val());
-            $("[id^='offeritem']").change(
-
-                function() {
-                    var customer_id = $("#offer-customer_id").val();
-                    var offer_item_type_id = $(this).val();
-                  //  alert(customer_id + " " + offer_item_type_id);
-                    var item = $(this).attr("id").split("-"); 
-                    $.get("index.php?r=offer/get-product-discount", {customer_id : customer_id, offer_item_type_id: offer_item_type_id}, 
-                        function(data) {
-                            var data = $.parseJSON(data);
-                            $('#offeritem-'+item[1]+'-base_discount_perc').val(data.base_discount_perc);
-                            
+            $('#check_discount').click(
+                function () {
+                    console.log($("[id='-offer_item_type_id']"));
+                    $("[id$='-offer_item_type_id']").each(
+                        function () {
+                            var customer_id = $("#offer-customer_id").val();
+                            var offer_item_type_id = $(this).val();
+                            var item = $(this).attr("id").split("-"); 
+                            $.get("index.php?r=offer/get-product-discount", {customer_id : customer_id, offer_item_type_id: offer_item_type_id}, 
+                                function(data) {
+                                    var data = $.parseJSON(data);
+                                    $('#offeritem-'+item[1]+'-base_discount_perc').val(data.base_discount_perc);
+                                    
+                                }
+                            );                    
                         }
-                    );                    
+                    ); 
                 }
             );
-
         });
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);
