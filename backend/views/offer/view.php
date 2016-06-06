@@ -13,6 +13,8 @@ use backend\models\OfferItemType;
 use backend\models\SelectMenu;
 use backend\models\OfferUpload;
 use backend\models\OfferUploadSearch;
+use backend\models\Customer;
+use backend\models\CustomerDiscount;
 
 
 /* @var $this yii\web\View */
@@ -136,6 +138,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'qty',
                 'value',
                 'value_total',
+                [
+                    'attribute'=>'customer_discount',
+                    'value'=>function ($data) {
+                        $a = CustomerDiscount::findOne(['offer_item_type_id'=>$data->offer_item_type_id, 'customer_id'=>$data->offer->customer_id]);
+                        if ($a != NULL) {
+                            return $a->base_discount_perc;    
+                        }
+                        else {
+                            return 0;
+                        }
+                        
+                    },
+                ],
+                [
+                    'attribute'=>'value_base_disc_net',
+                    'value'=>function ($data) {
+                        $a = CustomerDiscount::findOne(['offer_item_type_id'=>$data->offer_item_type_id, 'customer_id'=>$data->offer->customer_id]);
+                        if ($a != NULL) {
+                            return number_format($a->base_discount_perc*$data->value_total, 2);
+                        }
+                        else {
+                            return number_format($data->value_total, 2);
+                        }
+                    },
+                    'contentOptions' => ['style' => 'width:300px'],
+                ],                      
+
                 'project_discount_perc',
                 'value_net',                
                 'value_total_net',

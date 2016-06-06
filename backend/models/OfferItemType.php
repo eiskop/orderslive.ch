@@ -61,8 +61,20 @@ class OfferItemType extends \yii\db\ActiveRecord
     {
         return $this->hasMany(OfferItem::className(), ['offer_item_type_id' => 'id']);
     }
-    public function getCustomerDiscount()
+    public function getCustomerDiscount($customer_id)
     {
-        return $this->hasMany(CustomerDiscount::className(), ['offer_item_type_id' => 'id']);
+        if ($customer_id == FALSE) {
+            return $this->hasMany(CustomerDiscount::className(), ['offer_item_type_id' => 'id']);    
+        }
+        else {
+            if (is_numeric($customer_id)) {
+                return $this->hasOne(CustomerDiscount::className(), ['offer_item_type_id' => 'id'])->onCondition(['customer_id' => $customer_id]);           
+            }
+            else {
+                return $this->hasOne(CustomerDiscount::className(), ['offer_item_type_id' => 'id'])->onCondition(['customer_id' => 0]);              
+            }
+        }
+
+        
     }    
 }

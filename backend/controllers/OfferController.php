@@ -28,6 +28,8 @@ use yii\web\UploadedFile;
  */
 class OfferController extends Controller
 {
+
+
 	/**
 	 * @inheritdoc
 	 */
@@ -96,7 +98,12 @@ class OfferController extends Controller
 	 */
 	public function actionCreate()
 	{
-	
+		function round5 ($value) {
+			$number = round($value*20)/20;
+			return $number;
+		}
+
+
 		if (Yii::$app->user->can('create-offer')) 
 		{
 
@@ -115,6 +122,10 @@ class OfferController extends Controller
 			    }
 			    else {
 			    	$model->offer_no = date('y').date('m').'0001';
+			    }	
+
+			    if ($model->customer_id_2 == NULL) {
+					$model->customer_id_2 = 0;
 			    }	
 			    if ($model->followup_by_id != true) {
 					$model->followup_by_id = 0;
@@ -184,10 +195,14 @@ class OfferController extends Controller
 						if ($flag = $model->save(false)) {
 							foreach ($modelsOfferItem as $modelOfferItem) {
 								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->value_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value/100;
+								$a = CustomerDiscount::findOne(['offer_item_type_id'=>$modelOfferItem->offer_item_type_id, 'customer_id'=>$model->customer_id]);
+								$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+
+								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
 								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
-								$modelOfferItem->value_total_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total/100;
+								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
+								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+
 								$model->qty += $modelOfferItem->qty;         
 								$model->value += $modelOfferItem->value_total;
 								$model->value_net += $modelOfferItem->value_total_net;                       
@@ -245,6 +260,11 @@ class OfferController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+
+		function round5 ($value) {
+			$number = round($value*20)/20;
+			return $number;
+		}
 
 		if (Yii::$app->user->can('change-offer') OR Yii::$app->user->can('update-offer')) 
 		{
@@ -314,9 +334,20 @@ class OfferController extends Controller
 							$model->value_net = 0;
 							foreach ($modelsOfferItem as $modelOfferItem) {
 								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->value_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value/100;
+								$a = CustomerDiscount::findOne(['offer_item_type_id'=>$modelOfferItem->offer_item_type_id, 'customer_id'=>$model->customer_id]);
+								if ($a != NULL) {
+									$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+								}
+								else {
+									$modelOfferItem->base_discount_perc = 0;
+								}
+								
+
+								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
 								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
-								$modelOfferItem->value_total_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total/100;
+								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
+								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+
 								$model->qty += $modelOfferItem->qty;
 								$model->value += $modelOfferItem->value_total;
 								$model->value_net += $modelOfferItem->value_total_net;

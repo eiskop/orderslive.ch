@@ -68,7 +68,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]) ?>
             </div>
             <div class="col-md-6">
-                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->all(), 'id', 'nameAndStreet', 'name'), [
+                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
                     'prompt'=>'Select Customer',
                     'onchange'=>'
                         $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
@@ -112,7 +112,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>
         <div class="row">
             <div class="col-md-6">
-                <?= $form->field($model, 'customer_id_2')->dropDownList(ArrayHelper::map(Customer::find()->all(), 'id', 'nameAndStreet', 'name'), [
+                <?= $form->field($model, 'customer_id_2')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
                     'prompt'=>'Select Customer',
                     'onchange'=>'
                         $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
@@ -191,7 +191,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ],
             ]); ?>
             <div style="width: 100%; " class="container" >
-                <div class="btn btn-primary btn-md" style="margin:3px; float:right;" role="button" id="check_discount">Rabatt Prüfen und Rechnen</div>
+                <div class="btn btn-primary btn-md" style="margin:3px; float:right;" role="button" id="check_discount">Rabatt aktualisieren</div>
             </div>
             <div class="container-items"><!-- widgetContainer -->
             <?php foreach ($modelsOfferItem as $i => $modelOfferItem): ?>
@@ -215,28 +215,33 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
                                 ]) ?>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]value")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-2">
+                                <?= $form->field($modelOfferItem, "[{$i}]value_total")->textInput(['maxlength' => true, 'readonly'=>true]) ?>
+                            </div>                            
+                            <div class="col-sm-2">
+                                <button type="button" class="add-item btn btn-success btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-plus"></i></button>
+                                <button type="button" class="remove-item btn btn-danger btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-minus"></i></button>
+                            </div>                            
+                        </div>
+                        <div class="row">                             
+                            <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]base_discount_perc")->textInput(['maxlength' => true, 'readonly'=>true]) ?>
+                            </div>                            
+                            <div class="col-sm-2">
+                                <?= $form->field($modelOfferItem, "[{$i}]value_total_net")->textInput(['maxlength' => true, 'readonly' => true]) ?>
                             </div>                            
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]project_discount_perc")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value_net")->textInput(['maxlength' => true, 'readonly' => true]) ?>
-                            </div>  
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value_total_net")->textInput(['maxlength' => true, 'readonly' => true]) ?>
-                            </div>  
-                            <div class="col-sm-1">
-                                <button type="button" class="add-item btn btn-success btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-plus"></i></button>
-                                <button type="button" class="remove-item btn btn-danger btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-minus"></i></button>
-                            </div>
+                                <?= $form->field($modelOfferItem, "[{$i}]order_line_net_value")->textInput(['maxlength' => true, 'readonly' => true]) ?>
+                            </div>    
                         </div>
 
                     </div>
@@ -246,7 +251,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             <?php DynamicFormWidget::end(); ?>
         </div>
     </div>
-</div>    
+</div>   
 <div class="table">
     <h2>Dateien hinzufügen</h2>
     <div class="row">
@@ -267,6 +272,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 <?php
 $script = <<< JS
         $(document).ready(function () {
+
             $('#check_discount').click(
                 function () {
                     console.log($("[id='-offer_item_type_id']"));
@@ -279,7 +285,24 @@ $script = <<< JS
                                 function(data) {
                                     var data = $.parseJSON(data);
                                     $('#offeritem-'+item[1]+'-base_discount_perc').val(data.base_discount_perc);
+                                    var bruto_value = $('#offeritem-'+item[1]+'-qty').val()*$('#offeritem-'+item[1]+'-value').val();
+                                    $('#offeritem-'+item[1]+'-value_total').val(bruto_value);
                                     
+                                    var bd_perc = (100-data.base_discount_perc)/100;
+                                    
+
+                                    var net_value_bd = bruto_value*bd_perc;
+
+                                    var net_value_bd_rounded = (Math.round(net_value_bd * 20) / 20).toFixed(2);
+
+                                    $('#offeritem-'+item[1]+'-value_total_net').val(net_value_bd_rounded);
+                                    var project_discount_perc = (100-$('#offeritem-'+item[1]+'-project_discount_perc').val())/100
+                                    var net_value_total = net_value_bd_rounded*project_discount_perc;
+                                    var number = (Math.round(net_value_total * 20) / 20).toFixed(2);
+                                    $('#offeritem-'+item[1]+'-order_line_net_value').val(number);
+                                    
+
+
                                 }
                             );                    
                         }

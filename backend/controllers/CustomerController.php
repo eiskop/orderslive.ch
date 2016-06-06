@@ -77,6 +77,7 @@ class CustomerController extends Controller
             else {
                 $model->region = 'D-CH';   
             }
+            $model->active = 1;
             $model->save(false);            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

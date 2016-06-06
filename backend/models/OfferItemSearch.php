@@ -72,6 +72,7 @@ class OfferItemSearch extends OfferItem
             'changed_by' => $this->changed_by,
             'changed' => $this->changed,
         ]);
+        $query->joinWith('offer');        
 
         return $dataProvider;
     }

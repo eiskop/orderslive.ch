@@ -61,17 +61,17 @@ class CustomerDiscount extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'customer_id' => Yii::t('app', 'Customer ID'),
-            'offer_item_type_id' => Yii::t('app', 'Offer Item Type ID'),
-            'base_discount_perc' => Yii::t('app', 'Discount'),
-            'valid_from' => Yii::t('app', 'Valid From'),
-            'created' => Yii::t('app', 'Created'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'updated' => Yii::t('app', 'Updated'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'approved' => Yii::t('app', 'Approved'),
-            'approved_by' => Yii::t('app', 'Approved By'),
-            'active' => Yii::t('app', 'Active'),
+            'customer_id' => Yii::t('app', 'Kunde'),
+            'offer_item_type_id' => Yii::t('app', 'Auftragpositionstyp'),
+            'base_discount_perc' => Yii::t('app', 'Grundrabatt %'),
+            'valid_from' => Yii::t('app', 'Gültig ab'),
+            'created' => Yii::t('app', 'Erstellt'),
+            'created_by' => Yii::t('app', 'Ersteller'),
+            'updated' => Yii::t('app', 'Geändert am'),
+            'updated_by' => Yii::t('app', 'Geändert von'),
+            'approved' => Yii::t('app', 'Genehmigt am'),
+            'approved_by' => Yii::t('app', 'Genehmigt von'),
+            'active' => Yii::t('app', 'Aktiv'),
         ];
     }
 

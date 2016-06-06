@@ -13,6 +13,8 @@ use Yii;
  * @property double $qty
  * @property double $value
  * @property double $value_net
+ * @property double $value_net_base_discount
+ * @property double $order_line_net_value 
  * @property double $project_discount_perc
  * @property integer $created_by
  * @property string $created
@@ -42,7 +44,7 @@ class OfferItem extends \yii\db\ActiveRecord
         return [
             [['offer_item_type_id', 'qty'], 'required'],
             [['offer_id', 'created_by', 'changed_by'], 'integer'],
-            [['qty', 'value', 'project_discount_perc', 'value_net'], 'number'],
+            [['qty', 'value', 'project_discount_perc', 'value_net', 'order_line_net_value'], 'number'],
             [['created', 'changed'], 'safe'],
             [['offer_item_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferItemType::className(), 'targetAttribute' => ['offer_item_type_id' => 'id']],
             [['offer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Offer::className(), 'targetAttribute' => ['offer_id' => 'id']],
@@ -63,9 +65,11 @@ class OfferItem extends \yii\db\ActiveRecord
             'qty' => 'Stk.',
             'value' => 'Wert (CHF/stk)',
             'project_discount_perc' => 'Projekt Rabatt (%)',
+            'base_discount_perc' => 'Grundrabatt %',
             'value_net' => 'Netto Wert (CHF)',
             'value_total' => 'Wert Total (CHF)',
-            'value_total_net' => 'Netto Wert Total (CHF)',
+            'value_total_net' => 'Netto Wert GR (CHF)',
+            'order_line_net_value' => 'Wert Total Netto (CHF)',
             'created_by' => 'Ersteller',
             'created' => 'Erstellt am',
             'changed_by' => 'Geändert von',
