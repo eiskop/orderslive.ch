@@ -375,6 +375,7 @@ $script = <<< JS
 
                                     $('#offeritem-'+item[1]+'-base_discount_perc').val(discount);
                                     var bruto_value = $('#offeritem-'+item[1]+'-qty').val()*$('#offeritem-'+item[1]+'-value').val();
+                                    bruto_value = (Math.round(bruto_value * 20) / 20).toFixed(2);
                                     var bd_perc = (100-discount)/100;
                                     console.log(bruto_value);
                                     $('#offeritem-'+item[1]+'-value_total').val(bruto_value);

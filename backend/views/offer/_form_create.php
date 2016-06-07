@@ -281,15 +281,31 @@ $script = <<< JS
                             var customer_id = $("#offer-customer_id").val();
                             var offer_item_type_id = $(this).val();
                             var item = $(this).attr("id").split("-"); 
+                            var data;
+
                             $.get("index.php?r=offer/get-product-discount", {customer_id : customer_id, offer_item_type_id: offer_item_type_id}, 
                                 function(data) {
                                     var data = $.parseJSON(data);
-                                    $('#offeritem-'+item[1]+'-base_discount_perc').val(data.base_discount_perc);
+                                    $('body').data('data', data);
+                                    
+
+
+                                }
+                            ).always(function(){
+                                    if (jQuery.isEmptyObject($('body').data('data'))) {
+                                        discount = 0;
+                                    }
+                                    else {
+                                        var discount = $('body').data('data').base_discount_perc;
+                                    }
+                                    
+
+                                    $('#offeritem-'+item[1]+'-base_discount_perc').val(discount);
                                     var bruto_value = $('#offeritem-'+item[1]+'-qty').val()*$('#offeritem-'+item[1]+'-value').val();
+                                    bruto_value = (Math.round(bruto_value * 20) / 20).toFixed(2);
+                                    var bd_perc = (100-discount)/100;
+                                    console.log(bruto_value);
                                     $('#offeritem-'+item[1]+'-value_total').val(bruto_value);
-                                    
-                                    var bd_perc = (100-data.base_discount_perc)/100;
-                                    
 
                                     var net_value_bd = bruto_value*bd_perc;
 
@@ -300,11 +316,7 @@ $script = <<< JS
                                     var net_value_total = net_value_bd_rounded*project_discount_perc;
                                     var number = (Math.round(net_value_total * 20) / 20).toFixed(2);
                                     $('#offeritem-'+item[1]+'-order_line_net_value').val(number);
-                                    
-
-
-                                }
-                            );                    
+                            });                    
                         }
                     ); 
                 }

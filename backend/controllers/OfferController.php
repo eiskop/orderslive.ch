@@ -196,7 +196,12 @@ class OfferController extends Controller
 							foreach ($modelsOfferItem as $modelOfferItem) {
 								$modelOfferItem->offer_id = $model->id;
 								$a = CustomerDiscount::findOne(['offer_item_type_id'=>$modelOfferItem->offer_item_type_id, 'customer_id'=>$model->customer_id]);
-								$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+								if ($a != NULL) {
+									$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+								}
+								else {
+									$modelOfferItem->base_discount_perc = 0;
+								}
 
 								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
 								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;

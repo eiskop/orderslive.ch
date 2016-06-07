@@ -65,7 +65,7 @@ class OfferItem extends \yii\db\ActiveRecord
             'qty' => 'Stk.',
             'value' => 'Wert (CHF/stk)',
             'project_discount_perc' => 'Projekt Rabatt (%)',
-            'base_discount_perc' => 'Grundrabatt %',
+            'base_discount_perc' => 'Grundrabatt (%)',
             'value_net' => 'Netto Wert (CHF)',
             'value_total' => 'Wert Total (CHF)',
             'value_total_net' => 'Netto Wert GR (CHF)',

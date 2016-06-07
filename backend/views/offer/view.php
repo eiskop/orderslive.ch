@@ -133,46 +133,47 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute'=>'offer_item_type_id',
                     'value'=>'offerItemType.name',
-                    'contentOptions' => ['style' => 'width:300px'],
-                ],          
-                'qty',
-                'value',
-                'value_total',
-                [
-                    'attribute'=>'customer_discount',
-                    'value'=>function ($data) {
-                        $a = CustomerDiscount::findOne(['offer_item_type_id'=>$data->offer_item_type_id, 'customer_id'=>$data->offer->customer_id]);
-                        if ($a != NULL) {
-                            return $a->base_discount_perc;    
-                        }
-                        else {
-                            return 0;
-                        }
-                        
-                    },
                 ],
                 [
-                    'attribute'=>'value_base_disc_net',
-                    'value'=>function ($data) {
-                        $a = CustomerDiscount::findOne(['offer_item_type_id'=>$data->offer_item_type_id, 'customer_id'=>$data->offer->customer_id]);
-                        if ($a != NULL) {
-                            return number_format($a->base_discount_perc*$data->value_total, 2);
-                        }
-                        else {
-                            return number_format($data->value_total, 2);
-                        }
-                    },
-                    'contentOptions' => ['style' => 'width:300px'],
-                ],                      
-
-                'project_discount_perc',
-                'value_net',                
-                'value_total_net',
-                // 'project_discount_perc',
-                // 'created_by',
-                // 'created',
-                // 'changed_by',
-                // 'changed',
+                    'attribute'=>'qty',
+                    'value'=>'qty',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                ],                              
+                [
+                    'attribute'=>'value',
+                    'value'=>'value',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                    'format'=>['decimal', 2],
+                ],
+                [
+                    'attribute'=>'value_total',
+                    'value'=>'value_total',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                    'format'=>['decimal', 2],
+                ], 
+                [
+                    'attribute' => 'base_discount_perc',
+                    'value' => 'base_discount_perc',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                ],
+                [
+                    'attribute'=>'value_total_net',
+                    'value'=>'value_total_net',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                    'format'=>['decimal', 2],
+                ],                                        
+                [
+                    'attribute'=>'project_discount_perc',
+                    'value'=>'project_discount_perc',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                ], 
+                [
+                    'attribute'=>'order_line_net_value',
+                    'value'=>'order_line_net_value',
+                    'contentOptions' => ['style' => 'text-align:right;'],
+                    'format'=>['decimal', 2],
+                ], 
+                               
             ],
         ]); ?>
 <?php Pjax::end(); ?> 
