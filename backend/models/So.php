@@ -146,4 +146,12 @@ class So extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SoStatus::className(), ['id' => 'status_id']);
     }    
+    public function getDLZ()
+    {   
+        if ($this->status_id == 3) {// Order complete
+            $a = (strtotime($this->updated)-strtotime($this->order_received))/(60*60*24);
+            $a =  number_format($a, 1, '.', '');
+            return $a;        
+        }
+    }        
 }
