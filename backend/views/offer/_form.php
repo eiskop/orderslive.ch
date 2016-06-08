@@ -265,7 +265,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 foreach ($query->each() as $doc) {
                     echo '<div class="row">';
                     echo '<div class="col-md-1">'.$doc['file_extension'].'</div>';
-                    echo '<div class="col-md-2" style="white-space:nowrap;">'.$doc['file_name'].'</div>';
+                    echo '<div class="col-md-2" style="white-space:nowrap;"><a href="'.$doc['file_path'].'" target="_blank" data-pjax="0">'.$doc['file_name'].'</a></div>';
                     echo '<div class="col-md-2">'.$doc['title'].'</div>';
                     echo '<div class="col-md-4">'.$doc['description'].'</div>';
                     echo '<div class="col-md-2">'.date('d.m.y H:i', strtotime($doc['created'])).'</div>';
