@@ -54,7 +54,7 @@ class CustomerSearch extends Customer
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->joinWith('customerDiscount');
         $query->andFilterWhere([
             'id' => $this->id,
             'customer_group_id' => $this->customer_group_id,

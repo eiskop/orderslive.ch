@@ -122,6 +122,17 @@ class Customer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(So::className(), ['customer_id' => 'id']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    public function getOffers()
+    {
+        return $this->hasMany(Offer::className(), ['customer_id' => 'id']);
+    }
+     /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getNameAndStreet()
     {
         return $this->name.', '.$this->street;
@@ -129,4 +140,8 @@ class Customer extends \yii\db\ActiveRecord
     /**
     * @return \yii\db\ActiveQuery
     */
+    public function getCustomerDiscount()
+    {
+        return $this->hasMany(CustomerDiscount::className(), ['customer_id' => 'id']);
+    }    
 }
