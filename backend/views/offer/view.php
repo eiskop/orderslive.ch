@@ -65,10 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'customer_order_no',
             'customer_contact',
-            [
-                'attribute'=>'customer_id_2',
-                'value'=>$model->customerId2->name,
-            ],    
+            'carpenter',  
             'prio1',
             'customer_priority_id',             
             [

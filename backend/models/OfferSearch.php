@@ -21,7 +21,7 @@ class OfferSearch extends Offer
     {
         return [
             [['id', 'qty', 'prio1', 'days_to_process', 'deadline'], 'integer'],
-            [['offer_no', 'offer_wir_id', 'customer_contact', 'customer_order_no', 'confirmation_no', 'offer_received', 'customer_priority_id', 'comments', 'created', 'updated', 'processed_by_id', 'followup_by_id', 'product_group_id', 'customer_id', 'customer_id_2','status_id','created_by', 'updated_by'], 'safe'],
+            [['offer_no', 'offer_wir_id', 'customer_contact', 'customer_order_no', 'confirmation_no', 'offer_received', 'customer_priority_id', 'comments', 'created', 'updated', 'processed_by_id', 'followup_by_id', 'product_group_id', 'customer_id', 'carpenter','status_id','created_by', 'updated_by'], 'safe'],
             [['value'], 'number'],
         ];
     }
@@ -70,7 +70,7 @@ class OfferSearch extends Offer
             //'offer.followup_by_id' => $this->followup_by_id,
             //'offer.product_group_id' => $this->product_group_id,
             //'offer.customer_id' => $this->customer_id,
-            //'offer.customer_id_2' => $this->customer_id_2,
+            //'offer.carpenter' => $this->carpenter,
             'offer.qty' => $this->qty,
             //'offer.prio1' => $this->prio1,
             'offer.value' => $this->value,
@@ -86,7 +86,7 @@ class OfferSearch extends Offer
         $query->andFilterWhere(['like', 'offer.offer_no', $this->offer_no])
             ->andFilterWhere(['like', 'offer.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
-            ->andFilterWhere(['like', 'customer.name', $this->customer_id_2])
+            ->andFilterWhere(['like', 'customer.name', $this->carpenter])
             ->andFilterWhere(['like', 'offer.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'offer.status_id', $this->status_id])
             ->andFilterWhere(['like', 'offer.updated_by', $this->updated_by]);  

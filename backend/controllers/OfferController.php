@@ -124,8 +124,8 @@ class OfferController extends Controller
 			    	$model->offer_no = date('y').date('m').'0001';
 			    }	
 
-			    if ($model->customer_id_2 == NULL) {
-					$model->customer_id_2 = 0;
+			    if ($model->carpenter == NULL) {
+					$model->carpenter = 0;
 			    }	
 			    if ($model->followup_by_id != true) {
 					$model->followup_by_id = 0;
@@ -311,8 +311,8 @@ class OfferController extends Controller
 					}
 				}
 				$model->deadline += $count_weekend*60*60*24;
-				if (is_null($model->customer_id_2)) {
-					$model->customer_id_2 = 0;
+				if (is_null($model->carpenter)) {
+					$model->carpenter = 0;
 				}
 
 				$modelChange->created_by = Yii::$app->user->id;

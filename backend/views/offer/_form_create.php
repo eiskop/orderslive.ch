@@ -112,14 +112,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
         </div>
         <div class="row">
             <div class="col-md-6">
-                <?= $form->field($model, 'customer_id_2')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
-                    'prompt'=>'Select Customer',
-                    'onchange'=>'
-                        $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
-                            $("select#customer-id").html(data);
-                        });'
-
-                ]) ?>
+               <?= $form->field($model, 'carpenter')->textInput() ?>
             </div>
 
             <div class="col-md-3">

@@ -18,7 +18,31 @@ use backend\models\OfferSearch;
 $this->title = 'Customers';
 $this->params['breadcrumbs'][] = $this->title;
 
+
+/*
+for updating customer discount information
+$dbc = Yii::$app->getDb();
+
+$command = $dbc->createCommand('SELECT * FROM customer2 where BOS > 0');
+$res = $command->queryAll();
+$count = 0;
+
+//echo count($res);
+foreach ($res as $k=>$v) {
+    //echo 'INSERT INTO customer_discount SET created=NOW(), created_by=1, offer_item_type_id=2, customer_id="'.$v['id'].'", base_discount_perc="'.$v['Kellpax'].'", active=1<br>';
+   // $command = $dbc->createCommand('INSERT INTO customer_discount SET created=NOW(), created_by=1, offer_item_type_id=4, customer_id="'.$v['id'].'", base_discount_perc="'.$v['BOS'].'", active=1');
+   //$command->execute();
+   //echo '<pre>', var_dump($v), '</pre>';
+    //$count++;
+    //echo $count.'<br>';
+}
+echo '<pre>', var_dump($res), '</pre>';
+*/
+
+
 ?>
+
+
 <div class="customer-index">
   
 

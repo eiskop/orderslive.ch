@@ -19,7 +19,7 @@ use yii\web\UploadedFile;
  * @property integer $product_group_id
  * @property integer $customer_id
  * @property string $customer_contact
- * @property integer $customer_id_2
+ * @property integer $carpenter
  * @property string $customer_order_no
  * @property string $confirmation_no
  * @property integer $qty
@@ -73,7 +73,7 @@ class Offer extends \yii\db\ActiveRecord
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
             [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no', 'qty'], 'integer'],
             [['value', 'offer_id_'], 'number'],
-            [['offer_received','customer_id', 'customer_id_2', 'followup_by_id', 'created', 'updated', 'uploadedFiles'], 'safe'],
+            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles'], 'safe'],
             [['comments'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
@@ -85,7 +85,7 @@ class Offer extends \yii\db\ActiveRecord
             [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['customer_id_2'], 'exist', 'skipOnError' => false, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id_2' => 'id']],
+            [['carpenter'], 'exist', 'skipOnError' => false, 'targetClass' => Customer::className(), 'targetAttribute' => ['carpenter' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['customer_priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => CustomerPriority::className(), 'targetAttribute' => ['customer_priority_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -107,7 +107,7 @@ class Offer extends \yii\db\ActiveRecord
             'product_group_id' => 'Product Group ID',
             'customer_id' => 'Kunde',
             'customer_contact' => 'Kunden Kontakt',
-            'customer_id_2' => 'Schreiner',
+            'carpenter' => 'Schreiner',
             'customer_order_no' => 'Komission',
             'confirmation_no' => 'AB',
             'qty' => 'Menge',
@@ -166,14 +166,6 @@ class Offer extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
     }
-
-   /** 
-    * @return \yii\db\ActiveQuery 
-    */ 
-   public function getCustomerId2() 
-   { 
-       return $this->hasOne(Customer::className(), ['id' => 'customer_id_2']); 
-   } 
 
     /**
      * @return \yii\db\ActiveQuery
