@@ -204,13 +204,14 @@ class OfferController extends Controller
 								}
 
 								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
-								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
 								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
 								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+								$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
 
 								$model->qty += $modelOfferItem->qty;         
 								$model->value += $modelOfferItem->value_total;
-								$model->value_net += $modelOfferItem->value_total_net;                       
+								$model->value_net += $modelOfferItem->value_total_net;      
+
 								
 								if (! ($flag = $modelOfferItem->save(false))) {
 									$transaction->rollBack();
@@ -348,10 +349,10 @@ class OfferController extends Controller
 								}
 								
 
-								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
-								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
+								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total/100);
 								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
 								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+								$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
 
 								$model->qty += $modelOfferItem->qty;
 								$model->value += $modelOfferItem->value_total;

@@ -44,8 +44,8 @@ class OfferItem extends \yii\db\ActiveRecord
         return [
             [['offer_item_type_id', 'qty'], 'required'],
             [['offer_id', 'created_by', 'changed_by'], 'integer'],
-            [['qty', 'value', 'project_discount_perc', 'value_net', 'order_line_net_value'], 'number'],
-            [['created', 'changed'], 'safe'],
+            [['qty', 'value_total','project_discount_perc', 'value_net', 'order_line_net_value'], 'number'],
+            [['created', 'changed', 'value'], 'safe'],
             [['offer_item_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferItemType::className(), 'targetAttribute' => ['offer_item_type_id' => 'id']],
             [['offer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Offer::className(), 'targetAttribute' => ['offer_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
