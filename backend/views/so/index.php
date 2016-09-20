@@ -68,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
         'filterModel' => $searchModel,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
 
         'layout'=>"{pager} {summary} {items} {pager}",
         'rowOptions' => 
@@ -175,6 +176,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>'soStatus.name',
                 'filter'=>Html::activeDropDownList($searchModel, 'status_id', ArrayHelper::map(SoStatus::find()->asArray()->all(), 'id', 'name'), ['class'=>'form-control', 'prompt' => 'Alle']),
             ],
+            [
+                'attribute'=>'DLZ_Tage',
+                'value'=>'dLZ',
+                'contentOptions'=>['style'=>'text-align: right;'],
+            ],            
             // 'created',
             // 'updated_by',
             // 'updated',

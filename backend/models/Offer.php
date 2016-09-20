@@ -5,6 +5,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\base\Model;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "offer".
@@ -17,13 +19,14 @@ use Yii;
  * @property integer $product_group_id
  * @property integer $customer_id
  * @property string $customer_contact
- * @property integer $customer_id_2
+ * @property integer $carpenter
  * @property string $customer_order_no
  * @property string $confirmation_no
  * @property integer $qty
  * @property integer $prio1
  * @property integer $status_id
  * @property double $value
+ * @property double $value_net
  * @property string $offer_received
  * @property string $customer_priority_id
  * @property integer $days_to_process
@@ -33,22 +36,29 @@ use Yii;
  * @property string $created
  * @property integer $updated_by
  * @property string $updated
+ * @property integer $offer_id
  *
- * @property User $updatedBy
  * @property User $processedBy
  * @property User $followupBy
  * @property ProductGroup $productGroup
  * @property Customer $customer
+ * @property Customer $customerId2
  * @property OfferStatus $status
  * @property CustomerPriority $customerPriority
  * @property User $createdBy
+ * @property User $updatedBy
  * @property OfferItem[] $offerItems
- */
+ * @property UploadedFile[] $uploadedFiles 
+*/
 class Offer extends \yii\db\ActiveRecord
 {
+    public $uploadedFiles;
+    public $offer_id_;
+
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
         return 'offer';
@@ -61,22 +71,25 @@ class Offer extends \yii\db\ActiveRecord
     {
         return [
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
-            [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no'], 'integer'],
-            [['value'], 'number'],
-            [['offer_received','customer_id', 'customer_id_2', 'followup_by_id', 'created', 'updated'], 'safe'],
-            [['comments', 'qty'], 'string'],
+            [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no', 'qty'], 'integer'],
+            [['value', 'offer_id_'], 'number'],
+            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles'], 'safe'],
+            [['comments'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
             [['customer_order_no', 'confirmation_no'], 'string', 'max' => 30],
             [['customer_priority_id'], 'string', 'max' => 1],
+            [['offer_no'], 'unique'],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['processed_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['processed_by_id' => 'id']],
-           // [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
+            [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['carpenter'], 'exist', 'skipOnError' => false, 'targetClass' => Customer::className(), 'targetAttribute' => ['carpenter' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['customer_priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => CustomerPriority::className(), 'targetAttribute' => ['customer_priority_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
+            [['uploadedFiles'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
         ];
     }
 
@@ -94,7 +107,7 @@ class Offer extends \yii\db\ActiveRecord
             'product_group_id' => 'Product Group ID',
             'customer_id' => 'Kunde',
             'customer_contact' => 'Kunden Kontakt',
-            'customer_id_2' => 'Schreiner',
+            'carpenter' => 'Schreiner',
             'customer_order_no' => 'Komission',
             'confirmation_no' => 'AB',
             'qty' => 'Menge',
@@ -111,6 +124,7 @@ class Offer extends \yii\db\ActiveRecord
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
             'updated' => 'Geändert am',
+            'uploadedFiles' => 'Dokumente hinzufügen',
         ];
     }
     /**
@@ -184,4 +198,61 @@ class Offer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(OfferItem::className(), ['offer_id' => 'id']);
     }
+
+
+   public function getOfferUploads()
+   {
+       return $this->hasMany(OfferUpload::className(), ['offer_id' => 'id']);
+   }
+
+    /**
+     * @return \yii\db\ActiveQuery
+    * @var UploadedFile[]
+    * @var $offer_id
+     */
+    public function upload($offer_id_)
+    {
+        function fixDb($str) {
+            return '"'.htmlentities($str).'"';
+        }
+
+        $valid = $this->validate();
+
+    //  echo 'file upload model  is called';
+        if ($valid) {
+
+            foreach ($this->uploadedFiles as $file) {
+                if (!file_exists('uploads/'.$offer_id_)) {
+                    mkdir('uploads/'.$offer_id_, octdec('0775'), true);
+                }
+  //              echo '<pre>', var_dump($file), '</pre>';
+
+                if ($file->saveAs('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension)) {
+                    $sql = 'INSERT INTO offer_upload SET '.
+                            'offer_id='.fixDb($offer_id_).', '.
+                            'file_path='.fixDb('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension).', '.
+                            'file_name='.fixDb($file->name).', '.
+                            'file_extension='.fixDb($file->extension).', '.
+                            'file_type='.fixDb($file->type).', '.
+                            'file_size='.fixDb($file->size).', '.
+                            'created=NOW(), '.
+                            'created_by='.fixDb(Yii::$app->user->id);
+//echo $sql;
+                    $command = Yii::$app->db->createCommand($sql);
+                    if (!$command->execute()) {
+                        unlink('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension);
+                    }
+                    
+                }
+
+            }
+        //  echo 'file upload model all files processed';
+      //    exit;
+            return true;
+        }
+        else {
+            return false;
+        }
+        unset($offer_id_);
+    }    
 }

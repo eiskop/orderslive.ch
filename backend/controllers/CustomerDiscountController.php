@@ -3,38 +3,39 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Customer;
-use backend\models\CustomerSearch;
-use backend\models\So;
-use backend\models\SoSearch;
+use backend\models\CustomerDiscount;
+use backend\models\CustomerDiscountSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * CustomerDiscountController implements the CRUD actions for CustomerDiscount model.
  */
-class CustomerController extends Controller
+class CustomerDiscountController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Customer models.
+     * Lists all CustomerDiscount models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
+        $searchModel = new CustomerDiscountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -44,41 +45,27 @@ class CustomerController extends Controller
     }
 
     /**
-     * Displays a single Customer model.
+     * Displays a single CustomerDiscount model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-
-        $searchModel = new SoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->where('customer_id = '.$id);
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);        
+        ]);
     }
 
     /**
-     * Creates a new Customer model.
+     * Creates a new CustomerDiscount model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new CustomerDiscount();
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
-                $model->region = 'W-CH';
-            }
-            else {
-                $model->region = 'D-CH';   
-            }
-            $model->active = 1;
-            $model->save(false);            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -88,7 +75,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Updates an existing Customer model.
+     * Updates an existing CustomerDiscount model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,14 +84,7 @@ class CustomerController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
-                $model->region = 'W-CH';
-            }
-            else {
-                $model->region = 'D-CH';   
-            }
-            $model->save(false);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -114,7 +94,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Deletes an existing Customer model.
+     * Deletes an existing CustomerDiscount model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -126,16 +106,23 @@ class CustomerController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionGetProductDiscount($customer_id) 
+    {
+        $discount = CustomerDiscount::findOne(['customer_id'=>$customer_id, 'active'=>'1']);    
+        echo Json::encode($discount);
+
+    }
+
     /**
-     * Finds the Customer model based on its primary key value.
+     * Finds the CustomerDiscount model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Customer the loaded model
+     * @return CustomerDiscount the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = CustomerDiscount::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

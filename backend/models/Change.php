@@ -41,10 +41,9 @@ class Change extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['change_object', 'change_object_id', 'change_time', 'change_type', 'change_reason', 'duration_min'], 'required'],
             [['change_object'], 'string'],
-            [['change_time', 'change_type', 'change_reason',  'duration_min', 'created_by', 'updated_by'], 'integer'],
-            [['created', 'updated','measure', 'responsible', 'comment', 'created', 'created_by', 'updated', 'updated_by'], 'safe'],
+            [['duration_min', 'created_by', 'updated_by'], 'integer'],
+            [['change_object', 'change_object_id', 'change_time', 'change_type', 'change_reason', 'duration_min', 'created', 'updated','measure', 'responsible', 'comment', 'created', 'created_by', 'updated', 'updated_by'], 'safe'],
             [['measure', 'comment'], 'string', 'max' => 255],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']], 
             [['responsible'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['responsible' => 'id']], 

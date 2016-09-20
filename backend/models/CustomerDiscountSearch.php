@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Customer;
+use backend\models\CustomerDiscount;
 
 /**
- * CustomerSearch represents the model behind the search form about `backend\models\Customer`.
+ * CustomerDiscountSearch represents the model behind the search form about `backend\models\CustomerDiscount`.
  */
-class CustomerSearch extends Customer
+class CustomerDiscountSearch extends CustomerDiscount
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['id', 'customer_group_id', 'created', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'customer_priority_id', 'contact', 'street', 'zip_code', 'city', 'province', 'fax_no', 'tel_no', 'updated'], 'safe'],
+            [['id', 'customer_id', 'offer_item_type_id', 'created_by', 'updated_by', 'approved_by', 'active'], 'integer'],
+            [['base_discount_perc'], 'double'],
+            [['valid_from', 'created', 'updated', 'approved'], 'safe'],
         ];
     }
 
@@ -41,7 +42,9 @@ class CustomerSearch extends Customer
      */
     public function search($params)
     {
-        $query = Customer::find();
+        $query = CustomerDiscount::find();
+
+        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -54,25 +57,22 @@ class CustomerSearch extends Customer
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('customerDiscount');
+
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'customer_group_id' => $this->customer_group_id,
+            'customer_id' => $this->customer_id,
+            'offer_item_type_id' => $this->offer_item_type_id,
+            'base_discount_perc' => $this->base_discount_perc,
+            'valid_from' => $this->valid_from,
             'created' => $this->created,
             'created_by' => $this->created_by,
             'updated' => $this->updated,
             'updated_by' => $this->updated_by,
+            'approved' => $this->approved,
+            'approved_by' => $this->approved_by,
+            'active' => $this->active,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'customer_priority_id', $this->customer_priority_id])
-            ->andFilterWhere(['like', 'contact', $this->contact])
-            ->andFilterWhere(['like', 'street', $this->street])
-            ->andFilterWhere(['like', 'zip_code', $this->zip_code])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'province', $this->province])
-            ->andFilterWhere(['like', 'fax_no', $this->fax_no])
-            ->andFilterWhere(['like', 'tel_no', $this->tel_no]);
 
         return $dataProvider;
     }

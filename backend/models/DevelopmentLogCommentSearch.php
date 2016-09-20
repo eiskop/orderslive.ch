@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\OfferItem;
+use backend\models\DevelopmentLogComment;
 
 /**
- * OfferItemSearch represents the model behind the search form about `backend\models\OfferItem`.
+ * DevelopmentLogCommentSearch represents the model behind the search form about `backend\models\DevelopmentLogComment`.
  */
-class OfferItemSearch extends OfferItem
+class DevelopmentLogCommentSearch extends DevelopmentLogComment
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class OfferItemSearch extends OfferItem
     public function rules()
     {
         return [
-            [['id', 'offer_id', 'offer_item_type_id', 'created_by', 'changed_by'], 'integer'],
-            [['qty', 'value', 'project_discount_perc', 'value_net'], 'number'],
-            [['created', 'changed'], 'safe'],
+            [['id', 'development_log_id', 'created_by', 'changed_by'], 'integer'],
+            [['comment', 'created', 'changed'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class OfferItemSearch extends OfferItem
      */
     public function search($params)
     {
-        $query = OfferItem::find();
+        $query = DevelopmentLogComment::find();
 
         // add conditions that should always apply here
 
@@ -61,18 +60,14 @@ class OfferItemSearch extends OfferItem
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'offer_id' => $this->offer_id,
-            'offer_item_type_id' => $this->offer_item_type_id,
-            'qty' => $this->qty,
-            'value' => $this->value,
-            'value_net' => $this->value_net,
-            'project_discount_perc' => $this->project_discount_perc,
-            'created_by' => $this->created_by,
+            'development_log_id' => $this->development_log_id,
             'created' => $this->created,
-            'changed_by' => $this->changed_by,
+            'created_by' => $this->created_by,
             'changed' => $this->changed,
+            'changed_by' => $this->changed_by,
         ]);
-        $query->joinWith('offer');        
+
+        $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }

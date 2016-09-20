@@ -19,6 +19,7 @@ use Yii;
  * @property string $province
  * @property string $fax_no
  * @property string $tel_no
+ * @property integer $active
  * @property integer $created
  * @property integer $created_by
  * @property string $updated
@@ -47,7 +48,7 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'street', 'zip_code', 'province'], 'required'],
-            [['customer_group_id', 'created', 'created_by', 'updated_by'], 'integer'],
+            [['customer_group_id', 'created', 'created_by', 'updated_by', 'active'], 'integer'],
             [['updated','customer_group_id', 'customer_priority_id', 'fax_no', 'tel_no', 'city', 'created', 'created_by', 'updated_by', 'region'], 'safe'],
             [['name', 'contact', 'city', 'province', 'tel_no'], 'string', 'max' => 100],
             [['customer_priority_id'], 'string', 'max' => 1],
@@ -121,6 +122,17 @@ class Customer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(So::className(), ['customer_id' => 'id']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    public function getOffers()
+    {
+        return $this->hasMany(Offer::className(), ['customer_id' => 'id']);
+    }
+     /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getNameAndStreet()
     {
         return $this->name.', '.$this->street;
@@ -128,4 +140,8 @@ class Customer extends \yii\db\ActiveRecord
     /**
     * @return \yii\db\ActiveQuery
     */
+    public function getCustomerDiscount()
+    {
+        return $this->hasMany(CustomerDiscount::className(), ['customer_id' => 'id']);
+    }    
 }

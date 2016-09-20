@@ -9,19 +9,27 @@ use backend\models\OfferItem;
 use backend\models\OfferItemSearch;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
+use backend\models\CustomerDiscount;
 use backend\models\Change;
 use backend\models\ChangeSearch;
+use backend\models\OfferUpload;
+use backend\models\OfferUploadSearch;
 use backend\models\Model;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * OfferController implements the CRUD actions for Offer model.
  */
 class OfferController extends Controller
 {
+
+
 	/**
 	 * @inheritdoc
 	 */
@@ -68,12 +76,18 @@ class OfferController extends Controller
 		$dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
 		$dataProvider2->query->where(['change_object'=>'offer'])->andWhere(['change_object_id' => $id])->orderBy(['created'=>SORT_DESC])->all();		
 
+		$searchModel3 = new OfferUploadSearch();
+		$dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
+		$dataProvider3->query->where(['offer_id'=>$id])->orderBy(['file_name'=>SORT_ASC])->all();		
+
 		return $this->render('view', [
 			'model' => $this->findModel($id),
 			'searchModel' => $searchModel,
 			'dataProvider' => $dataProvider,
 			'searchModel2' => $searchModel2,
-			'dataProvider2' => $dataProvider2,			
+			'dataProvider2' => $dataProvider2,	
+			'searchModel3' => $searchModel3,
+			'dataProvider3' => $dataProvider3,			
 		]);
 	}
 
@@ -84,9 +98,16 @@ class OfferController extends Controller
 	 */
 	public function actionCreate()
 	{
-	
+		function round5 ($value) {
+			$number = round($value*20)/20;
+			return $number;
+		}
+
+
 		if (Yii::$app->user->can('create-offer')) 
 		{
+
+
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
 			$modelChange = new Change();
@@ -101,6 +122,10 @@ class OfferController extends Controller
 			    }
 			    else {
 			    	$model->offer_no = date('y').date('m').'0001';
+			    }	
+
+			    if ($model->carpenter == NULL) {
+					$model->carpenter = 0;
 			    }	
 			    if ($model->followup_by_id != true) {
 					$model->followup_by_id = 0;
@@ -118,11 +143,20 @@ class OfferController extends Controller
 			   //     );
 				//}
 
+				//get uploaded files information
+				$model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+
 				// validate all models
+
 				$valid = $model->validate();
+
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
+				$model->product_group_id = 1;
+				$model->qty = 0;
+				
 				if ($valid) {
+
 					$model->created = date('Y-m-d H:i:s');
 					$model->created_by = Yii::$app->user->id;
 
@@ -161,13 +195,23 @@ class OfferController extends Controller
 						if ($flag = $model->save(false)) {
 							foreach ($modelsOfferItem as $modelOfferItem) {
 								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->value_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value/100;
-								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
-								$modelOfferItem->value_total_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total/100;
+								$a = CustomerDiscount::findOne(['offer_item_type_id'=>$modelOfferItem->offer_item_type_id, 'customer_id'=>$model->customer_id]);
+								if ($a != NULL) {
+									$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+								}
+								else {
+									$modelOfferItem->base_discount_perc = 0;
+								}
+
+								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value/100);
+								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
+								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+								$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
+
 								$model->qty += $modelOfferItem->qty;         
 								$model->value += $modelOfferItem->value_total;
-								$model->value_net += $modelOfferItem->value_total_net;                       
+								$model->value_net += $modelOfferItem->value_total_net;      
+
 								
 								if (! ($flag = $modelOfferItem->save(false))) {
 									$transaction->rollBack();
@@ -177,8 +221,21 @@ class OfferController extends Controller
 						}
 						if ($flag) {
 							$model->save(false);
+
+				            // upload files
+//echo var_dump($model->uploadedFiles);
+//echo var_dump($model->errors);
+		            	
+				            if ($model->upload($model->id)) {
+				            	//upload successful
+				            }
+							//END: upload files
+
 							$modelChange->save(false);
 							$transaction->commit();
+
+
+
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
 					} catch (Exception $e) {
@@ -186,8 +243,6 @@ class OfferController extends Controller
 					}
 	//END:process offer lines                
 				}
-
-
 				return $this->redirect(['create', 'id' => $model->id]);
 			} else {
 				return $this->render('create', [
@@ -211,6 +266,12 @@ class OfferController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+
+		function round5 ($value) {
+			$number = round($value*20)/20;
+			return $number;
+		}
+
 		if (Yii::$app->user->can('change-offer') OR Yii::$app->user->can('update-offer')) 
 		{
 			$model = $this->findModel($id);
@@ -221,6 +282,14 @@ class OfferController extends Controller
 			$modelChange->load(Yii::$app->request->post());
 
 			if ($model->load(Yii::$app->request->post())) {
+
+	            // upload files
+	            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+            
+	            if ($model->upload($model->id)) {
+	            	//upload successful
+	            }
+				//END: upload files		
 
 				$oldIDs = ArrayHelper::map($modelsOfferItem, 'id', 'id');
 				$modelsOfferItem = Model::createMultiple(OfferItem::classname(), $modelsOfferItem);
@@ -243,19 +312,23 @@ class OfferController extends Controller
 					}
 				}
 				$model->deadline += $count_weekend*60*60*24;
-
+				if (is_null($model->carpenter)) {
+					$model->carpenter = 0;
+				}
 
 				$modelChange->created_by = Yii::$app->user->id;
 				$modelChange->created = date('Y-m-d H:i:s');
 				$modelChange->change_object = 'offer';
 				$modelChange->change_object_id = $model->id;
 
+
 				// validate all models
 				$valid = $model->validate();
 				$valid = Model::validateMultiple($modelsOfferItem) && $valid;
 
-
 				if ($valid) {
+
+					
 					$transaction = \Yii::$app->db->beginTransaction();
 					try {
 						if ($flag = $model->save(false)) {
@@ -267,9 +340,20 @@ class OfferController extends Controller
 							$model->value_net = 0;
 							foreach ($modelsOfferItem as $modelOfferItem) {
 								$modelOfferItem->offer_id = $model->id;
-								$modelOfferItem->value_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value/100;
-								$modelOfferItem->value_total = $modelOfferItem->value*$modelOfferItem->qty;
-								$modelOfferItem->value_total_net = (100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total/100;
+								$a = CustomerDiscount::findOne(['offer_item_type_id'=>$modelOfferItem->offer_item_type_id, 'customer_id'=>$model->customer_id]);
+								if ($a != NULL) {
+									$modelOfferItem->base_discount_perc = $a->base_discount_perc;
+								}
+								else {
+									$modelOfferItem->base_discount_perc = 0;
+								}
+								
+
+								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total/100);
+								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
+								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
+								$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
+
 								$model->qty += $modelOfferItem->qty;
 								$model->value += $modelOfferItem->value_total;
 								$model->value_net += $modelOfferItem->value_total_net;
@@ -285,6 +369,7 @@ class OfferController extends Controller
 							$model->save(false);
 							$modelChange->save(false);
 							$transaction->commit();
+					
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
 					} catch (Exception $e) {
@@ -297,6 +382,7 @@ class OfferController extends Controller
 						'model' => $model,
 						'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
 						'modelChange' => $modelChange,
+			
 					]
 				);
 			}
@@ -317,6 +403,27 @@ class OfferController extends Controller
 		$this->findModel($id)->delete();
 
 		return $this->redirect(['index']);
+	}
+
+	public function actionUpload($id)
+	{
+	    $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+            if ($model->upload($id)) {
+                // file is uploaded successfully
+                return;
+            }
+        }
+        //return $this->render('upload', ['model' => $model]);
+	}	
+
+	public function actionGetProductDiscount($customer_id, $offer_item_type_id) 
+	{
+		$discount = CustomerDiscount::findOne(['customer_id'=>$customer_id, 'offer_item_type_id'=>$offer_item_type_id, 'active'=>'1']);	
+		echo Json::encode($discount);
+
 	}
 
 	/**

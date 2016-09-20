@@ -129,13 +129,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'value',
                 'value'=>'value',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
-                'format'=>['decimal', '0'],
+                'format'=>['decimal', '2'],
             ],  
             [
                 'attribute'=>'value_net',
                 'value'=>'value_net',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
-                'format'=>['decimal', '0'],
+                'format'=>['decimal', '2'],
             ],  
             [
                 'attribute'=>'customer_priority_id',

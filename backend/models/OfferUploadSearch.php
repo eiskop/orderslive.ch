@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\OfferItem;
+use backend\models\OfferUpload;
 
 /**
- * OfferItemSearch represents the model behind the search form about `backend\models\OfferItem`.
+ * OfferUploadSearch represents the model behind the search form about `backend\models\OfferUpload`.
  */
-class OfferItemSearch extends OfferItem
+class OfferUploadSearch extends OfferUpload
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class OfferItemSearch extends OfferItem
     public function rules()
     {
         return [
-            [['id', 'offer_id', 'offer_item_type_id', 'created_by', 'changed_by'], 'integer'],
-            [['qty', 'value', 'project_discount_perc', 'value_net'], 'number'],
-            [['created', 'changed'], 'safe'],
+            [['id', 'offer_id', 'file_size', 'created_by', 'changed_by'], 'integer'],
+            [['file_path', 'file_name', 'file_extension', 'file_type', 'title', 'description', 'created', 'changed'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class OfferItemSearch extends OfferItem
      */
     public function search($params)
     {
-        $query = OfferItem::find();
+        $query = OfferUpload::find();
 
         // add conditions that should always apply here
 
@@ -62,17 +61,19 @@ class OfferItemSearch extends OfferItem
         $query->andFilterWhere([
             'id' => $this->id,
             'offer_id' => $this->offer_id,
-            'offer_item_type_id' => $this->offer_item_type_id,
-            'qty' => $this->qty,
-            'value' => $this->value,
-            'value_net' => $this->value_net,
-            'project_discount_perc' => $this->project_discount_perc,
-            'created_by' => $this->created_by,
+            'file_size' => $this->file_size,
             'created' => $this->created,
-            'changed_by' => $this->changed_by,
+            'created_by' => $this->created_by,
             'changed' => $this->changed,
+            'changed_by' => $this->changed_by,
         ]);
-        $query->joinWith('offer');        
+
+        $query->andFilterWhere(['like', 'file_path', $this->file_path])
+            ->andFilterWhere(['like', 'file_name', $this->file_name])
+            ->andFilterWhere(['like', 'file_extension', $this->file_extension])
+            ->andFilterWhere(['like', 'file_type', $this->file_type])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
