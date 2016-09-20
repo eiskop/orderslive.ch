@@ -114,6 +114,7 @@ class OfferController extends Controller
 
 			if ($model->load(Yii::$app->request->post())) {
 
+
 				$max = Offer::find() // CREATE A OFFER NO
 			    ->select('max(offer_no)')->where(['LEFT(offer_no, 4)' =>date('y').date('m')]) // we need only one column
 			    ->scalar();
@@ -154,7 +155,7 @@ class OfferController extends Controller
 
 				$model->product_group_id = 1;
 				$model->qty = 0;
-				
+
 				if ($valid) {
 
 					$model->created = date('Y-m-d H:i:s');

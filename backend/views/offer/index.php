@@ -112,8 +112,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'customer_order_no',
 //            'customer_contact',
             [
-                'attribute'=>'customer_id_2',
-                'value'=>'customer.name',
+                'attribute'=>'carpenter',
+                'value'=>'carpenter',
                 'contentOptions' => ['style' => 'width:300px'],
             ],
             [
