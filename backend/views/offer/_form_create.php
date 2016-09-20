@@ -212,10 +212,10 @@ use wbraganca\dynamicform\DynamicFormWidget;
                                 <?= $form->field($modelOfferItem, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value")->textInput(['maxlength' => true]) ?>
+                                
                             </div>
                             <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value_total")->textInput(['maxlength' => true, 'readonly'=>true]) ?>
+                                <?= $form->field($modelOfferItem, "[{$i}]value_total")->textInput(['maxlength' => true]) ?>
                             </div>                            
                             <div class="col-sm-2">
                                 <button type="button" class="add-item btn btn-success btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-plus"></i></button>
@@ -294,11 +294,11 @@ $script = <<< JS
                                     
 
                                     $('#offeritem-'+item[1]+'-base_discount_perc').val(discount);
-                                    var bruto_value = $('#offeritem-'+item[1]+'-qty').val()*$('#offeritem-'+item[1]+'-value').val();
+                                    var bruto_value = $('#offeritem-'+item[1]+'-value_total').val();
                                     bruto_value = (Math.round(bruto_value * 20) / 20).toFixed(2);
                                     var bd_perc = (100-discount)/100;
-                                    console.log(bruto_value);
-                                    $('#offeritem-'+item[1]+'-value_total').val(bruto_value);
+                                   
+                                    $('#offeritem-'+item[1]+'-value_total').attr('value', bruto_value);
 
                                     var net_value_bd = bruto_value*bd_perc;
 

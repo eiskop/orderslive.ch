@@ -276,6 +276,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= GridView::widget([
         'dataProvider' => $dataProvider2,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -285,22 +286,30 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'change_time',
                 'value'=> function($data) {
-                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                    return $values[$data->change_time];
+                    if (!is_null($data->change_time)) {
+                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                        return $values[$data->change_time];
+                    }
                 },
             ],
             [
                 'attribute'=>'change_type',
                 'value'=> function($data) {
-                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                    return $values[$data->change_type];
+                    if (!is_null($data->change_type)) {
+                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                        return $values[$data->change_type];
+                    }
+                    
                 },
             ],
             [
                 'attribute'=>'change_reason',
                 'value'=> function($data) {
-                     $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                    return $values[$data->change_reason];
+                    if (!is_null($data->change_reason)) {
+                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
+                        return $values[$data->change_reason];
+                    }
+                    
                 },
             ],
             [
