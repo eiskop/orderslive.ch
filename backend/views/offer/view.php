@@ -82,7 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ], 
             [
                 'attribute'=>'Rabatt %',
-                'value'=>number_format((100-$model->value_net/$model->value*100), 2, '.', ''),
+                'value'=>  (($model->value > 0) ? number_format((100-$model->value_net/$model->value*100), 2, '.', '') : "0"),
+                //(($model->voucher_category ==0) ? "Income Voucher": (($model->voucher_category ==1)? "Exepense Voucher" : "General Voucher")),
             ],                           
             
             [
