@@ -23,7 +23,7 @@ use backend\models\CustomerDiscount;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->offer_no.' - '.$model->customer->name.', Komission: '.$model->customer_order_no;
-$this->params['breadcrumbs'][] = ['label' => 'Offers', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Offerten', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="offer-view">
@@ -39,13 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
         
         ?>
         <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Löschen', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php 
+            if (Yii::$app->user->can('delete-offer')) 
+            {
+                echo Html::a('Löschen', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
+                        'method' => 'post',
+                    ],
+                ]);
+            }
+        
+        ?>
+
     </p>
 
     <?= DetailView::widget([
@@ -53,6 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'offer_no',
+            [
+                'attribute'=>'followup_by_id',
+                'value'=>$model->followupBy->username,
+            ],              
             'confirmation_no',
             'offer_wir_id',
             [
@@ -191,9 +202,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'file_name',
                 'format'=>'raw',
                 'value'=> function ($data) {
-                        $a = OfferUploadSearch::findOne(['offer_id'=>$data->offer_id, 'file_name'=>$data->file_name]);
-                        return '<a href="'.$a->file_path.'" target="_blank" data-pjax="0">'.$a->file_name.'</a>';
-                    
+                    $a = OfferUploadSearch::findOne(['offer_id'=>$data->offer_id, 'file_name'=>$data->file_name]);
+                    $file = basename($a->file_name);
+                    return '<a href="'.$a->file_path.'" target="_blank" data-pjax="0">'.$a->file_name.'</a>';
                 }
             ],            
             'title',
@@ -256,6 +267,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],            
         ],
     ]); ?>
+    <h5 style ="font-color: grey; font-size:0.9em;">Internet Explorer Benutzer müssen fürs Download mit der Rechten Mausknopf auf dem Link klicken und "Ziel speichern unter..." wählen</h5>
     <?php Pjax::end(); ?>
 
 
