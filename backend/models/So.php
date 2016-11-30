@@ -21,6 +21,7 @@ use common\models\User;
  * @property string $order_received
  * @property string $customer_priority_id
  * @property integer $days_to_process
+ * @property integer $assigned_to
  * @property integer $created_by
  * @property string $created
  * @property integer $updated_by
@@ -56,7 +57,7 @@ class So extends \yii\db\ActiveRecord
             [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received'], 'required'],
             [['id', 'deadline', 'prio1'], 'integer'],
             [['value'], 'number'],
-            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no'], 'safe'],
+            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no'], 'safe'],
             [['customer_order_no', 'confirmation_no', 'surface'], 'string', 'max' => 30],
             [['comments'], 'string'],
             //[['customer_priority_id'], 'string', 'max' => 1]
@@ -85,6 +86,7 @@ class So extends \yii\db\ActiveRecord
             'order_received' => 'Eingang',
             'deadline' => 'Termin',
             'comments' => 'Kommentar',
+            'assigned_to' => 'Zugeteilt an',
             'created_by' => 'Ersteller',
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
@@ -123,6 +125,15 @@ class So extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAssignedTo()
+    {
+        return $this->hasOne(User::className(), ['id' => 'assigned_to']);
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

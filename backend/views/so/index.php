@@ -177,6 +177,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=>Html::activeDropDownList($searchModel, 'status_id', ArrayHelper::map(SoStatus::find()->asArray()->all(), 'id', 'name'), ['class'=>'form-control', 'prompt' => 'Alle']),
             ],
             [
+                'attribute'=>'assigned_to',
+                'value'=>'assignedTo.username',
+                'filter'=>Html::activeDropDownList($searchModel, 'assigned_to', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'form-control', 'prompt' => 'Alle']),
+            ],            
+            [
                 'attribute'=>'DLZ_Tage',
                 'value'=>'dLZ',
                 'contentOptions'=>['style'=>'text-align: right;'],

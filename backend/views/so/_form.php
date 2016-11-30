@@ -153,6 +153,16 @@ use kartik\typeahead\Typeahead;
 
                             ]) ?>
                         </td>
+                        <td style="padding-right: 2%; width: 20%;">
+                            <?= $form->field($model, 'assigned_to')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+                                'prompt'=>'Select ',
+                                'onchange'=>'
+                                $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
+                                    $("select#user_id").html(data);
+                                });'
+
+                            ]) ?>
+                        </td>                        
                         <td style="font-size: 1.5em; vertical-align: bottom; text-align: center; padding-left: 2%; width: 30%;"><?= $form->field($model, 'prio1')->checkBox(['label' => 'Prio.1.', 'uncheck' => '0', 'checked' => '1']) ?></td>           
                     </tr>
                 </table>

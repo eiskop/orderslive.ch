@@ -71,6 +71,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
             ],
             [
+                'attribute'=>'assigned_to',
+                'value'=>$model->assignedTo->username,
+            ],
+            [
                 'attribute'=>'created_by',
                 'value'=>$model->createdBy->username,
             ],

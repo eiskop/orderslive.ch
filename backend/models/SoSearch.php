@@ -20,7 +20,7 @@ class SoSearch extends So
     {
         return [
             [['id', 'days_to_process', 'qty'], 'integer'],
-            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'offer_no'], 'safe'],
+            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no'], 'safe'],
             [['value'], 'number'],
         ];
     }
@@ -74,6 +74,7 @@ class SoSearch extends So
             'so.created' => $this->created,
             'so.updated_by' => $this->updated_by,
             'so.updated' => $this->updated,
+            'so.assigned_to' => $this->assigned_to,
         ]);
 
         $query->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
@@ -83,7 +84,8 @@ class SoSearch extends So
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
-            ->andFilterWhere(['like', 'so.created_by', $this->created_by]);
+            ->andFilterWhere(['like', 'so.created_by', $this->created_by])
+            ->andFilterWhere(['like', 'so.assigned_to', $this->assigned_to]);
 
         return $dataProvider;
     }

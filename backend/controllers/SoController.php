@@ -125,6 +125,7 @@ class SoController extends Controller
                 //echo var_dump($customer);
                 $prio = CustomerPriority::findOne(['id'=>$customer->customer_priority_id]);
                 //echo var_dump($prio);
+                $assigned_to = User::findOne(['id'=>$model->assigned_to]);
 
 
                 $model->customer_priority_id = $customer->customer_priority_id;
