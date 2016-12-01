@@ -8,6 +8,7 @@ use backend\models\SoSearch;
 use backend\models\SoItem;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
+use backend\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
