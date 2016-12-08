@@ -83,11 +83,17 @@ foreach ($orders3 as $order) {
 	//echo var_dump($order->id.' / qty '.$order->qty);
 }
 */
-
+/*
 $db = new yii\db\Connection([
     'dsn' => 'mysql:host=localhost;dbname=orderslive',
     'username' => 'orderslive',
     'password' => 'KqPKFye73MPSsWF7',
+    'charset' => 'utf8',
+]);*/
+$db = new yii\db\Connection([
+    'dsn' => 'mysql:host=localhost;dbname=orderslive_dev',
+    'username' => 'root',
+    'password' => 'tuhatjatuline',
     'charset' => 'utf8',
 ]);
 date_default_timezone_set('Europe/Zurich');
@@ -97,12 +103,37 @@ echo '<h2>Offerten zu Aufträge</h2>';
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
 // Weekly per product group
 //SELECT week(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 and product_group_id = 2 Group by product_group_id, WEEK(updated) ORDER BY datum, name
-$orders_all = $db->createCommand('SELECT count(*) AS orders, sum(qty) as qty, product_group.name as product_group_name, customer.region FROM offer 
+$offers_all = $db->createCommand('SELECT count(*) AS offers, sum(qty) as qty, product_group.name as product_group_name, customer.region FROM offer 
     left join product_group on offer.product_group_id = product_group.id
     left join customer on offer.customer_id = customer.id
     WHERE status_id != 0 and status_id != 4
         GROUP BY product_group_id, region')->queryAll();
 
+
+$kellpax_offers = 0;
+$wirus_offers = 0;
+$kellpax_offers_d_ch = 0;
+$kellpax_offers_w_ch = 0;
+$wirus_offers_d_ch = 0;
+$wirus_offers_w_ch = 0;
+
+foreach ($offers_all as $k=>$v) {
+    $offers_var_txt = strtolower($v['product_group_name']).'_offers';
+    $offers_region_var_txt = strtolower($v['product_group_name']).'_offers_'.str_replace('-', '_', strtolower($v['region']));
+    ${$offers_var_txt} += $v['offers'];
+    ${$offers_region_var_txt} += $v['offers'];
+} 
+
+$total_offers = ($kellpax_offers+$wirus_offers);
+$kellpax_offers_perc = $kellpax_offers/$total_offers;
+$wirus_offers_perc = $wirus_offers/$total_offers;
+
+
+$orders_all = $db->createCommand('SELECT count(*) AS orders, sum(qty) as qty, product_group.name as product_group_name, customer.region FROM offer 
+    left join product_group on offer.product_group_id = product_group.id
+    left join customer on offer.customer_id = customer.id
+    WHERE status_id = 3
+        GROUP BY product_group_id, region')->queryAll();
 
 $kellpax_orders = 0;
 $wirus_orders = 0;
@@ -123,32 +154,7 @@ $kellpax_orders_perc = $kellpax_orders/$total_orders;
 $wirus_orders_perc = $wirus_orders/$total_orders;
 
 
-$offers_all = $db->createCommand('SELECT count(*) AS orders, sum(qty) as qty, product_group.name as product_group_name, customer.region FROM offer 
-    left join product_group on offer.product_group_id = product_group.id
-    left join customer on offer.customer_id = customer.id
-    WHERE status_id != 0 and status_id != 4 AND offer_no != ""
-        GROUP BY product_group_id, region')->queryAll();
-
-$kellpax_offers = 0;
-$wirus_offers = 0;
-$kellpax_offers_d_ch = 0;
-$kellpax_offers_w_ch = 0;
-$wirus_offers_d_ch = 0;
-$wirus_offers_w_ch = 0;
-
-foreach ($offers_all as $k=>$v) {
-    $offers_var_txt = strtolower($v['product_group_name']).'_offers';
-    $offers_region_var_txt = strtolower($v['product_group_name']).'_offers_'.str_replace('-', '_', strtolower($v['region']));
-    ${$offers_var_txt} += $v['orders'];
-    ${$offers_region_var_txt} += $v['orders'];
-} 
-
-$total_offers = ($kellpax_offers+$wirus_offers);
-$kellpax_offers_perc = $kellpax_offers/$total_offers;
-$wirus_offers_perc = $wirus_offers/$total_offers;
-
-
-$success_ratio = $total_offers/$total_orders*100;
+$success_ratio = $total_orders/$total_offers*100;
 
 // PLZ start 1 und 2 ist westschweiz
 ?>
@@ -188,7 +194,7 @@ $(function () {
             type: 'pie'
         },
         title: {
-            text: 'Gesamt Offerten'
+            text: 'Gewonnen vs. Verloren'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -213,11 +219,11 @@ $(function () {
             name: 'Anteil',
             colorByPoint: true,
             data: [{
-                name: 'Kellpax',
-                y: ".($kellpax_orders)."
+                name: 'Gewonnen',
+                y: ".($total_orders)."
             }, {
-                name: 'Wirus',
-                y: ".($wirus_orders)."
+                name: 'Verloren',
+                y: ".($total_offers-$total_orders)."
             }]
         }]
     });
@@ -352,11 +358,13 @@ $(function () {
 
 
 
-$res = $db->createCommand('SELECT so.id, UNIX_TIMESTAMP(so.order_received) as datum_uts, date(so.order_received) as datum, WEEK(so.order_received, 3) as woche, product_group.name as product_group_name, so.qty, so.offer_no, customer.name as customer_name, customer_order_no, surface 
-    FROM `so` 
-    left join product_group on so.product_group_id = product_group.id 
-    left join customer on so.customer_id = customer.id
-    WHERE status_id != 0 and status_id != 4 AND offer_no != "" ORDER BY datum DESC, product_group_name, customer_name')
+
+$res = $db->createCommand('SELECT offer.id, UNIX_TIMESTAMP(offer.offer_received) as datum_uts, date(offer.offer_received) as datum, WEEK(offer.offer_received, 3) as woche, product_group.name as product_group_name, offer.qty, offer.offer_no, customer.name as customer_name, customer_order_no, offer_status.name as status, offer.status_id as status_id
+    FROM `offer` 
+    left join product_group on offer.product_group_id = product_group.id 
+    left join customer on offer.customer_id = customer.id
+    left join offer_status on status_id = offer_status.id
+    WHERE status_id = 3 ORDER BY datum DESC, product_group_name, customer_name')
             ->queryAll();
 
           // echo var_dump($res);
@@ -455,9 +463,10 @@ echo '</pre>';
                 'contentOptions' => ['style' => 'width:50px; text-align: right;']
             ],
             [
-                'header'=>'Oberfläche',
-                'attribute'=>'surface',
-                'value'=>'surface'
+                'header'=>'Status',
+                'attribute'=>'status',
+                'value'=>'status',
+                'contentOptions' => ['style' => 'width:50px;']
             ],
 //          [
 //              'header' => 'Kommentar',

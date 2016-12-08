@@ -6,9 +6,9 @@ use Yii;
 use backend\models\So;
 use backend\models\SoSearch;
 use backend\models\SoItem;
+use backend\models\User;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
-use backend\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -139,6 +139,9 @@ class SoController extends Controller
                 $uts_deadline = $model->deadline;
                 // add weekend as additional time to process
                 $count_weekend = 0;
+                if ($model->assigned_to != TRUE) {
+                    $model->assigned_to = 0;
+                }
             
                 for ($i = 0; $i <= $model->days_to_process; $i++) {
                     $date = $uts_received+$i*60*60*24; 
@@ -184,7 +187,10 @@ class SoController extends Controller
 
                 $model->updated = date('Y-m-d H:i:s');
                 $model->updated_by = Yii::$app->user->id;
-
+                if ($model->assigned_to != TRUE) {
+                    $model->assigned_to = 0;
+                }
+            
                 $uts_received = strtotime($model->order_received);
                 $model->order_received = date('Y-m-d', $uts_received);
                 $uts_deadline = $model->deadline;
