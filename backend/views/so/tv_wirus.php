@@ -30,7 +30,7 @@ $this->title = 'WIRUS - Offene Aufträge';
 //$this->params['breadcrumbs'][] = $this->title;
     $orders = So::find()->where('status_id != 3 AND status_id != 4 and so.product_group_id = 2');
     $orders2 = So::find()->where('status_id = 3 AND product_group_id = 2 AND DATE(updated) = DATE(NOW())');
-    $orders3 = So::find()->where('status_id = 3 AND product_group_id = 2 AND WEEK(updated, 3) = WEEK(NOW(), 3)');
+    $orders3 = So::find()->where('status_id = 3 AND product_group_id = 2 AND WEEK(updated, 3) = WEEK(NOW(), 3) AND YEAR(updated) = YEAR(NOW())');
     echo '<table class="table" style="font-size:1.7em; width: 100%;">
     		<tr>
     			<td style="white-space: nowrap;">Offen: </td>
