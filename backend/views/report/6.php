@@ -106,7 +106,7 @@ $res = $db->createCommand('SELECT so.id, date(so.created) as created, UNIX_TIMES
     left join customer on so.customer_id = customer.id 
     left join so_status on so.status_id = so_status.id 
     left join user on so.assigned_to = user.id 
-WHERE status_id != 0 and status_id != 3 and status_id != 4 ORDER BY order_received ASC')->queryAll();
+WHERE confirmation_no LIKE "" AND status_id != 0 and status_id != 3 and status_id != 4 ORDER BY order_received ASC')->queryAll();
 
           // echo var_dump($res);
           // exit;
