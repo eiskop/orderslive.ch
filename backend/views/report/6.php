@@ -80,20 +80,14 @@ foreach ($orders3 as $order) {
 }
 */
 
-/*
+
 $db = new yii\db\Connection([
     'dsn' => 'mysql:host=localhost;dbname=orderslive',
     'username' => 'orderslive',
     'password' => 'KqPKFye73MPSsWF7',
     'charset' => 'utf8',
 ]);
-*/
-$db = new yii\db\Connection([
-    'dsn' => 'mysql:host=localhost;dbname=orderslive_dev',
-    'username' => 'root',
-    'password' => 'tuhatjatuline',
-    'charset' => 'utf8',
-]);
+
 date_default_timezone_set('Europe/Zurich');
 echo '<h2>Unbestätigte Aufträge</h2>';
 //
