@@ -89,7 +89,7 @@ $db = new yii\db\Connection([
 ]);
 
 date_default_timezone_set('Europe/Zurich');
-echo '<h2>Unbestätigte Aufträge</h2>';
+echo '<h2>Unbestätigte Aufträge - Kellpax</h2>';
 //
 // aufträge, stk pro tag
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
@@ -100,7 +100,7 @@ $res = $db->createCommand('SELECT so.id, date(so.created) as created, UNIX_TIMES
     left join customer on so.customer_id = customer.id 
     left join so_status on so.status_id = so_status.id 
     left join user on so.assigned_to = user.id 
-WHERE confirmation_no LIKE "" and status_id != 3 and status_id != 4 ORDER BY order_received ASC')->queryAll();
+WHERE so.product_group_id = 1 AND confirmation_no LIKE "" and status_id != 3 and status_id != 4 ORDER BY order_received ASC')->queryAll();
 
           // echo var_dump($res);
           // exit;
