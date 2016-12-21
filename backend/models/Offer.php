@@ -77,7 +77,7 @@ class Offer extends \yii\db\ActiveRecord
             [['comments'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
-            [['customer_order_no', 'confirmation_no'], 'string', 'max' => 30],
+            [['customer_order_no', 'confirmation_no'], 'string', 'max' => 255],
             [['customer_priority_id'], 'string', 'max' => 1],
             [['offer_no'], 'unique'],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],

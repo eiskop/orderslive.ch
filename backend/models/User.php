@@ -17,6 +17,7 @@ use Yii;
  * @property string $email
  * @property integer $status
  * @property integer $product_group_id
+ * @property integer $active 
  * @property integer $created_at
  * @property integer $updated_at
  *

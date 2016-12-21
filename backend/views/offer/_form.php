@@ -64,7 +64,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]);?>
             </div>          
             <div class="col-md-2">
-                <?= $form->field($model, 'processed_by_id')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+                <?= $form->field($model, 'processed_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
                     'prompt'=>'Select ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
@@ -88,16 +88,16 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>           
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'customer_contact')->textInput() ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <?= $form->field($model, 'customer_order_no')->textInput(['maxlength' => true]) ?>
             </div>        
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'offer_wir_id')->textInput(['maxlength' => 20]) ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'confirmation_no')->textInput(['maxlength' => true]) ?>
             </div>              
         </div>        
@@ -117,10 +117,11 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>             
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <?= $form->field($model, 'carpenter')->textInput() ?>
+            <div class="col-md-8">
+               <?= $form->field($model, 'carpenter')->textInput() ?>
             </div>
-            <div class="col-md-3">
+
+            <div class="col-md-2">
                 <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map(OfferStatus::find()->orderBy('name')->all(), 'id', 'name'), [
                     'onchange'=>'
                     $.post("index.php?r=offer-status/index&id='.'"+$(this).val(), function (data) {
@@ -129,8 +130,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
                 ]) ?>
             </div>
-            <div class="col-md-3">
-                <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+            <div class="col-md-2">
+                <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
                     'prompt'=>'Select ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
@@ -179,7 +180,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>
             <div class="container-items"><!-- widgetContainer -->
             <?php foreach ($modelsOfferItem as $i => $modelOfferItem): ?>
-                <div class="item panel panel-default"><!-- widgetBody -->
+               <div class="item panel panel-default"><!-- widgetBody -->
                     <div class="panel-body">
                         <?php
                             // necessary for update action.
@@ -190,7 +191,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                        
                         <div class="row">
                             <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]offer_item_type_id")->dropDownList(ArrayHelper::map(OfferItemType::find()->all(), 'id', 'name'), [
+                                <?= $form->field($modelOfferItem, "[{$i}]offer_item_type_id")->dropDownList(ArrayHelper::map(OfferItemType::find()->where(['active'=>1])->orderBy(['sorting' => SORT_ASC])->all(), 'id', 'name'), [
                                     'prompt'=>'Select ',
                                     'onchange'=>'
                                     $.post("index.php?r=offer-item-type/index&id='.'"+$(this).val(), function (data) {
@@ -202,10 +203,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
                             </div>
-<!-- <div class="col-sm-2">
-                                <?=  $form->field($modelOfferItem, "[{$i}]value")->textInput(['maxlength' => true]) ?>
+                            <div class="col-sm-2">
+                                
                             </div>
--->
                             <div class="col-sm-2">
                                 <?= $form->field($modelOfferItem, "[{$i}]value_total")->textInput(['maxlength' => true]) ?>
                             </div>                            
@@ -331,7 +331,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Speichern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

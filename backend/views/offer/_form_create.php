@@ -58,7 +58,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]);?>
             </div>          
             <div class="col-md-2">
-                <?= $form->field($model, 'processed_by_id')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+                <?= $form->field($model, 'processed_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
                     'prompt'=>'Select ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
@@ -82,16 +82,16 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>           
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'customer_contact')->textInput() ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <?= $form->field($model, 'customer_order_no')->textInput(['maxlength' => true]) ?>
             </div>        
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'offer_wir_id')->textInput(['maxlength' => 20]) ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'confirmation_no')->textInput(['maxlength' => true]) ?>
             </div>              
         </div>        
@@ -111,11 +111,11 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>             
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                <?= $form->field($model, 'carpenter')->textInput() ?>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map(OfferStatus::find()->orderBy('name')->all(), 'id', 'name'), [
                     'onchange'=>'
                     $.post("index.php?r=offer-status/index&id='.'"+$(this).val(), function (data) {
@@ -124,8 +124,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
                 ]) ?>
             </div>
-            <div class="col-md-3">
-                <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->all(), 'id', 'username'), [
+            <div class="col-md-2">
+                <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
                     'prompt'=>'Select ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
@@ -157,107 +157,13 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]);
 */?>
 
-<div class="table">
-  <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-list-alt"></i>Offerten Positonen</h4></div>
-        <div class="panel-body">
-             <?php 
-//echo '<pre>';
-//echo var_dump($modelsOfferItem);
-//echo '</pre>';
-             DynamicFormWidget::begin([
-                'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                'widgetBody' => '.container-items', // required: css class selector
-                'widgetItem' => '.item', // required: css class
-                'limit' => 10, // the maximum times, an element can be cloned (default 999)
-                'min' => 1, // 0 or 1 (default 1)
-                'insertButton' => '.add-item', // css class
-                'deleteButton' => '.remove-item', // css class
-                'model' => $modelsOfferItem[0],
-                'formId' => 'dynamic-form',
-                'formFields' => [
-                    'offer_item_type_id',
-                    'qty',
-                    'value',
-                    'project_discount_perc',
-                    'value_net',
-                ],
-            ]); ?>
-            <div style="width: 100%; " class="container" >
-                <div class="btn btn-primary btn-md" style="margin:3px; float:right;" role="button" id="check_discount">Rabatt aktualisieren</div>
-            </div>
-            <div class="container-items"><!-- widgetContainer -->
-            <?php foreach ($modelsOfferItem as $i => $modelOfferItem): ?>
-                <div class="item panel panel-default"><!-- widgetBody -->
-                    <div class="panel-body">
-                        <?php
-                            // necessary for update action.
-                            if (! $modelOfferItem->isNewRecord) {
-                                echo Html::activeHiddenInput($modelOfferItem, "[{$i}]id");
-                            }
-                        ?>
-                       
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]offer_item_type_id")->dropDownList(ArrayHelper::map(OfferItemType::find()->all(), 'id', 'name'), [
-                                    'prompt'=>'Select ',
-                                    'onchange'=>'
-                                    $.post("index.php?r=offer-item-type/index&id='.'"+$(this).val(), function (data) {
-                                        $("select#product-group-id").html(data);                                        
-                                    });'
 
-                                ]) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                
-                            </div>
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value_total")->textInput(['maxlength' => true]) ?>
-                            </div>                            
-                            <div class="col-sm-2">
-                                <button type="button" class="add-item btn btn-success btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-plus"></i></button>
-                                <button type="button" class="remove-item btn btn-danger btn-sm" style="margin-top: 10%;"><i class="glyphicon glyphicon-minus"></i></button>
-                            </div>                            
-                        </div>
-                        <div class="row">                             
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]base_discount_perc")->textInput(['maxlength' => true, 'readonly'=>true]) ?>
-                            </div>                            
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]value_total_net")->textInput(['maxlength' => true, 'readonly' => true]) ?>
-                            </div>                            
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]project_discount_perc")->textInput(['maxlength' => true]) ?>
-                            </div>
-                            <div class="col-sm-2">
-                                <?= $form->field($modelOfferItem, "[{$i}]order_line_net_value")->textInput(['maxlength' => true, 'readonly' => true]) ?>
-                            </div>    
-                        </div>
 
-                    </div>
-                </div>
-            <?php endforeach; ?>
-            </div>
-            <?php DynamicFormWidget::end(); ?>
-        </div>
-    </div>
-</div>   
-<div class="table">
-    <h2>Dateien hinzufügen</h2>
-    <div class="row">
-        <div class="col-md-12">
-             <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>
-             <button>Submit</button>
-        </div>
-    </div>
-</div>
+
 <div class="table">
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Kopfdaten erfassen' : 'Ändern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

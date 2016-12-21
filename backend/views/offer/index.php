@@ -121,9 +121,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             [
-                'attribute'=>'updated_by',
-                'value'=>'updatedBy.username',
-                'filter'=>Html::activeDropDownList($searchModel, 'updated_by', ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'), ['class'=>'', 'prompt' => 'Alle']),                
+                'attribute'=>'followup_by_id',
+                'value'=>'followupBy.last_name',
+                'filter'=>Html::activeDropDownList($searchModel, 'followup_by_id', ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->asArray()->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), ['class'=>'', 'prompt' => 'Alle']),                
             ],        
             [
                 'attribute'=>'value',

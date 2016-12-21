@@ -353,7 +353,20 @@ class OfferController extends Controller
 								$modelOfferItem->value_net = round5((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total/100);
 								$modelOfferItem->value_total_net = round5(((100-$modelOfferItem->base_discount_perc)*$modelOfferItem->value_total)/100);
 								$modelOfferItem->order_line_net_value = round5(((100-$modelOfferItem->project_discount_perc)*$modelOfferItem->value_total_net)/100);
-								$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
+								if ($modelOfferItem->qty != 0) {
+									$modelOfferItem->value = $modelOfferItem->value_total/$modelOfferItem->qty;
+								}
+								else {
+									$modelOfferItem->value = 0;
+								}
+								$list = array('offer_item_type_id', 'qty', 'value_total', 'project_discount_perc');
+								foreach ($list as $key => $value) {
+									if ($modelOfferItem->{$value} != TRUE) {
+										$modelOfferItem->{$value} = 0;
+									}	
+								}
+								
+								
 
 								$model->qty += $modelOfferItem->qty;
 								$model->value += $modelOfferItem->value_total;

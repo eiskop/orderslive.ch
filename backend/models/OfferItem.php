@@ -42,7 +42,7 @@ class OfferItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['offer_item_type_id', 'qty'], 'required'],
+           // [['offer_item_type_id', 'qty'], 'required'],
             [['offer_id', 'created_by', 'changed_by'], 'integer'],
             [['qty', 'value_total','project_discount_perc', 'value_net', 'order_line_net_value'], 'number'],
             [['created', 'changed', 'value'], 'safe'],
