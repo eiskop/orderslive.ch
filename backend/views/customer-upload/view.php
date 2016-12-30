@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\models\Customer;
+use backend\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\CustomerUpload */
@@ -29,7 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'customer_id',
+            [
+                'attribute'=>'customer_id',
+                'value'=>$model->customer->name,
+            ],  
             'file_path',
             'file_name',
             'file_extension',
@@ -37,12 +42,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'description:ntext',
             'file_size',
-            'valid_from',
-            'valid_to',
-            'created',
-            'created_by',
-            'changed',
-            'changed_by',
+            [
+                'attribute'=>'valid_from',
+                'value'=>date('d.m.Y', strtotime($model->valid_from)),
+            ],   
+            [
+                'attribute'=>'valid_to',
+                'value'=>date('d.m.Y', strtotime($model->valid_to)),
+            ],   
+            [
+                'attribute'=>'created',
+                'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
+            ], 
+            [
+                'attribute'=>'created_by',
+                'value'=>$model->createdBy->username,
+            ],  
+            [
+                'attribute'=>'changed',
+                'value'=>date('d.m.Y H:i:s', strtotime($model->changed)),
+            ], 
+            [
+                'attribute'=>'changed_by',
+                'value'=>$model->changedBy->username,
+            ],  
         ],
     ]) ?>
 
