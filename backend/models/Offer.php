@@ -53,7 +53,7 @@ use yii\web\UploadedFile;
 class Offer extends \yii\db\ActiveRecord
 {
     public $uploadedFiles;
-    public $offer_id_;
+
 
     /**
      * @inheritdoc
@@ -204,54 +204,5 @@ class Offer extends \yii\db\ActiveRecord
        return $this->hasMany(OfferUpload::className(), ['offer_id' => 'id']);
    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-    * @var UploadedFile[]
-    * @var $offer_id
-     */
-    public function upload($offer_id_)
-    {
-        function fixDb($str) {
-            return '"'.htmlentities($str).'"';
-        }
 
-        $valid = $this->validate();
-
-    //  echo 'file upload model  is called';
-        if ($valid) {
-
-            foreach ($this->uploadedFiles as $file) {
-                if (!file_exists('uploads/'.$offer_id_)) {
-                    mkdir('uploads/'.$offer_id_, octdec('0775'), true);
-                }
-  //              echo '<pre>', var_dump($file), '</pre>';
-
-                if ($file->saveAs('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension)) {
-                    $sql = 'INSERT INTO offer_upload SET '.
-                            'offer_id='.fixDb($offer_id_).', '.
-                            'file_path='.fixDb('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension).', '.
-                            'file_name='.fixDb($file->name).', '.
-                            'file_extension='.fixDb($file->extension).', '.
-                            'file_type='.fixDb($file->type).', '.
-                            'file_size='.fixDb($file->size).', '.
-                            'created=NOW(), '.
-                            'created_by='.fixDb(Yii::$app->user->id);
-//echo $sql;
-                    $command = Yii::$app->db->createCommand($sql);
-                    if (!$command->execute()) {
-                        unlink('uploads/'.$offer_id_.'/'.$file->baseName.'.'.$file->extension);
-                    }
-                    
-                }
-
-            }
-        //  echo 'file upload model all files processed';
-      //    exit;
-            return true;
-        }
-        else {
-            return false;
-        }
-        unset($offer_id_);
-    }    
 }

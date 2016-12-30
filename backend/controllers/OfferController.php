@@ -144,9 +144,6 @@ class OfferController extends Controller
 			   //     );
 				//}
 
-				//get uploaded files information
-				$model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
-
 				// validate all models
 
 				$valid = $model->validate();
@@ -227,9 +224,6 @@ class OfferController extends Controller
 //echo var_dump($model->uploadedFiles);
 //echo var_dump($model->errors);
 		            	
-				            if ($model->upload($model->id)) {
-				            	//upload successful
-				            }
 							//END: upload files
 
 							$modelChange->save(false);
@@ -286,10 +280,47 @@ class OfferController extends Controller
 
 	            // upload files
 	            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
-            
-	            if ($model->upload($model->id)) {
-	            	//upload successful
+	            if (!is_null($model->uploadedFiles)) {
+	            	//echo '<pre>', var_dump($model->uploadedFiles);
+	            	$uploadDir = 'uploads/offer/'.$model->id;
+	            	if (!file_exists($uploadDir)) {
+	            		mkdir($uploadDir);
+	            	}
+	            	foreach ($model->uploadedFiles as $file) {
+	            		$modelUpload = new OfferUpload();
+
+		            	$pinfo = pathinfo($file);
+		            
+		            	$file_name = 'uploads/offer/'.$model->id.'/'.$file->name;
+//		            	echo '<pre>', var_dump($pinfo);
+//		            	exit;
+		            	while(file_exists($file_name)) {
+	             			$file_name = 'uploads/offer/'.$model->id.'/'.$pinfo['filename'].'_'.date('d-m-Y_H-i-s', time()).'.'.$pinfo['extension'];
+	             			//$file_name.'<br>';
+	             		}
+	             		//echo $file_name.'<br>';	
+	             		
+	             		$file->saveAs($file_name);	
+	             		$pinfo2 = pathinfo($file_name);
+						//Save file Data to DB
+						$modelUpload->offer_id = $model->id;
+		            	$modelUpload->file_path = $file_name;
+		            	$modelUpload->file_name = $pinfo2['basename'];
+		            	$modelUpload->title = $pinfo['basename'];
+		            	$modelUpload->file_extension = $pinfo['extension'];
+		            	$modelUpload->file_type = $file->type;
+		            	$modelUpload->file_size = $file->size;
+		            	$modelUpload->created = date('Y-m-d H:i:s');
+		            	$modelUpload->created_by = Yii::$app->user->id;
+		            	$modelUpload->save();
+
+		            	//END: Save file Data to DB
+	            	}
 	            }
+             	
+	         //   if ($model->upload($model->id)) {
+	            	//upload successful
+	           // }
 				//END: upload files		
 
 				$oldIDs = ArrayHelper::map($modelsOfferItem, 'id', 'id');
@@ -419,19 +450,7 @@ class OfferController extends Controller
 		return $this->redirect(['index']);
 	}
 
-	public function actionUpload($id)
-	{
-	    $model = new UploadForm();
 
-        if (Yii::$app->request->isPost) {
-            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
-            if ($model->upload($id)) {
-                // file is uploaded successfully
-                return;
-            }
-        }
-        //return $this->render('upload', ['model' => $model]);
-	}	
 
 	public function actionGetProductDiscount($customer_id, $offer_item_type_id) 
 	{

@@ -59,8 +59,8 @@ use kartik\typeahead\Typeahead;
     <table class="table" style="width: 50%"> 
         <tr>
             <td colspan="3">
-                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->all(), 'id', 'nameAndStreet', 'name'), [
-                    'prompt'=>'Select Customer',
+                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
+                    'prompt'=>'Kunde auswählen',
                     'onchange'=>'
                         $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
                             $("select#customer-id").html(data);

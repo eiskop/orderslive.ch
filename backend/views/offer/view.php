@@ -206,6 +206,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $file = basename($a->file_name);
                     return '<a href="'.$a->file_path.'" target="_blank" data-pjax="0">'.$a->file_name.'</a>';
                 }
+
             ],            
             'title',
             'description',
@@ -242,12 +243,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     'delete' => function ($url, $model) {
-                        if (Yii::$app->user->can('delete-offerupload')) 
+                        if (Yii::$app->user->can('change-offerupload')) 
                         {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                                         'title' => Yii::t('app', 'Delete'),
                                         'data-confirm' => 'Are you sure you want to delete this item?',
                                         'data-method' => 'post',
+                                        'data-pjax' => '0',
 
                             ]);
                         }

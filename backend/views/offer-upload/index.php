@@ -25,13 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'offer_id',
-            'file_path',
+            //'offer_id',
+            [
+                'attribute'=>'offer_id',
+                'value'=>'offer.offer_no'
+
+            ],
+            //'file_path',
             'file_name',
-            'file_extension',
+            //'file_extension',
             // 'file_type',
-            // 'title',
-            // 'description:ntext',
+            'title',
+            'description:ntext',
             // 'file_size',
             // 'created',
             // 'created_by',

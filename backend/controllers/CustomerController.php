@@ -7,10 +7,14 @@ use backend\models\Customer;
 use backend\models\CustomerSearch;
 use backend\models\So;
 use backend\models\SoSearch;
+use backend\models\Model;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 /**
  * CustomerController implements the CRUD actions for Customer model.
  */
@@ -96,7 +100,6 @@ class CustomerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post())) {
             if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
                 $model->region = 'W-CH';
@@ -104,7 +107,11 @@ class CustomerController extends Controller
             else {
                 $model->region = 'D-CH';   
             }
+            $model->upload($id);
+            
+            
             $model->save(false);
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -112,6 +119,7 @@ class CustomerController extends Controller
             ]);
         }
     }
+
 
     /**
      * Deletes an existing Customer model.
@@ -125,6 +133,8 @@ class CustomerController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
 
     /**
      * Finds the Customer model based on its primary key value.

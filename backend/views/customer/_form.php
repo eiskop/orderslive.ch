@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Customer;
+use backend\models\CustomerUpload;
 use backend\models\CustomerGroup;
 use backend\models\CustomerPriority;
 use yii\helpers\ArrayHelper;
@@ -13,7 +14,21 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="customer-form">
+    <?php 
+        $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form', 'enctype' => 'multipart/form-data']]); 
+        
+        if ($_GET['r'] == 'customer/create') { // check if action is create ... so on update it wouldn't change the product group.
+            $model->created_by = Yii::$app->user->id;
+            
+        }
+        
+        if ($_GET['r'] == 'customer/update') { // check if action is create ... so on update it wouldn't change the product group.
+            $model->updated_by = Yii::$app->user->id;
+            
+        }        
+        
 
+    ?>
     <?php $form = ActiveForm::begin(); ?>
         <div class="container-fluid" style="margin-top: 40px;">
 
@@ -57,6 +72,9 @@ use yii\helpers\ArrayHelper;
                 <div class="col-sm-2"><?= $form->field($model, 'fax_no')->textInput(['maxlength' => true]) ?></div>
             </div>
         </div>
+    <div class="form-group">
+        <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>        
+    </div>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

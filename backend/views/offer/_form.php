@@ -251,16 +251,24 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ->select('file_extension, file_name, file_path, title, description, created, created_by, user.username')
                 ->from('offer_upload')
                 ->leftJoin('user', 'offer_upload.created_by = user.id')
-                ->where(['offer_id'=>$model->id])->orderBy(['file_name'=>SORT_ASC]);
+                ->where(['offer_id'=>$model->id])->orderBy(['title'=>SORT_ASC, 'file_name'=>SORT_ASC]);
 
                 //$res = $query->all();    
                 //echo '<pre>', var_dump($dataProvider);
-                echo '<div class="table">';
+                
+                
+                echo '<div class="table" >';
+                echo '<div class="row" style="border-bottom: 1px solid grey;">';
+                    echo '<div class="col-md-1">Typ</div>';
+                    echo '<div class="col-md-4">Name</div>';
+                    echo '<div class="col-md-4">Beschreibung</div>';
+                    echo '<div class="col-md-2">Erstellt</div>';
+                    echo '<div class="col-md-1">Ersteller</div>';
+                echo '</div>';
                 foreach ($query->each() as $doc) {
-                    echo '<div class="row">';
+                    echo '<div class="row" style="border-bottom: 1px solid grey;">';
                     echo '<div class="col-md-1">'.$doc['file_extension'].'</div>';
-                    echo '<div class="col-md-2" style="white-space:nowrap;"><a href="'.$doc['file_path'].'" target="_blank" data-pjax="0">'.$doc['file_name'].'</a></div>';
-                    echo '<div class="col-md-2">'.$doc['title'].'</div>';
+                    echo '<div class="col-md-4" style=""><a href="'.$doc['file_path'].'" target="_blank" data-pjax="0">'.$doc['title'].'</a></div>';
                     echo '<div class="col-md-4">'.$doc['description'].'</div>';
                     echo '<div class="col-md-2">'.date('d.m.y H:i', strtotime($doc['created'])).'</div>';
                     echo '<div class="col-md-1">'.$doc['username'].'</div>';

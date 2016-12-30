@@ -101,7 +101,11 @@ class OfferUploadController extends Controller
      */
     public function actionDelete($id)
     {
+        $file = $this->findModel($id)->file_path;
+        unlink($file);
         $this->findModel($id)->delete();
+
+        
 
         return $this->redirect(['index']);
     }
