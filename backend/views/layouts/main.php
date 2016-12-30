@@ -58,7 +58,7 @@ AppAsset::register($this);
             'label' => 'Offerten',
             'url' => ['/offer/index'],
         ];        
-        if (Yii::$app->user->can('create-customer')) 
+        if (Yii::$app->user->can('view-customer')) 
         {
             $menuItems[] = [
                 'label' => 'Kunden', 

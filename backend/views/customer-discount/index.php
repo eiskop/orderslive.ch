@@ -24,11 +24,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'customer_id',
-            'offer_item_type_id',
-            'base_discount_perc',
-            'valid_from',
+            [
+                'attribute'=>'id',
+                'contentOptions'=>['style'=>'width:30px;text-align:right;'],
+            ],
+            [
+                'attribute'=>'customer_id',
+                'value'=>'customer.name',
+                'contentOptions'=>['style'=>'width:600px;'],
+            ],
+            [
+                'attribute'=>'offer_item_type_id',
+                'value'=>'offerItemType.name',
+                'contentOptions'=>['style'=>'width:100px;'],
+            ],            
+            [
+                'attribute' => 'base_discount_perc',
+                'contentOptions'=>['style'=>'width:30px;text-align:right;'],
+                'format' => ['decimal', 1],
+            ],
+            [
+                'attribute'=>'valid_from',
+                'contentOptions'=>['style'=>'width:100px;'],
+                'format' => ['date'],
+            ],              
             // 'created',
             // 'created_by',
             // 'updated',
@@ -37,7 +56,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'approved_by',
             // 'active',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions'=>['style'=>'width:70px;'],
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

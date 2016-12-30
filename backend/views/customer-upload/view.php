@@ -9,7 +9,7 @@ use backend\models\User;
 /* @var $model backend\models\CustomerUpload */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Customer Uploads'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Kundendateien'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="customer-upload-view">
@@ -17,18 +17,30 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+
+        
+        <?php
+            if (Yii::$app->user->can('change-customerupload')) 
+            {
+                echo Html::a(Yii::t('app', 'Ändern'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+            }        
+            if (Yii::$app->user->can('delete-customerupload')) 
+            {
+                echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Bist du sicher, dass du diese Datei löschen willst?',
+                        'method' => 'post',
+                    ],
+                ]).' ';
+            }
+
+         ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'attributes' => [
             'id',
             [
@@ -62,10 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'changed',
                 'value'=>date('d.m.Y H:i:s', strtotime($model->changed)),
             ], 
-            [
-                'attribute'=>'changed_by',
-                'value'=>$model->changedBy->username,
-            ],  
+            'changedBy.username',
         ],
     ]) ?>
 

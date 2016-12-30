@@ -5,8 +5,12 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Customer;
 use backend\models\CustomerSearch;
+use backend\models\CustomerUpload;
+use backend\models\CustomerUploadSearch;
 use backend\models\So;
 use backend\models\SoSearch;
+use backend\models\Offer;
+use backend\models\OfferSearch;
 use backend\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -40,7 +44,12 @@ class CustomerController extends Controller
     {
         $searchModel = new CustomerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        if (Yii::$app->user->can('delete-customer')) {
+            $dataProvider->query->andWhere('customer.active > -1');
+        }
+        else {
+            $dataProvider->query->andWhere('customer.active = 1');
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -57,11 +66,21 @@ class CustomerController extends Controller
 
         $searchModel = new SoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->where('customer_id = '.$id);
+        $dataProvider->query->andWhere('customer_id = '.$id);
+        $searchModel2 = new OfferSearch();
+        $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
+        $dataProvider2->query->andWhere('customer_id = '.$id);        
+        $searchModel3 = new CustomerUploadSearch();
+        $dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
+        $dataProvider3->query->andWhere('customer_id = '.$id);        
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchModel2' => $searchModel2,
+            'dataProvider2' => $dataProvider2,
+            'searchModel3' => $searchModel3,
+            'dataProvider3' => $dataProvider3,
         ]);        
     }
 

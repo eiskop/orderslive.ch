@@ -24,22 +24,28 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             if (Yii::$app->user->can('create-so')) 
             {
-                echo Html::a('Auftrag Hinzufügen', ['create'], ['class' => 'btn btn-success']);
+                echo Html::a('Auftrag Hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
             }
-        
-        ?>
-        <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Löschen', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Bist du sicher, dass du diesen Auftrag löschen willst?',
-                'method' => 'post',
-            ],
-        ]) ?>
+            if (Yii::$app->user->can('change-so') OR Yii::$app->user->can('update-so')) 
+            {
+                echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+            }        
+            if (Yii::$app->user->can('delete-so')) 
+            {
+                echo Html::a('Löschen', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Bist du sicher, dass du diesen Auftrag löschen willst?',
+                        'method' => 'post',
+                    ],
+                ]).' ';
+            }
+         ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'attributes' => [
             'id',
             [

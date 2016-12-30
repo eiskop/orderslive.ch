@@ -20,7 +20,7 @@ use Yii;
  * @property integer $approved_by
  * @property integer $active
  *
- * @property OfferItem $offerItemType
+ * @property OfferItemType $OfferItemType
  * @property Customer $customer
  * @property User $createdBy
  * @property User $updatedBy
@@ -46,7 +46,7 @@ class CustomerDiscount extends \yii\db\ActiveRecord
             [['customer_id', 'offer_item_type_id', 'created_by', 'updated_by', 'approved_by', 'active'], 'integer'],
             [['base_discount_perc'], 'double'],
             [['valid_from', 'created', 'updated', 'approved'], 'safe'],
-            [['offer_item_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferItem::className(), 'targetAttribute' => ['offer_item_type_id' => 'offer_item_type_id']],
+            [['offer_item_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferItemType::className(), 'targetAttribute' => ['offer_item_type_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -80,7 +80,7 @@ class CustomerDiscount extends \yii\db\ActiveRecord
      */
     public function getOfferItemType()
     {
-        return $this->hasOne(OfferItem::className(), ['offer_item_type_id' => 'offer_item_type_id']);
+        return $this->hasOne(OfferItemType::className(), ['id' => 'offer_item_type_id']);
     }
 
     /**
