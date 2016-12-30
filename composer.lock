@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a313199f47b125aeccc7ffd46a29be33",
-    "content-hash": "45eadae08a019c66dddc5f2cb4dab918",
+    "content-hash": "3fca11c3942b69bceecc08362838edf8",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -66,7 +65,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2015-04-02 11:48:05"
+            "time": "2015-04-02T11:48:05+00:00"
         },
         {
             "name": "2amigos/yii2-highcharts-widget",
@@ -128,7 +127,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2015-03-16 21:55:20"
+            "time": "2015-03-16T21:55:20+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -448,7 +447,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2015-03-06 05:28:07"
+            "time": "2015-03-06T05:28:07+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -492,7 +491,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2013-11-30 08:25:19"
+            "time": "2013-11-30T08:25:19+00:00"
         },
         {
             "name": "kartik-v/mpdf",
@@ -535,7 +534,103 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2015-05-05 07:34:49"
+            "time": "2015-05-05T07:34:49+00:00"
+        },
+        {
+            "name": "kartik-v/php-date-formatter",
+            "version": "v1.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/php-date-formatter.git",
+                "reference": "38984fb614f3ebc3605a8e369eee1406feea02a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/php-date-formatter/zipball/38984fb614f3ebc3605a8e369eee1406feea02a4",
+                "reference": "38984fb614f3ebc3605a8e369eee1406feea02a4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\dateformatter\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "A Javascript datetime formatting and manipulation library using PHP date-time formats.",
+            "homepage": "https://github.com/kartik-v/php-date-formatter",
+            "keywords": [
+                "date",
+                "datetime",
+                "formatter",
+                "javascript",
+                "php",
+                "php-date-formatter.js",
+                "time"
+            ],
+            "time": "2015-12-21T18:22:51+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-datecontrol",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-datecontrol.git",
+                "reference": "497b7bb438864843b450aa9ab1df20bed096b5a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-datecontrol/zipball/497b7bb438864843b450aa9ab1df20bed096b5a1",
+                "reference": "497b7bb438864843b450aa9ab1df20bed096b5a1",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/php-date-formatter": ">1.3",
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\datecontrol\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Date control module allowing separation of formats for View and Model for Yii Framework 2.0",
+            "homepage": "https://github.com/kartik-v/yii2-datecontrol",
+            "keywords": [
+                "control",
+                "date",
+                "extension",
+                "format",
+                "yii",
+                "yii2"
+            ],
+            "time": "2016-12-07 19:41:05"
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -625,7 +720,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-16 05:19:57"
+            "time": "2015-06-16T05:19:57+00:00"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -672,7 +767,7 @@
                 "utf8",
                 "yii2"
             ],
-            "time": "2014-11-10 18:09:37"
+            "time": "2014-11-10T18:09:37+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-typeahead",
@@ -720,7 +815,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-28 18:05:41"
+            "time": "2015-06-28T18:05:41+00:00"
         },
         {
             "name": "miloschuman/yii2-highcharts-widget",
@@ -765,7 +860,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-09-23 19:25:06"
+            "time": "2015-09-23T19:25:06+00:00"
         },
         {
             "name": "perminder-klair/yii2-dropzone",
@@ -807,7 +902,7 @@
                 "upload",
                 "yii2"
             ],
-            "time": "2015-11-09 11:28:44"
+            "time": "2015-11-09T11:28:44+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -860,7 +955,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2015-06-06T14:19:39+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -913,7 +1008,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-04 07:55:57"
+            "time": "2016-03-04T07:55:57+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -969,7 +1064,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-23 13:23:25"
+            "time": "2016-03-23T13:23:25+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1028,7 +1123,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20 09:13:37"
+            "time": "2016-01-20T09:13:37+00:00"
         },
         {
             "name": "wbraganca/yii2-dynamicform",
@@ -1074,7 +1169,7 @@
                 "yii2 dynamic form",
                 "yii2-dynamicform"
             ],
-            "time": "2015-02-25 15:31:24"
+            "time": "2015-02-25T15:31:24+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -1162,7 +1257,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-08-05 22:00:30"
+            "time": "2015-08-05T22:00:30+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1212,7 +1307,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2015-05-10 22:08:17"
+            "time": "2015-05-10T22:08:17+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -1259,7 +1354,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2016-02-06 00:49:24"
+            "time": "2016-02-06T00:49:24+00:00"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -1309,7 +1404,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2015-05-10 22:12:32"
+            "time": "2015-05-10T22:12:32+00:00"
         }
     ],
     "packages-dev": [
@@ -1390,7 +1485,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-05-29 06:29:14"
+            "time": "2015-05-29T06:29:14+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -1424,7 +1519,7 @@
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
-            "time": "2013-11-01 13:02:21"
+            "time": "2013-11-01T13:02:21+00:00"
         },
         {
             "name": "yiisoft/yii2-codeception",
@@ -1469,7 +1564,7 @@
                 "codeception",
                 "yii2"
             ],
-            "time": "2015-05-10 22:08:30"
+            "time": "2015-05-10T22:08:30+00:00"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -1516,7 +1611,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2015-08-06 16:14:06"
+            "time": "2015-08-06T16:14:06+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -1563,7 +1658,7 @@
                 "faker",
                 "yii2"
             ],
-            "time": "2015-03-01 06:22:44"
+            "time": "2015-03-01T06:22:44+00:00"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -1616,14 +1711,15 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2016-03-18 14:09:46"
+            "time": "2016-03-18T14:09:46+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "kartik-v/yii2-grid": 20,
-        "perminder-klair/yii2-dropzone": 20
+        "perminder-klair/yii2-dropzone": 20,
+        "kartik-v/yii2-datecontrol": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

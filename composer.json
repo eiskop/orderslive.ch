@@ -25,7 +25,8 @@
         "kartik-v/yii2-grid": "@dev",
         "kartik-v/yii2-mpdf": "*",
         "wbraganca/yii2-dynamicform": "*",
-        "perminder-klair/yii2-dropzone": "dev-master"
+        "perminder-klair/yii2-dropzone": "dev-master",
+        "kartik-v/yii2-datecontrol": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
