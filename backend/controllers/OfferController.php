@@ -306,8 +306,8 @@ class OfferController extends Controller
 						$modelUpload->offer_id = $model->id;
 		            	$modelUpload->file_path = $file_name;
 		            	$modelUpload->file_name = $pinfo2['basename'];
-		            	if ($model->title != TRUE)  {
-                            $model->title = $pinfo['basename'];    
+		            	if ($modelUpload->title != TRUE)  {
+                            $modelUpload->title = $pinfo['basename'];    
                         }
 		            	$modelUpload->file_extension = $pinfo['extension'];
 		            	$modelUpload->file_type = $file->type;
