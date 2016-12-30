@@ -81,11 +81,11 @@ class Customer extends \yii\db\ActiveRecord
             'province' => 'Canton',
             'fax_no' => 'Fax No',
             'tel_no' => 'Tel No',
-            //'region' => 'Region',            
-    //    'created' => 'Created',
-    //    'created_by' => 'Created By',
-    //      'updated' => 'Updated',
-    //        'updated_by' => 'Updated By',
+            'region' => 'Region',            
+            'created' => Yii::t('app', 'Erstellt'),
+            'created_by' => Yii::t('app', 'Ersteller'),
+            'updated' => Yii::t('app', 'Anpassung am'),
+            'updated_by' => Yii::t('app', 'Angepasst von'),
             'uploadedFiles' => 'Dokumente hinzufügen',
         ];
     }

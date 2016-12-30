@@ -39,7 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'customer_group_id',
+            [
+                'attribute' => 'customer_group_id',
+                'value' => $model->customerGroup->name,
+            ],
             'customer_priority_id',
             'contact',
             'street',
@@ -49,10 +52,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'province',
             'fax_no',
             'tel_no',
-            'created',
-            'created_by',
-            'updated',
-            'updated_by',
+            [
+                'attribute'=>'created',
+                'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
+            ], 
+            [
+                'attribute'=>'created_by',
+                'value'=>$model->createdBy->username,
+            ],  
+            [
+                'attribute'=>'updated',
+                'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
+            ], 
+            [
+                'attribute'=>'updated_by',
+                'value'=>$model->updatedBy->username,
+            ],  
         ],
     ]) ?>
 
