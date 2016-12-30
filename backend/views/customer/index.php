@@ -50,7 +50,10 @@ echo '<pre>', var_dump($res), '</pre>';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Customer', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Kunde erfassen', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>          
+        <?= Html::a('Kundendateien', ['customer-upload/index'], ['class' => 'btn btn-primary']) ?>
+
     </p>
 
     <?= GridView::widget([

@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Datei hochladen'), ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Filter rücksetzen'), ['index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Kunden', ['customer/index'], ['class' => 'btn btn-primary']) ?>
 
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([

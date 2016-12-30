@@ -26,7 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>             
+        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>     
+        
+
     </p>
 <?php Pjax::begin(); ?>    
     <?= GridView::widget([
