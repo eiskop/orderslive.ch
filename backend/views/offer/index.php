@@ -25,7 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+            if (Yii::$app->user->can('create-offer')) 
+            {
+                echo Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
+            } 
+        ?>
         <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>     
         
 
