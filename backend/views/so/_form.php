@@ -50,7 +50,14 @@ use kartik\typeahead\Typeahead;
             $model->product_group_id = Yii::$app->user->identity->product_group_id;    
             $model->order_received = date('d-m-Y', time());
         }
-        
+        // for redirecting to form with a predefined customer_id
+        if (isset($_GET['customer_id'])) {
+            $model->customer_id = $_GET['customer_id'];
+        }
+        else {
+            $model->customer_id = '';   
+        }
+        //END: for redirecting to form with a predefined customer_id        
 
     ?>
 
@@ -61,6 +68,7 @@ use kartik\typeahead\Typeahead;
             <td colspan="3">
                 <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
                     'prompt'=>'Kunde auswählen',
+                    'options' => [$_GET['customer_id'] => ['Selected'=>true]],
                     'onchange'=>'
                         $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
                             $("select#customer-id").html(data);

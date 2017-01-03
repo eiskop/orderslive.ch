@@ -25,20 +25,44 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+
+
 ?>
 <div class="customer-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Stornieren', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+
+        <?php
+            if (Yii::$app->user->can('change-so') OR Yii::$app->user->can('update-so')) 
+            {
+                echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+            }         
+            if (Yii::$app->user->can('create-so')) 
+            {
+                echo Html::a('Neuer Auftrag', ['so/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+            }  
+            if (Yii::$app->user->can('create-offer')) 
+            {
+                echo Html::a('Neue Offerte', ['offer/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+            }  
+            if (Yii::$app->user->can('delete-so')) 
+            {
+                echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Bist du sicher dass du diesen Kunden löschen willst?',
+                        'method' => 'post',
+                    ],
+                ]).' '; 
+
+            }           
+
+
+
+
+        ?>
     </p>
 
     <?= DetailView::widget([
