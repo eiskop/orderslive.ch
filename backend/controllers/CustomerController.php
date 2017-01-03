@@ -94,11 +94,13 @@ class CustomerController extends Controller
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
-                $model->region = 'W-CH';
-            }
-            else {
-                $model->region = 'D-CH';   
+            if ($model->zip_code != FALSE) {
+                if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
+                    $model->region = 'W-CH';
+                }
+                else {
+                    $model->region = 'D-CH';   
+                }
             }
             $model->active = 1;
             $model->save(false);            
@@ -120,11 +122,13 @@ class CustomerController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
-                $model->region = 'W-CH';
-            }
-            else {
-                $model->region = 'D-CH';   
+            if ($model->zip_code != FALSE) {
+                if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
+                    $model->region = 'W-CH';
+                }
+                else {
+                    $model->region = 'D-CH';   
+                }
             }
             $model->upload($id);
             
