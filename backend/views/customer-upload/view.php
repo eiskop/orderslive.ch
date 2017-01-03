@@ -48,12 +48,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>Html::a($model->customer->name, ['customer/view', 'id' => $model->customer_id]),
                 'format' => 'raw'
             ],  
-            'file_path',
-            'file_name',
+            [
+                'attribute'=>'file_name',
+                'value'=>Html::a($model->file_name, $model->file_path),
+                'format' => 'raw'
+            ],  
+            'title',
+            'description:ntext',            
             'file_extension',
             'file_type',
-            'title',
-            'description:ntext',
+
             'file_size',
             [
                 'attribute'=>'valid_from',
@@ -73,7 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],  
             [
                 'attribute'=>'changed',
-                'value'=>date('d.m.Y H:i:s', strtotime($model->changed)),
+                'value'=>call_user_func(function($model) {
+                            if (!is_null($model->changed)) {
+                                return date('d.m.Y H:i:s', strtotime($model->changed));
+                            }
+                            else {
+                                return ' ';
+                            }
+                        }, $model),
             ], 
             'changedBy.username',
         ],

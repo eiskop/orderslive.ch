@@ -86,7 +86,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>$model->createdBy->username,
             ],
             'updatedBy.username',
-            'updated',
+            [
+                'attribute'=>'updated',
+                'value'=>call_user_func(function($model) {
+                            if (!is_null($model->updated)) {
+                                return date('d.m.Y H:i:s', strtotime($model->updated));
+                            }
+                            else {
+                                return ' ';
+                            }
+                        }, $model),
+            ], 
+
         ],
     ]) ?>
 </div>

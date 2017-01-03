@@ -57,7 +57,7 @@ use kartik\typeahead\Typeahead;
         else {
             $model->customer_id = '';   
         }
-        //END: for redirecting to form with a predefined customer_id        
+        //END: for redirecting to form with a predefined customer_id       
 
     ?>
 
@@ -68,7 +68,7 @@ use kartik\typeahead\Typeahead;
             <td colspan="3">
                 <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
                     'prompt'=>'Kunde auswählen',
-                    'options' => [$_GET['customer_id'] => ['Selected'=>true]],
+                    'options' => [$model->customer_id => ['Selected'=>true]],
                     'onchange'=>'
                         $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
                             $("select#customer-id").html(data);
