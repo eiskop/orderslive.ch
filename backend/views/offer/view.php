@@ -72,8 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],       
             [
                 'attribute'=>'customer_id',
-                'value'=>$model->customer->name,
-            ],
+                'value'=>Html::a($model->customer->name, ['customer/view', 'id' => $model->customer_id]),
+                'format' => 'raw'
+            ],  
             'customer_order_no',
             'customer_contact',
             'carpenter',  

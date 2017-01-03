@@ -45,7 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute'=>'customer_id',
-                'value'=>$model->customer->name,
+                'value'=>Html::a($model->customer->name, ['customer/view', 'id' => $model->customer_id]),
+                'format' => 'raw'
             ],  
             'file_path',
             'file_name',
