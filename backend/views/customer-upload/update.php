@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\CustomerUpload */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Customer Upload',
+$this->title = Yii::t('app', '{modelClass}: ', [
+    'modelClass' => 'Kundendatei ändern',
 ]) . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Customer Uploads'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Kundendateien'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

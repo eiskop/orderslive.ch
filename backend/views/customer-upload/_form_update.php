@@ -15,11 +15,9 @@ use kartik\datecontrol\Module;
 <div class="customer-upload-form">
 
     <?php 
-        $form = ActiveForm::begin(); 
+        $form = ActiveForm::begin();       
 
     ?>
-
-
 
     <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1, 'id'=>$model->customer_id])->all(), 'id', 'nameAndStreet', 'name'), ['readonly'=>true]) ?>
 

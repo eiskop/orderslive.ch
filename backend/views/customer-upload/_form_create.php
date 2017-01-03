@@ -14,13 +14,25 @@ use dosamigos\datepicker\DatePicker;
 <div class="customer-upload-form">
     <?php
 
+
+
      $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form', 'enctype' => 'multipart/form-data']]); 
         $model->valid_from = date('d.m.Y', time());
         $model->valid_to = date('d.m.Y', strtotime('+ 1 year'));     
+        // for redirecting to form with a predefined customer_id
+        if (isset($_GET['customer_id'])) {
+            $model->customer_id = $_GET['customer_id'];
+        }
+        else {
+            $model->customer_id = '';   
+        }
+        //END: for redirecting to form with a predefined customer_id       
+
     ?>
 
     <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
         'prompt'=>'Kunde auswählen',
+        'options'=>[$model->customer_id => ['Selected'=>true]],
         'onchange'=>'
             $.post("index.php?r=customer/index&id='.'"+$(this).val(), function (data) {
                 $("select#customer-id").html(data);
