@@ -9,13 +9,14 @@ use backend\models\CustomerDiscount;
 use backend\models\So;
 use backend\models\SoSearch;
 use backend\models\Offer;
+use backend\models\OfferItemType;
 use backend\models\OfferSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CustomerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Customers';
+$this->title = 'Kunden';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -47,12 +48,19 @@ echo '<pre>', var_dump($res), '</pre>';
   
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+  
 
     <p>
-        <?= Html::a('Kunde erfassen', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>          
-        <?= Html::a('Kundendateien', ['customer-upload/index'], ['class' => 'btn btn-primary']) ?>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); 
+            if (Yii::$app->user->can('create-customer')) 
+            {
+                echo Html::a('Kunde erfassen', ['create'], ['class' => 'btn btn-success']).' ';
+            }
+            echo Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']).' ';           
+            echo Html::a('Kundendateien', ['customer-upload/index'], ['class' => 'btn btn-primary']).' ';
+
+        ?>
+        
 
     </p>
 
@@ -97,12 +105,13 @@ echo '<pre>', var_dump($res), '</pre>';
                     function ($data) {
                        foreach ($data->customerDiscount as $k=>$v) {
                             if ($v['offer_item_type_id'] == 1) {
-                                return $v['base_discount_perc'];
+                                
+                                return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
                             }
                         }
                     },
                 'contentOptions' => ['style' => 'text-align: right;'], 
-             
+                'format' => 'raw',             
             ],
             [
                 'attribute'=>'Wirus Rabatt (%)',
@@ -110,12 +119,12 @@ echo '<pre>', var_dump($res), '</pre>';
                     function ($data) {
                        foreach ($data->customerDiscount as $k=>$v) {
                             if ($v['offer_item_type_id'] == 2) {
-                                return $v['base_discount_perc'];
+                                return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
                             }
                         }
                     },
                 'contentOptions' => ['style' => 'text-align: right;'], 
-                
+                'format' => 'raw', 
             ], 
             [
                 'attribute'=>'Moralt Rabatt (%)',
@@ -123,12 +132,12 @@ echo '<pre>', var_dump($res), '</pre>';
                     function ($data) {
                        foreach ($data->customerDiscount as $k=>$v) {
                             if ($v['offer_item_type_id'] == 3) {
-                                return $v['base_discount_perc'];
+                                return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
                             }
                         }
                     },
                 'contentOptions' => ['style' => 'text-align: right;'], 
-                
+                'format' => 'raw', 
             ],
             [
                 'attribute'=>'BOS Rabatt (%)',
@@ -136,10 +145,11 @@ echo '<pre>', var_dump($res), '</pre>';
                     function ($data) {
                        foreach ($data->customerDiscount as $k=>$v) {
                             if ($v['offer_item_type_id'] == 4) {
-                                return $v['base_discount_perc'];
+                                return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
                             }
                         }
                     },
+                'format' => 'raw',                     
                 'contentOptions' => ['style' => 'text-align: right;'], 
                 
             ],
@@ -149,26 +159,29 @@ echo '<pre>', var_dump($res), '</pre>';
                     function ($data) {
                        foreach ($data->customerDiscount as $k=>$v) {
                             if ($v['offer_item_type_id'] == 5) {
-                                return $v['base_discount_perc'];
+                                return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
                             }
                         }
                     },
+                'format' => 'raw',   
                 'contentOptions' => ['style' => 'text-align: right;'], 
                 
             ],  
             [
-                'attribute'=>'sos',
+                'attribute'=>'A',
                 'value'=>function ($data) {
-                    return So::find()->where(['customer_id'=>$data->id])->count();
+                    return Html::a(So::find()->where(['customer_id'=>$data->id])->count(), ['so/index', 'SoSearch[customer_id]' => $data->name]);
                 },
+                'format' => 'raw',                    
                 'contentOptions' => ['style' => 'text-align: right;'], 
                 
             ],
             [
-                'attribute'=>'offers',
+                'attribute'=>'O',
                 'value'=>function ($data) {
-                    return Offer::find()->where(['customer_id'=>$data->id])->count();
+                    return Html::a(Offer::find()->where(['customer_id'=>$data->id])->count(), ['offer/index', 'OfferSearch[customer_id]' => $data->name]);
                 },
+                'format' => 'raw',
                 'contentOptions' => ['style' => 'text-align: right;'], 
 
             ],            
@@ -218,7 +231,9 @@ echo '<pre>', var_dump($res), '</pre>';
                 }
             ],
         ],
-    ]); ?>
+    ]); 
+
+    ?>
 
 <style type="text/css">
     .grid-view th {

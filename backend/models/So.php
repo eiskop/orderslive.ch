@@ -74,7 +74,7 @@ class So extends \yii\db\ActiveRecord
            // 'id' => 'ID',
             'product_group_id' => 'Produkt',
             'customer_id' => 'Kunde',
-            'customer_order_no' => 'Komission',
+            'customer_order_no' => 'Kommission',
             'confirmation_no' => 'AB',
             'offer_no' => 'Offertnr.',
             'customer_priority_id' => 'Prio',

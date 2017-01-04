@@ -19,9 +19,9 @@ class CustomerDiscountSearch extends CustomerDiscount
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'offer_item_type_id', 'created_by', 'updated_by', 'approved_by', 'active'], 'integer'],
+            [['id', 'created_by', 'updated_by', 'approved_by', 'active'], 'integer'],
             [['base_discount_perc'], 'double'],
-            [['valid_from', 'created', 'updated', 'approved'], 'safe'],
+            [['valid_from', 'created', 'updated', 'approved', 'customer_id', 'offer_item_type_id'], 'safe'],
         ];
     }
 
@@ -59,21 +59,26 @@ class CustomerDiscountSearch extends CustomerDiscount
             return $dataProvider;
         }
 
+        $query->joinWith('customer');
+        $query->joinWith('offerItemType');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'offer_item_type_id' => $this->offer_item_type_id,
+           // 'customer_id' => $this->customer_id,
+           // 'offer_item_type_id' => $this->offer_item_type_id,
             'base_discount_perc' => $this->base_discount_perc,
-            'valid_from' => $this->valid_from,
-            'created' => $this->created,
-            'created_by' => $this->created_by,
-            'updated' => $this->updated,
-            'updated_by' => $this->updated_by,
-            'approved' => $this->approved,
-            'approved_by' => $this->approved_by,
+           // 'valid_from' => $this->valid_from,
+            //'created' => $this->created,
+//            'created_by' => $this->created_by,
+  //          'updated' => $this->updated,
+    //        'updated_by' => $this->updated_by,
+      //      'approved' => $this->approved,
+        //    'approved_by' => $this->approved_by,
             'active' => $this->active,
         ]);
+
+        $query->andFilterWhere(['like', 'customer.name', $this->customer_id])
+        ->andFilterWhere(['like', 'offer_item_type.name', $this->offer_item_type_id]);
 
         return $dataProvider;
     }

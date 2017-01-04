@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\CustomerDiscount */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Customer Discount',
-]) . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Customer Discounts'), 'url' => ['index']];
+$this->title = Yii::t('app', ' {modelClass} ', [
+    'modelClass' => 'Kondition Nr.',
+]) . $model->id.' '.$this->title = Yii::t('app', 'ändern');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Konditionen'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Ändern');
 ?>
 <div class="customer-discount-update">
 

@@ -22,7 +22,7 @@ use dosamigos\datepicker\DatePicker;
 /* @var $model backend\models\Customer */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Kunden', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

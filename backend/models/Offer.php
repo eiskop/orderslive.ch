@@ -107,7 +107,7 @@ class Offer extends \yii\db\ActiveRecord
             'customer_id' => 'Kunde',
             'customer_contact' => 'Kunden Kontakt',
             'carpenter' => 'Schreiner',
-            'customer_order_no' => 'Komission',
+            'customer_order_no' => 'Kommission',
             'confirmation_no' => 'AB',
             'qty' => 'Menge',
             'prio1' => 'Prio. 1',

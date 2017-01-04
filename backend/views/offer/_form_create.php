@@ -43,8 +43,6 @@ use wbraganca\dynamicform\DynamicFormWidget;
         }
         //END: for redirecting to form with a predefined customer_id         
         
-        
-
     ?>
 
   

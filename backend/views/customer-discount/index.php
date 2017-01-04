@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\CustomerDiscountSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Customer Discounts');
+$this->title = Yii::t('app', 'Konditionen');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="customer-discount-index">
@@ -16,7 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Customer Discount'), ['create'], ['class' => 'btn btn-success']) ?>
+       
+        <?php // echo $this->render('_search', ['model' => $searchModel]); 
+            if (Yii::$app->user->can('create-customerdiscount')) 
+            {
+                echo Html::a('Kondition erfassen', ['create'], ['class' => 'btn btn-success']).' ';
+            }
+            echo Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']).' ';           
+            echo Html::a('Kunden', ['customer/index'], ['class' => 'btn btn-primary']).' ';
+
+        ?>        
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,

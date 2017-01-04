@@ -43,8 +43,6 @@ use wbraganca\dynamicform\DynamicFormWidget;
             $model->product_group_id = Yii::$app->user->identity->product_group_id;    
             $model->offer_received = date('d-m-Y', time());
         }
-        
-
     ?>
 
   
