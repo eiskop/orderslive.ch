@@ -50,7 +50,11 @@ $this->params['breadcrumbs'][] = $this->title;
             if (Yii::$app->user->can('create-customerupload')) 
             {
                 echo Html::a('Neue Datei', ['customer-upload/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
-            } 
+            }
+            if (Yii::$app->user->can('create-customerdiscount')) 
+            {
+                echo Html::a('Neue Kondition', ['customer-discount/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+            }             
             if (Yii::$app->user->can('delete-so')) 
             {
                 echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
@@ -68,43 +72,146 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ?>
     </p>
+    <div class="table">
+        <div class="row">
+            <div class="col-lg-6">
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            [
-                'attribute' => 'customer_group_id',
-                'value' => $model->customerGroup->name,
-            ],
-            'customer_priority_id',
-            'contact',
-            'street',
-            'zip_code',
-            'region',
-            'city',
-            'province',
-            'fax_no',
-            'tel_no',
-            [
-                'attribute'=>'created',
-                'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
-            ], 
-            [
-                'attribute'=>'created_by',
-                'value'=>$model->createdBy->username,
-            ],  
-            [
-                'attribute'=>'updated',
-                'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
-            ], 
-            [
-                'attribute'=>'updated_by',
-                'value'=>$model->updatedBy->username,
-            ],  
-        ],
-    ]) ?>
+                <h2>Kundeninformationen</h2>
+                <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />                
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'name',
+                        [
+                            'attribute' => 'customer_group_id',
+                            'value' => $model->customerGroup->name,
+                        ],
+                        'customer_priority_id',
+                        'contact',
+                        'street',
+                        'zip_code',
+                        'region',
+                        'city',
+                        'province',
+                        'fax_no',
+                        'tel_no',
+                        [
+                            'attribute'=>'created',
+                            'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
+                        ], 
+                        [
+                            'attribute'=>'created_by',
+                            'value'=>$model->createdBy->username,
+                        ],  
+                        [
+                            'attribute'=>'updated',
+                            'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
+                        ], 
+                        [
+                            'attribute'=>'updated_by',
+                            'value'=>$model->updatedBy->username,
+                        ],  
+                    ],
+                ])
+                ?>
+
+            </div>
+            <div class="col-lg-6">
+                <h2>Konditionen</h2>
+                <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />
+
+                <?php Pjax::begin(); ?>    <?= GridView::widget([
+
+                    'dataProvider' => $dataProvider4,
+                    'filterModel' => $searchModel4,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+
+                        [
+                            'attribute'=>'id',
+                            'contentOptions'=>['style'=>'width:30px;text-align:right;'],
+                        ],
+                        [
+                            'attribute'=>'offer_item_type_id',
+                            'value'=>'offerItemType.name',
+                            'contentOptions'=>['style'=>'width:100px;'],
+                        ],            
+                        [
+                            'attribute' => 'base_discount_perc',
+                            'contentOptions'=>['style'=>'width:30px;text-align:right;'],
+                            'format' => ['decimal', 1],
+                        ],
+                        [
+                            'attribute'=>'valid_from',
+                            'contentOptions'=>['style'=>'width:100px;'],
+                            'format' => ['date'],
+                        ],              
+                        // 'created',
+                        // 'created_by',
+                        // 'updated',
+                        // 'updated_by',
+                        // 'approved',
+                        // 'approved_by',
+                        
+                        [
+                            'attribute'=>'active',
+                            'format'=>'boolean',
+                        ],
+
+                           [  
+                            'class' => 'yii\grid\ActionColumn',
+                            'contentOptions' => ['style' => 'width:70px; text-align: center;'],
+                            'header'=>'',
+                            'template' => '{view} {update} {delete}',
+                            'buttons' => 
+                            [
+
+                                //view button
+                                'view' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                                'title' => Yii::t('app', 'View'),                              
+                                    ]);
+                                },
+                                'update' => function ($url, $model) {
+                                    if (Yii::$app->user->can('change-customerdiscount')) 
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                                    'title' => Yii::t('app', 'Update'),                              
+                                        ]);
+                                    }
+                                },
+                                'delete' => function ($url, $model) {
+                                    if (Yii::$app->user->can('delete-customerdiscount')) 
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                                    'title' => Yii::t('app', 'Delete'),
+                                                    'data-confirm' => 'Are you sure you want to delete this item?',
+                                                    'data-method' => 'post'
+                                        ]);
+                                    }
+                                },                                           
+                            ],
+                            'urlCreator' => function ($action, $model, $key, $index) {
+                                if ($action === 'view') {
+                                    return Url::to(['customer-discount/view', 'id'=>$model->id]);
+                                }
+                                if ($action === 'update') {
+                                    return Url::to(['customer-discount/update', 'id'=>$model->id]);
+                                }
+                                if ($action === 'delete') {
+                                    return Url::to(['customer-discount/delete', 'id'=>$model->id]);
+                                }                    
+                            }
+                        ],
+                    ],
+                ]); ?>
+                <?php Pjax::end(); ?>
+
+            </div>
+        </div>
+    </div>            
+
 
 <h2>Offerten</h2>
 <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />
@@ -216,7 +323,7 @@ $this->params['breadcrumbs'][] = $this->title;
           
             [  
                 'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width:50px;'],
+                'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                 'header'=>'',
                 'template' => '{view} {update}',
                 'buttons' => 
@@ -406,7 +513,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [  
                 'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width:50px;'],
+                'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                 'header'=>'',
                 'template' => '{view} {update}',
                 'buttons' => 
@@ -455,6 +562,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::end(); 
     //end: orders ?>
+    
+
+
+
+
 
     <h2>Kundendateien</h2>
     <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />
@@ -488,38 +600,8 @@ $this->params['breadcrumbs'][] = $this->title;
              'title',
              'description:ntext',
             // 'file_size',
-            [
-                'attribute'=>'valid_from',
-                'value'=>'valid_from',
-                'contentOptions' => ['style' => 'width:80px; text-align: right;'],
-                'format' => ['date', 'php:d.m.Y'],
-                'filter'=>DatePicker::widget([
-                    'model' => $searchModel3,
-                    'attribute' => 'valid_from',
-                 //   'template' => '{addon}{input}',
-                        'clientOptions' => [
-                            'autoclose' => true,
-                            'format' => 'dd.mm.yy'
-                        ]
-                ]),
-            ],            
-
-            [
-                'attribute'=>'valid_to',
-                'value'=>'valid_to',
-                'contentOptions' => ['style' => 'width:80px; text-align: right;'],
-                'format' => ['date', 'php:d.m.Y'],
-                'filter'=>DatePicker::widget([
-                    'model' => $searchModel3,
-                    'attribute' => 'valid_to',
-                 //   'template' => '{addon}{input}',
-                        'clientOptions' => [
-                            'autoclose' => true,
-                            'format' => 'dd.mm.yy'
-                        ]
-                ]),
-            ],            
-
+            // 'valid_from',
+            // 'valid_to',
             // 'created',
             // 'created_by',
             // 'changed',
@@ -527,7 +609,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
            [  
                 'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width:50px;'],
+                'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                 'header'=>'',
                 'template' => '{view} {update} {delete}',
                 'buttons' => 
@@ -572,7 +654,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); 
+
+
+?>
 
 
 

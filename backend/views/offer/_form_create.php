@@ -38,13 +38,10 @@ use wbraganca\dynamicform\DynamicFormWidget;
             $model->offer_received = date('d-m-Y', time());
         }
         // for redirecting to form with a predefined customer_id
-        if (isset($_GET['customer_id'])) {
+        if ($model->customer_id != TRUE AND isset($_GET['customer_id'])) {
             $model->customer_id = $_GET['customer_id'];
         }
-        else {
-            $model->customer_id = '';   
-        }
-        //END: for redirecting to form with a predefined customer_id        
+        //END: for redirecting to form with a predefined customer_id         
         
         
 

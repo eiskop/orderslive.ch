@@ -24,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Kunden', ['customer/index'], ['class' => 'btn btn-primary']) ?>
 
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    
+    <?php Pjax::begin(); ?>    
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [

@@ -20,13 +20,10 @@ use dosamigos\datepicker\DatePicker;
         $model->valid_from = date('d.m.Y', time());
         $model->valid_to = date('d.m.Y', strtotime('+ 1 year'));     
         // for redirecting to form with a predefined customer_id
-        if (isset($_GET['customer_id'])) {
+        if ($model->customer_id != TRUE AND isset($_GET['customer_id'])) {
             $model->customer_id = $_GET['customer_id'];
         }
-        else {
-            $model->customer_id = '';   
-        }
-        //END: for redirecting to form with a predefined customer_id       
+        //END: for redirecting to form with a predefined customer_id        
 
     ?>
 

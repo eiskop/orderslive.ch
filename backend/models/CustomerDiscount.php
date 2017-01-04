@@ -42,10 +42,10 @@ class CustomerDiscount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'offer_item_type_id', 'base_discount_perc', 'valid_from', 'created', 'created_by', 'updated_by', 'approved', 'approved_by', 'active'], 'required'],
+            [['customer_id', 'offer_item_type_id', 'base_discount_perc', 'valid_from', 'active'], 'required'],
             [['customer_id', 'offer_item_type_id', 'created_by', 'updated_by', 'approved_by', 'active'], 'integer'],
             [['base_discount_perc'], 'double'],
-            [['valid_from', 'created', 'updated', 'approved'], 'safe'],
+            [['valid_from', 'created', 'updated', 'approved', 'updated_by', 'approved', 'approved_by','updated_by', 'approved', 'approved_by', 'created', 'created_by'], 'safe'],
             [['offer_item_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferItemType::className(), 'targetAttribute' => ['offer_item_type_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],

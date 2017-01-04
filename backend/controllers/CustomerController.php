@@ -7,6 +7,7 @@ use backend\models\Customer;
 use backend\models\CustomerSearch;
 use backend\models\CustomerUpload;
 use backend\models\CustomerUploadSearch;
+use backend\models\CustomerDiscountSearch;
 use backend\models\So;
 use backend\models\SoSearch;
 use backend\models\Offer;
@@ -72,7 +73,10 @@ class CustomerController extends Controller
         $dataProvider2->query->andWhere('customer_id = '.$id);        
         $searchModel3 = new CustomerUploadSearch();
         $dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
-        $dataProvider3->query->andWhere('customer_id = '.$id);        
+        $dataProvider3->query->andWhere('customer_id = '.$id);   
+        $searchModel4 = new CustomerDiscountSearch();
+        $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
+        $dataProvider4->query->andWhere('customer_id = '.$id);   
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModel' => $searchModel,
@@ -81,6 +85,8 @@ class CustomerController extends Controller
             'dataProvider2' => $dataProvider2,
             'searchModel3' => $searchModel3,
             'dataProvider3' => $dataProvider3,
+            'searchModel4' => $searchModel4,
+            'dataProvider4' => $dataProvider4,            
         ]);        
     }
 
