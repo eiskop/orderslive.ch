@@ -25,7 +25,7 @@ use yii\helpers\ArrayHelper;
 
 
 date_default_timezone_set('Europe/Zurich');
-$this->title = 'Durchlaufzeit (Tage)';
+$this->title = 'Durchlaufzeit '.date('Y').' (Tage)';
 
 //$this->params['breadcrumbs'][] = $this->title;
 //
@@ -86,13 +86,13 @@ $db = new yii\db\Connection([
     'charset' => 'utf8',
 ]);
 date_default_timezone_set('Europe/Zurich');
-echo '<h2>Durchlaufzeit von '.date('d.m.Y', strtotime('11. April 2016')).' bis '.date('d.m.Y', time()).'</h2>';
+echo '<h2>Durchlaufzeit '.date('Y').'</h2>';
 
 $res = $db->createCommand('SELECT customer_id, customer.name as customer_name, customer.city as city, customer.street as street, customer.zip_code as zip_code, product_group.name as product_group_name, so.customer_priority_id, customer_priority.days_to_process, avg(UNIX_TIMESTAMP(so.updated)-UNIX_TIMESTAMP(order_received))/(60*60*24) as durchlaufzeit_tage, count(*) as aufträge FROM `so` 
         LEFT JOIN customer on so.customer_id = customer.id  
     	LEFT JOIN product_group on so.product_group_id = product_group.id  
     	LEFT JOIN customer_priority on so.customer_priority_id = customer_priority.id  
-  	WHere status_id = 3 AND UNIX_TIMESTAMP(so.updated) != 0 AND UNIX_TIMESTAMP(so.updated) > '.strtotime('11. April 2016').' group by customer_id, product_group_id ORDER BY customer.name ASC, product_group.name asc' ) //    WHere status_id = 3 AND UNIX_TIMESTAMP(so.updated) != 0 AND UNIX_TIMESTAMP(so.updated) > '.strtotime('-1 Year').' group by customer_id, product_group_id ORDER BY customer.name ASC, product_group.name asc' )
+  	WHere status_id = 3 AND year(so.updated) != 0 AND YEAR(so.updated) = '.date("Y").' AND YEAR(so.order_received) = '.date("Y").' group by customer_id, product_group_id ORDER BY customer.name ASC, product_group.name asc' ) //    WHere status_id = 3 AND UNIX_TIMESTAMP(so.updated) != 0 AND UNIX_TIMESTAMP(so.updated) > '.strtotime('-1 Year').' group by customer_id, product_group_id ORDER BY customer.name ASC, product_group.name asc' )
             ->queryAll();
 
           // echo var_dump($res);
@@ -134,7 +134,21 @@ foreach ($rows as $k=>$v) {
 }
 ?>
 <h3>
-<?= "Durchschnittliche Durchlaufzeit: ".number_format(($sum_dlz/$count_rows), 2, '.', ' ').' ('."Kellpax: ".number_format(($sum_dlz_kpx/$count_rows_kpx), 2, '.', ' ').", Wirus: ".number_format(($sum_dlz_wir/$count_rows_wir), 2, '.', ' ').')' ?>
+<?php 
+    
+    echo "Durchschnittliche Durchlaufzeit: ";
+    if ($count_rows > 0) {
+     echo number_format(($sum_dlz/$count_rows), 2, '.', ' ').' ';    
+    }
+    if ($count_rows_kpx > 0) {
+     echo ', Kellpax: '.number_format(($sum_dlz_kpx/$count_rows_kpx), 2, '.', ' ');
+    }
+    if ($count_rows_wir > 0) {
+     echo ', Wirus: '.number_format(($sum_dlz_wir/$count_rows_wir), 2, '.', ' ').')';
+    }
+
+     
+?>
 </h3>
     <?= GridView::widget([
     	'summary'=>'', 
