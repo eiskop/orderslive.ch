@@ -66,7 +66,10 @@ class CustomerDiscountController extends Controller
     {
         $model = new CustomerDiscount();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->created = date('Y-m-d H:i:s');
+            $model->created_by = Yii::$app->user->id;
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -84,7 +87,8 @@ class CustomerDiscountController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->updated = date('Y-m-d H:i:s');
+        $model->updated_by = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
