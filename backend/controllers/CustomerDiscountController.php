@@ -88,9 +88,14 @@ class CustomerDiscountController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->updated = date('Y-m-d H:i:s');
-        $model->updated_by = Yii::$app->user->id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+        
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->updated = date('Y-m-d H:i:s');
+            $model->updated_by = Yii::$app->user->id;
+            $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
