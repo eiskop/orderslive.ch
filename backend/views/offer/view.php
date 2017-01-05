@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'offer_no',
             [
                 'attribute'=>'followup_by_id',
-                'value'=>$model->followupBy->username,
+                'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
             ],              
             'confirmation_no',
             'offer_wir_id',
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'created_by',
-                'value'=>$model->createdBy->username,
+                'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
             ],          
             [
                 'attribute'=>'updated',
@@ -122,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'updated_by',
-                'value'=>$model->updatedBy->username,
+                'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
             ],  
         ],
     ]) ?>
