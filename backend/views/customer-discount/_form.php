@@ -25,9 +25,7 @@ use backend\models\OfferItemType;
         //END: for redirecting to form with a predefined customer_id      
         if ($model->valid_from != FALSE) {
             $model->valid_from = date('d.m.Y', strtotime($model->valid_from));
-        }
-  
-  
+        }  
     ?>
 
     <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [

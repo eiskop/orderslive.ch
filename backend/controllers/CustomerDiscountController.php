@@ -70,6 +70,7 @@ class CustomerDiscountController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->created = date('Y-m-d H:i:s');
             $model->created_by = Yii::$app->user->id;
+            $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
             $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -117,7 +118,7 @@ class CustomerDiscountController extends Controller
       //  exit;
         $this->findModel($id)->delete();
 
-        return $this->redirect(empty(Yii::$app->request->referrer)?:Yii::$app->request->referrer);    
+        return $this->redirect(empty(Yii::$app->request->referrer)?['index']:Yii::$app->request->referrer);    
     }
 
     public function actionGetProductDiscount($customer_id) 
