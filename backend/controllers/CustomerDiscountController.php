@@ -6,6 +6,7 @@ use Yii;
 use backend\models\CustomerDiscount;
 use backend\models\CustomerDiscountSearch;
 use backend\models\OfferItemType;
+use backend\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -106,9 +107,12 @@ class CustomerDiscountController extends Controller
      */
     public function actionDelete($id)
     {
+
+       // echo '<pre>', var_dump($_SERVER);
+      //  exit;
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(empty(Yii::$app->request->referrer)?:Yii::$app->request->referrer);    
     }
 
     public function actionGetProductDiscount($customer_id) 
