@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 
 <div class="customer-form">
     <?php 
-        $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form', 'enctype' => 'multipart/form-data']]); 
+        $form = ActiveForm::begin(['options'=>['enableClientValidation' => true, 'enableAjaxValidation' => false, 'validateOnChange'=> false, 'id' => 'dynamic-form']]); 
         
         if ($_GET['r'] == 'customer/create') { // check if action is create ... so on update it wouldn't change the product group.
             $model->created_by = Yii::$app->user->id;
@@ -72,9 +72,6 @@ use yii\helpers\ArrayHelper;
                 <div class="col-sm-2"><?= $form->field($model, 'fax_no')->textInput(['maxlength' => true]) ?></div>
             </div>
         </div>
-    <div class="form-group">
-        <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>        
-    </div>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
