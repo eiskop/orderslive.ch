@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-6">
 
-                <h2>Kundeninformationen</h2>
+                <h2>Informationen</h2>
                 <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />                
                 <?= DetailView::widget([
                     'model' => $model,
@@ -206,6 +206,89 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ],
                 ]); ?>
+
+                <?php Pjax::end(); ?>
+
+                <h2>Dateien</h2>
+                <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />
+                <?php Pjax::begin(); ?>    <?= GridView::widget([
+                    'dataProvider' => $dataProvider3,
+                    'filterModel' => $searchModel3,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+
+                        [
+                            'attribute' => 'id',
+                            'value' => 'id',
+                            'contentOptions' => ['style' => 'width:20px; text-align: right;'],    
+                        ],
+                        [
+                            'attribute' => 'file_name',
+                            'value' => function ($model) {
+                                return $model->file_name.'.'.$model->file_extension;
+                            }
+                        ],
+              //          'file_path',
+                        //'file_name',
+                        //'file_extension',
+                        // 'file_type',
+                         'title',
+                         'description:ntext',
+                        // 'file_size',
+                        // 'valid_from',
+                        // 'valid_to',
+                        // 'created',
+                        // 'created_by',
+                        // 'changed',
+                        // 'changed_by',
+
+                       [  
+                            'class' => 'yii\grid\ActionColumn',
+                            'contentOptions' => ['style' => 'width:70px; text-align: center;'],
+                            'header'=>'',
+                            'template' => '{view} {update} {delete}',
+                            'buttons' => 
+                            [
+
+                                //view button
+                                'view' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                                'title' => Yii::t('app', 'View'),                              
+                                    ]);
+                                },
+                                'update' => function ($url, $model) {
+                                    if (Yii::$app->user->can('change-customerupload')) 
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                                    'title' => Yii::t('app', 'Update'),                              
+                                        ]);
+                                    }
+                                },
+                                'delete' => function ($url, $model) {
+                                    if (Yii::$app->user->can('delete-customerupload')) 
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                                    'title' => Yii::t('app', 'Delete'),
+                                                    'data-confirm' => 'Are you sure you want to delete this item?',
+                                                    'data-method' => 'post'
+                                        ]);
+                                    }
+                                },                                           
+                            ],
+                            'urlCreator' => function ($action, $model, $key, $index) {
+                                if ($action === 'view') {
+                                    return Url::to(['customer-upload/view', 'id'=>$model->id]);
+                                }
+                                if ($action === 'update') {
+                                    return Url::to(['customer-upload/update', 'id'=>$model->id]);
+                                }
+                                if ($action === 'delete') {
+                                    return Url::to(['customer-upload/delete', 'id'=>$model->id]);
+                                }                    
+                            }
+                        ],
+                    ],
+                ]); ?>
                 <?php Pjax::end(); ?>
 
             </div>
@@ -276,11 +359,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],            
 
 
-            [
+/*            [
                 'attribute'=>'customer_id',
                 'value'=>'customer.name',
                 'contentOptions' => ['style' => 'width:300px'],
             ],
+            */
             'customer_order_no',
             [
                 'attribute'=>'carpenter',
@@ -463,11 +547,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                 ]),
             ],
-            [
+/*            [
                 'attribute'=>'customer_id',
                 'value'=>'customer.name',
                 'contentOptions' => ['style' => 'width:300px'],
             ],
+*/            
             'customer_order_no',
             'confirmation_no',
             'offer_no',            
@@ -563,102 +648,4 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); 
     //end: orders ?>
     
-
-
-
-
-
-    <h2>Kundendateien</h2>
-    <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />
-    <?php Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider3,
-        'filterModel' => $searchModel3,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'attribute' => 'id',
-                'value' => 'id',
-                'contentOptions' => ['style' => 'width:20px; text-align: right;'],    
-            ],
-            
-
-            [
-                'attribute' => 'customer_id',
-                'value' => 'customer.name'
-            ],
-            [
-                'attribute' => 'file_name',
-                'value' => function ($model) {
-                    return $model->file_name.'.'.$model->file_extension;
-                }
-            ],
-  //          'file_path',
-            //'file_name',
-            //'file_extension',
-            // 'file_type',
-             'title',
-             'description:ntext',
-            // 'file_size',
-            // 'valid_from',
-            // 'valid_to',
-            // 'created',
-            // 'created_by',
-            // 'changed',
-            // 'changed_by',
-
-           [  
-                'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width:70px; text-align: center;'],
-                'header'=>'',
-                'template' => '{view} {update} {delete}',
-                'buttons' => 
-                [
-
-                    //view button
-                    'view' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                    'title' => Yii::t('app', 'View'),                              
-                        ]);
-                    },
-                    'update' => function ($url, $model) {
-                        if (Yii::$app->user->can('change-customerupload')) 
-                        {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                        'title' => Yii::t('app', 'Update'),                              
-                            ]);
-                        }
-                    },
-                    'delete' => function ($url, $model) {
-                        if (Yii::$app->user->can('delete-customerupload')) 
-                        {
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                        'title' => Yii::t('app', 'Delete'),
-                                        'data-confirm' => 'Are you sure you want to delete this item?',
-                                        'data-method' => 'post'
-                            ]);
-                        }
-                    },                                           
-                ],
-                'urlCreator' => function ($action, $model, $key, $index) {
-                    if ($action === 'view') {
-                        return Url::to(['customer-upload/view', 'id'=>$model->id]);
-                    }
-                    if ($action === 'update') {
-                        return Url::to(['customer-upload/update', 'id'=>$model->id]);
-                    }
-                    if ($action === 'delete') {
-                        return Url::to(['customer-upload/delete', 'id'=>$model->id]);
-                    }                    
-                }
-            ],
-        ],
-    ]); ?>
-<?php Pjax::end(); 
-
-
-?>
-
-
-
 </div>
