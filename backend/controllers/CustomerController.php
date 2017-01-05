@@ -136,7 +136,6 @@ class CustomerController extends Controller
                     $model->region = 'D-CH';   
                 }
             }
-            $model->upload($id);
             
             
             $model->save(false);
