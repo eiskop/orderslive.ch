@@ -53,6 +53,7 @@ class CustomerDiscountController extends Controller
      */
     public function actionView($id)
     {
+      //  echo '<pre>', var_dump($this->findModel($id));
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -70,6 +71,9 @@ class CustomerDiscountController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->created = date('Y-m-d H:i:s');
             $model->created_by = Yii::$app->user->id;
+        //                echo var_dump($model->valid_from);
+      //      echo var_dump(date('Y-m-d', strtotime($model->valid_from)));
+    //            exit;
             $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
             $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
@@ -95,6 +99,9 @@ class CustomerDiscountController extends Controller
             
             $model->updated = date('Y-m-d H:i:s');
             $model->updated_by = Yii::$app->user->id;
+  //          echo var_dump($model->valid_from);
+    //        echo var_dump(date('Y-m-d', strtotime($model->valid_from)));
+      //          exit;
             $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
             $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);

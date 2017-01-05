@@ -59,14 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'base_discount_perc',
             [
                 'attribute' => 'valid_from',
-                'value' => $model->valid_from,
-                'format' => 'date',
+                'value' => date('d.m.Y', strtotime($model->valid_from)),
             ],
-            [
-                'attribute' => 'created',
-                'value' => $model->created,
-                'format' => 'datetime',
-            ],            
+            'created:datetime',
             [
                 'attribute' => 'created_by',
                 'value' => $model->createdBy->first_name.' '.$model->createdBy->last_name,
