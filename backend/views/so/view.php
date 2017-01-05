@@ -42,10 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
             }
          ?>
     </p>
-
+    <div style="width: 70%">
     <?= DetailView::widget([
         'model' => $model,
-        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
+        'formatter' => [
+           'class' => 'yii\i18n\Formatter',
+           'dateFormat' => 'dd.MM.Y',
+           'datetimeFormat' => 'dd.MM.Y H:i:s',
+           'timeFormat' => 'H:i:s', 
+           'nullDisplay' => ''
+        ],        
         'attributes' => [
             'id',
             [
@@ -65,13 +71,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>$model->soStatus->name,
             ],              
             'value',
-            'order_received',
+            'order_received:date',
             'customer_priority_id',
             'days_to_process',
-            [
-                'attribute'=>'Termin für Erfassung',
-                'value'=>date('d.m.Y H:i:s', $model->deadline),
-            ],               
+            'deadline:date',
             'comments',
             [
                 'attribute'=>'created',
@@ -100,4 +103,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]) ?>
+    </div>
+    <style type ="text/css">
+        table.detail-view th {
+            width: 25%;
+    }
+
+    table.detail-view td {
+            width: 75%;
+    }
+    </style>
 </div>

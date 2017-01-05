@@ -84,13 +84,14 @@ class So extends \yii\db\ActiveRecord
             'status_id' => 'Status',
             'value' => 'Wert',
             'order_received' => 'Eingang',
-            'deadline' => 'Termin',
+            'deadline' => 'Termin für Erfasung',
             'comments' => 'Kommentar',
             'assigned_to' => 'Zugeteilt an',
             'created_by' => 'Ersteller',
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
             'updated' => 'Geändert am',
+            'days_to_process' => 'Tage zum bearbeiten',
         ];
     }
     
