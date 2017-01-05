@@ -80,6 +80,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <hr style="margin-top: -10px; padding-top: 0; margin-bottom: 5px; padding-bottom: 0;" />                
                 <?= DetailView::widget([
                     'model' => $model,
+                    'formatter' => [
+                       'class' => 'yii\i18n\Formatter',
+                       'dateFormat' => 'dd.MM.Y',
+                       'datetimeFormat' => 'dd.MM.Y H:i:s',
+                       'timeFormat' => 'H:i:s', 
+                    ],
                     'attributes' => [
                         'id',
                         'name',
@@ -96,18 +102,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'province',
                         'fax_no',
                         'tel_no',
-                        [
-                            'attribute'=>'created',
-                            'value'=>date('d.m.Y H:i:s', strtotime($model->created)),
-                        ], 
+                        'created:datetime',
                         [
                             'attribute'=>'created_by',
                             'value'=>$model->createdBy->username,
                         ],  
-                        [
-                            'attribute'=>'updated',
-                            'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
-                        ], 
+                        'updated:datetime',
                         [
                             'attribute'=>'updated_by',
                             'value'=>$model->updatedBy->username,

@@ -100,6 +100,8 @@ class CustomerController extends Controller
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->created = date('Y-m-d H:i:s');
+            $model->created_by = Yii::$app->user->id;            
             if ($model->zip_code != FALSE) {
                 if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
                     $model->region = 'W-CH';
@@ -128,6 +130,8 @@ class CustomerController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+            $model->updated = date('Y-m-d H:i:s');
+            $model->updated_by = Yii::$app->user->id;            
             if ($model->zip_code != FALSE) {
                 if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {
                     $model->region = 'W-CH';
