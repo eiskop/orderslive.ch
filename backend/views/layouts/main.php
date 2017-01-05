@@ -62,7 +62,20 @@ AppAsset::register($this);
         {
             $menuItems[] = [
                 'label' => 'Kunden', 
-                'url' => ['/customer/index']
+                'items' =>[
+                    [
+                        'label' => 'Kunden', 
+                        'url' => ['/customer/index'],
+                    ],
+                    [
+                        'label' => 'Konditionen', 
+                        'url' => ['/customer-discount/index'],
+                    ],
+                    [
+                        'label' => 'Dateien', 
+                        'url' => ['/customer-upload/index'],
+                    ],                    
+                ],
             ];
             //echo Html::a('Kunden', ['create'], ['class' => 'btn btn-success']);
         }  
