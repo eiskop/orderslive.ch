@@ -146,8 +146,15 @@ use wbraganca\dynamicform\DynamicFormWidget;
             <div class="col-md-12">
                 <?= $form->field($model, 'comments')->textArea(['rows' => '5']) ?>
             </div>
-        </div>        
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'uploadedFiles[]')->fileInput(['multiple' => true]) ?>
+            </div>
+        </div>                   
     </div>
+
+</div>
 
 <?php 
 /*Html::a('Your Link name','index.php?r=customer/index', [

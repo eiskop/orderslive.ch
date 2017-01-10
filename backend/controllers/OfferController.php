@@ -221,8 +221,56 @@ class OfferController extends Controller
 							$model->save(false);
 
 				            // upload files
+
+				            $model->uploadedFiles = UploadedFile::getInstances($model, 'uploadedFiles');
+				            if (!is_null($model->uploadedFiles)) {
+				            	
 //echo var_dump($model->uploadedFiles);
 //echo var_dump($model->errors);
+//exit;
+				            	$uploadDir = 'uploads/offer/'.$model->id;
+				            	if (!file_exists($uploadDir)) {
+				            		mkdir($uploadDir);
+				            	}
+				            	foreach ($model->uploadedFiles as $file) {
+				            		$modelUpload = new OfferUpload();
+
+					            	$pinfo = pathinfo($file);
+					            
+					            	$file_name = 'uploads/offer/'.$model->id.'/'.$file->name;
+			//		            	echo '<pre>', var_dump($pinfo);
+			//		            	exit;
+					            	while(file_exists($file_name)) {
+				             			$file_name = 'uploads/offer/'.$model->id.'/'.$pinfo['filename'].'_'.date('d-m-Y_H-i-s', time()).'.'.$pinfo['extension'];
+				             			//$file_name.'<br>';
+				             		}
+				             		//echo $file_name.'<br>';	
+				             		
+				             		$file->saveAs($file_name);	
+				             		$pinfo2 = pathinfo($file_name);
+									//Save file Data to DB
+									$modelUpload->offer_id = $model->id;
+					            	$modelUpload->file_path = $file_name;
+					            	$modelUpload->file_name = $pinfo2['basename'];
+					            	if ($modelUpload->title != TRUE)  {
+			                            $modelUpload->title = $pinfo['basename'];    
+			                        }
+					            	$modelUpload->file_extension = $pinfo['extension'];
+					            	$modelUpload->file_type = $file->type;
+					            	$modelUpload->file_size = $file->size;
+					            	$modelUpload->created = date('Y-m-d H:i:s');
+					            	$modelUpload->created_by = Yii::$app->user->id;
+					            	$modelUpload->save();
+
+					            	//END: Save file Data to DB
+				            	}
+				            }
+			             	
+				         //   if ($model->upload($model->id)) {
+				            	//upload successful
+				           // }
+			
+
 		            	
 							//END: upload files
 
