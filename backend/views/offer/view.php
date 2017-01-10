@@ -124,11 +124,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],          
             [
                 'attribute'=>'updated',
-                'value'=>date('d.m.Y H:i:s', strtotime($model->updated)),
+                'value'=> call_user_func (
+                    function ($data) {
+                        if ($data->updated != '0000-00-00 00:00:00') {
+                            return date('d.m.Y H:i:s', strtotime($data->updated));            
+                        }
+                        else {
+                            return '-';
+                        }
+                        
+                    //date('d.m.Y H:i:s', strtotime($model->updated)),    
+                    }
+                , $model),
+                
             ],
             [
                 'attribute'=>'updated_by',
-                'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
+                'value'=>($model->updatedBy->first_name.' '.$model->updatedBy->last_name),
             ],  
         ],
     ]) ?>
