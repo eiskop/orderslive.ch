@@ -38,7 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         
         ?>
-        <?= Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php 
+            if (Yii::$app->user->can('change-offer')) 
+            {
+                echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            }
+        
+        ?>        
         <?php 
             if (Yii::$app->user->can('delete-offer')) 
             {
