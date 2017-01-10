@@ -69,7 +69,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'followup_by_id',
                 'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
-            ],              
+            ],
+            [
+                'attribute'=>'assigned_to',
+                'value'=>($model->assignedTo->first_name.' '.$model->assignedTo->last_name),
+            ], 
             'confirmation_no',
             'offer_wir_id',
             [

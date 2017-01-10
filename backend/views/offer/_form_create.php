@@ -118,7 +118,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>             
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                <?= $form->field($model, 'carpenter')->textInput() ?>
             </div>
 
@@ -132,6 +132,16 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]) ?>
             </div>
             <div class="col-md-2">
+                <?= $form->field($model, 'assigned_to')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
+                    'prompt'=>'Select ',
+                    'onchange'=>'
+                    $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
+                        $("select#user-id").html(data);
+                    });'
+
+                ]) ?>
+            </div> 
+            <div class="col-md-2">
                 <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
                     'prompt'=>'Select ',
                     'onchange'=>'
@@ -140,8 +150,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                     });'
 
                 ]) ?>
-            </div>            
-        </div>    
+            </div> 
         <div class="row">
             <div class="col-md-12">
                 <?= $form->field($model, 'comments')->textArea(['rows' => '5']) ?>

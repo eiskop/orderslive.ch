@@ -32,6 +32,7 @@ use yii\web\UploadedFile;
  * @property integer $days_to_process
  * @property integer $deadline
  * @property string $comments
+ * @property integer $assigned_to 
  * @property integer $created_by
  * @property string $created
  * @property integer $updated_by
@@ -73,7 +74,7 @@ class Offer extends \yii\db\ActiveRecord
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
             [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no', 'qty'], 'integer'],
             [['value'], 'number'],
-            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles'], 'safe'],
+            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles', 'assigned_to'], 'safe'],
             [['comments'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
@@ -119,6 +120,7 @@ class Offer extends \yii\db\ActiveRecord
             'days_to_process' => 'Max Bearbeitungszeit',
             'deadline' => 'Termin',
             'comments' => 'Kommentar',
+            'assigned_to' => 'Zugeteilt an',            
             'created_by' => 'Ersteller',
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
@@ -148,6 +150,14 @@ class Offer extends \yii\db\ActiveRecord
     public function getFollowupBy()
     {
         return $this->hasOne(User::className(), ['id' => 'followup_by_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAssignedTo()
+    {
+        return $this->hasOne(User::className(), ['id' => 'assigned_to']);
     }
 
     /**
