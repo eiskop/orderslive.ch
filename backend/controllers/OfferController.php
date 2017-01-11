@@ -131,7 +131,9 @@ class OfferController extends Controller
 			    if ($model->followup_by_id != true) {
 					$model->followup_by_id = 0;
 			    }
-
+			    if ($model->assigned_to_id != true) {
+					$model->assigned_to_id = 0;
+			    }
 				$modelsOfferItem = Model::createMultiple(OfferItem::classname());
 				Model::loadMultiple($modelsOfferItem, Yii::$app->request->post());
 
