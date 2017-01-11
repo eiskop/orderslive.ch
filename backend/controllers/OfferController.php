@@ -128,10 +128,10 @@ class OfferController extends Controller
 			    if ($model->carpenter == NULL) {
 					$model->carpenter = 0;
 			    }	
-			    if ($model->followup_by_id != true) {
+			    if ($model->followup_by_id == NULL) {
 					$model->followup_by_id = 0;
 			    }
-			    if ($model->assigned_to_id != true) {
+			    if ($model->assigned_to_id == NULL) {
 					$model->assigned_to_id = 0;
 			    }
 				$modelsOfferItem = Model::createMultiple(OfferItem::classname());
