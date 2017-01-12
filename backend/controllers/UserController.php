@@ -84,7 +84,13 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $old_pass = $model->password_hash;
+        if ($model->load(Yii::$app->request->post())) {
+            if ($old_pass != $model->password_hash) {
+                $model->password_hash = Yii::$app->security->generatePasswordHash($model->password_hash);
+            }
+            
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
