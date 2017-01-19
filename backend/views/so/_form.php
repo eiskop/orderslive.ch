@@ -63,7 +63,7 @@ use kartik\typeahead\Typeahead;
     <table class="table" style="width: 50%"> 
         <tr>
             <td colspan="3">
-                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
+                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->orderBy(['name'=>SORT_ASC])->all(), 'id', 'nameAndStreet', 'name'), [
                     'prompt'=>'Kunde auswählen',
                     'options' => [$model->customer_id => ['Selected'=>true]],
                     'onchange'=>'

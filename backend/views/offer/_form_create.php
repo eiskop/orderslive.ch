@@ -63,7 +63,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>          
             <div class="col-md-2">
                 <?= $form->field($model, 'processed_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
-                    'prompt'=>'Select ',
+                    'prompt'=>'Wählen ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
                         $("select#user-id").html(data);
@@ -72,8 +72,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]) ?>
             </div>
             <div class="col-md-6">
-                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
-                    'prompt'=>'Select Customer',
+                <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->orderBy(['name'=>SORT_ASC])->all(), 'id', 'nameAndStreet', 'name'), [
+                    'prompt'=>'Kunde wählen',
                     'options'=> [
                         $model->customer_id => ['Selected'=>true],
                     ],
@@ -105,7 +105,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
         <div class="row">
             <div class="col-md-4 hidden">
                 <?= $form->field($model, 'product_group_id')->dropDownList(ArrayHelper::map(ProductGroup::find()->all(), 'id', 'name'), [
-                    'prompt'=>'Select ',
+                    'prompt'=>'Wählen ',
                     'onchange'=>'
                     $.post("index.php?r=product-group/index&id='.'"+$(this).val(), function (data) {
                         $("select#product-group-id").html(data);
@@ -133,7 +133,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div>
             <div class="col-md-2">
                 <?= $form->field($model, 'assigned_to')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
-                    'prompt'=>'Select ',
+                    'prompt'=>'Wählen ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
                         $("select#user-id").html(data);
@@ -143,7 +143,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             </div> 
             <div class="col-md-2">
                 <?= $form->field($model, 'followup_by_id')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
-                    'prompt'=>'Select ',
+                    'prompt'=>'Wählen ',
                     'onchange'=>'
                     $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
                         $("select#user-id").html(data);

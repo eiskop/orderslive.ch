@@ -19,7 +19,7 @@ use kartik\datecontrol\Module;
 
     ?>
 
-    <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1, 'id'=>$model->customer_id])->all(), 'id', 'nameAndStreet', 'name'), ['readonly'=>true]) ?>
+    <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1, 'id'=>$model->customer_id])->orderBy(['customer.name'=>SORT_ASC])->all(), 'id', 'nameAndStreet', 'name'), ['readonly'=>true]) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

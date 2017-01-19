@@ -39,7 +39,7 @@ class CustomerDiscountController extends Controller
     {
         $searchModel = new CustomerDiscountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->query->orderBy(['customer.name'=>SORT_ASC])->all();   
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

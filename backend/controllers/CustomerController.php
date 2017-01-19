@@ -45,6 +45,7 @@ class CustomerController extends Controller
     {
         $searchModel = new CustomerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->orderBy(['customer.name'=>SORT_ASC])->all();   
         if (Yii::$app->user->can('delete-customer')) {
             $dataProvider->query->andWhere('customer.active > -1');
         }
@@ -100,7 +101,7 @@ class CustomerController extends Controller
         $model = new Customer();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->created = date('Y-m-d H:i:s');
+            $model->created = time();
             $model->created_by = Yii::$app->user->id;            
             if ($model->zip_code != FALSE) {
                 if ($model->zip_code[0] == 1 OR $model->zip_code[0] == 2) {

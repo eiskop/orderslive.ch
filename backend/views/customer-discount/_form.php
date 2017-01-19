@@ -28,7 +28,7 @@ use backend\models\OfferItemType;
         }  
     ?>
 
-    <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->all(), 'id', 'nameAndStreet', 'name'), [
+    <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map(Customer::find()->where(['active'=>1])->orderBy(['customer.name'=>SORT_ASC])->all(), 'id', 'nameAndStreet', 'name'), [
         'prompt'=>'Kunde auswählen',
         'options' => [$model->customer_id => ['Selected'=>true]],
         'onchange'=>'
