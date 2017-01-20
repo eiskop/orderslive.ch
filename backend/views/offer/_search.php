@@ -15,21 +15,21 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php //echo   $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'offer_wir_id') ?>
+    <?php //echo   $form->field($model, 'offer_wir_id') ?>
 
-    <?= $form->field($model, 'processed_by_id') ?>
+    <?php //echo   $form->field($model, 'processed_by_id') ?>
 
-    <?= $form->field($model, 'followup_by_id') ?>
+    <?php //echo   $form->field($model, 'followup_by_id') ?>
 
-    <?= $form->field($model, 'product_group_id') ?>
+    <?php //echo   $form->field($model, 'product_group_id') ?>
 
-    <?= $form->field($model, 'customer.name') ?>
+    <?php //echo   $form->field($model, 'customer.name') ?>
 
     <?php // echo $form->field($model, 'customer_contact') ?>
 
-    <?= $form->field($model, 'customer.name') ?>
+    <?php //echo   // $form->field($model, 'customer.name') ?>
 
     <?php // echo $form->field($model, 'customer_order_no') ?>
 
@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'prio1') ?>
 
-    <?= $form->field($model, 'status.name') ?>
+    <?php //echo   $form->field($model, 'status.name') ?>
 
     <?php // echo $form->field($model, 'value') ?>
 
@@ -62,8 +62,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?php //echo   Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php //echo   Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

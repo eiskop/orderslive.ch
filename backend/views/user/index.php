@@ -45,7 +45,7 @@ $dataProvider->pagination->pageSize = 0;
             'last_name',
             'username',
             [
-                'attribute' => 'offer_assigned_to_no',
+                'attribute' => 'offers_taken_no',
                 'label' => 'Offerten<br>geholt',
                 'encodeLabel' => false,
                 'value'=> 'offerFinishedCount',
@@ -56,7 +56,7 @@ $dataProvider->pagination->pageSize = 0;
                 'contentOptions' => ['style' => 'width:50px; text-align: right; '],
             ],
             [
-                'attribute' => 'offer_updated_by_no',
+                'attribute' => 'offers_in_progress_no',
                 'label' => 'Offerten im<br>Bearbeitung',
                 'encodeLabel' => false,
                 'value'=> function ($data) {
@@ -66,18 +66,19 @@ $dataProvider->pagination->pageSize = 0;
                 'contentOptions' => ['style' => 'width:50px; text-align: right; '],
             ],
             [
-                'attribute' => 'offer_updated_by_no',
+                'attribute' => 'offers_created_no',
                 'label' => 'Offerten <br>erstellt',
                 'encodeLabel' => false,
                 'value'=> function ($data) {
                     return Html::a($data->offersCreatedCount, ['offer/index', 'OfferSearch[created_by]' => $data->id, 'OfferSearch[status_id]' => [1, 2, 3, 5, 6, 7]], ['data-pjax' => '0']);
                 },
+                'value'=> 'offersCreatedCount',
                 'format' => 'raw',                 
                 'contentOptions' => ['style' => 'width:50px; text-align: right; '],
             ],              
             [
-                'attribute' => 'so_assigned_to_no',
-                'label' => 'Auftrag<br>geholt',
+                'attribute' => 'so_complete_no',
+                'label' => 'Auftrag<br>erledigt',
                 'encodeLabel' => false,
                 'value'=> function ($data) {
                     return Html::a($data->soFinishedCount, ['so/index', 'SoSearch[assigned_to]' => $data->id, 'SoSearch[status_id]' => 3], ['data-pjax' => '0']);
@@ -86,7 +87,7 @@ $dataProvider->pagination->pageSize = 0;
                 'contentOptions' => ['style' => 'width:50px; text-align: right; '],
             ],
             [
-                'attribute' => 'so_updated_by_no',
+                'attribute' => 'so_in_progress_no',
                 'label' => 'Aufträge im<br>Bearbeitung',
                 'encodeLabel' => false,
 
@@ -97,7 +98,7 @@ $dataProvider->pagination->pageSize = 0;
                 'contentOptions' => ['style' => 'width:50px; text-align: right; '],
             ],     
             [
-                'attribute' => 'so_updated_by_no',
+                'attribute' => 'so_created_no',
                 'label' => 'Aufträge<br>erstellt',
                 'encodeLabel' => false,
 
