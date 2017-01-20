@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use backend\models\So;
 use backend\models\SoStatus;
 
+
 /**
  * SoSearch represents the model behind the search form about `backend\models\So`.
  */
@@ -80,10 +81,10 @@ class SoSearch extends So
         $query->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'so.confirmation_no', $this->confirmation_no])
             ->andFilterWhere(['like', 'so.surface', $this->surface])
-            ->andFilterWhere(['like', 'so.status_id', $this->status_id])
+            ->andFilterWhere(['so.status_id' => $this->status_id])
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
-            ->andFilterWhere(['like', 'customer.name', $this->customer_id])
+            ->andFilterWhere(['like', 'customer.id', $this->customer_id])
             ->andFilterWhere(['like', 'so.created_by', $this->created_by])
             ->andFilterWhere(['like', 'so.assigned_to', $this->assigned_to]);
 
