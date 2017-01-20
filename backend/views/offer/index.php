@@ -128,6 +128,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
             [
+                'attribute'=>'assigned_to',
+                'value'=>'assignedTo.last_name',
+                'filter'=>Html::activeDropDownList($searchModel, 'assigned_to', ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->asArray()->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), ['class'=>'', 'prompt' => 'Alle']),                
+            ],              
+            [
                 'attribute'=>'followup_by_id',
                 'value'=>'followupBy.last_name',
                 'filter'=>Html::activeDropDownList($searchModel, 'followup_by_id', ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->asArray()->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), ['class'=>'', 'prompt' => 'Alle']),                
