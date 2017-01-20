@@ -79,6 +79,14 @@ AppAsset::register($this);
             ];
             //echo Html::a('Kunden', ['create'], ['class' => 'btn btn-success']);
         }  
+        if (Yii::$app->user->can('view-user')) 
+        {
+            $menuItems[] = [
+                'label' => 'Benutzer', 
+                'url' => ['/user/index']
+            ];
+            //echo Html::a('Kunden', ['create'], ['class' => 'btn btn-success']);
+        } 
         if (Yii::$app->user->can('reports')) 
         {
             $menuItems[] = [
