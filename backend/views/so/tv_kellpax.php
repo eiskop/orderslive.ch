@@ -120,79 +120,79 @@ $db = new yii\db\Connection([
 ]);
 date_default_timezone_set('Europe/Zurich');
 
-$posts = $db->createCommand('SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 1 as ordering FROM so 
+$posts = $db->createCommand('SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 1 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 1 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1
 								UNION 
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 2 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 2 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1
 								UNION 
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 3 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 3 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 4 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 4 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 5 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 5 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1					
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 6 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 6 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1					
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as updated_by, deadline, prio1, 7 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 7 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
 								product_group_id = product_group.id
 								LEFT JOIN user ON 
-								so.updated_by = user.id
+								so.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty <= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 1					
@@ -313,8 +313,8 @@ $rows = $provider->getModels();
             
             // 'value',
            	[
-		    	'header' => 'Mod.',
-	            'attribute' => 'updated_by',
+		    	'header' => 'Zug.',
+	            'attribute' => 'assigned_to',
 	            'contentOptions' => ['style' => 'width:50px'],
 			],   
             [
