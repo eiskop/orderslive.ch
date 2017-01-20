@@ -47,6 +47,7 @@ class UserSearch extends User
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+             'sort' => ['defaultOrder'=>['first_name'=>SORT_ASC, 'last_name'=>SORT_ASC]],
         ]);
 
         $this->load($params);
@@ -60,18 +61,16 @@ class UserSearch extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'product_group_id' => $this->product_group_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'status' => $this->status,
+//            'product_group_id' => $this->product_group_id,
+  //          'created_at' => $this->created_at,
+    //        'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'first_name', $this->first_name])
             ->andFilterWhere(['like', 'last_name', $this->last_name])
             ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
+       
             ->andFilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;

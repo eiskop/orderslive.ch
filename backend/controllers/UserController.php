@@ -37,7 +37,10 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->query
+            ->where(['not like', 'id', '0'])
+            ->andWhere(['not like', 'id', '0'])
+            ->all(); 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

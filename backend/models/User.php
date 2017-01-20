@@ -148,6 +148,7 @@ class User extends \yii\db\ActiveRecord
         return $this->hasMany(Offer::className(), ['updated_by' => 'id']);
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -170,6 +171,13 @@ class User extends \yii\db\ActiveRecord
     public function getOffers2()
     {
         return $this->hasMany(Offer::className(), ['created_by' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffersCreatedCount()
+    {
+        return $this->hasMany(Offer::className(), ['created_by' => 'id'])->count();
     }
 
     /**
@@ -227,6 +235,13 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(So::className(), ['created_by' => 'id']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSosCreatedCount()
+    {
+        return $this->hasMany(So::className(), ['created_by' => 'id'])->count();
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -259,4 +274,87 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ProductGroup::className(), ['id' => 'product_group_id']);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOfferFinishedCount() // 
+    {
+        //TopicTag::find()->where(['tag_id' => $this->id])->count();
+        $count = (new \yii\db\Query())
+        ->select('count(*)')
+        ->from('offer')
+        ->where(['assigned_to' => $this->id])->andWhere(['status_id' => 3])
+        ->scalar();
+       return $count;
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOfferInProgressCount() // 
+    {
+        //TopicTag::find()->where(['tag_id' => $this->id])->count();
+        $count = (new \yii\db\Query())
+        ->select('count(*)')
+        ->from('offer')
+        ->where(['assigned_to' => $this->id])
+        ->andWhere(['or', 
+            [
+                'status_id'=> [1, 2, 6, 7],
+            ]
+        ])          
+        ->scalar();
+       return $count;
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoFinishedCount() // 
+    {
+        //TopicTag::find()->where(['tag_id' => $this->id])->count();
+        $count = (new \yii\db\Query())
+        ->select('count(*)')
+        ->from('so')
+        ->where(['assigned_to' => $this->id])->andWhere(['status_id' => 3])
+        ->scalar();
+       return $count;
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoInProgressCount() // 
+    {
+        //TopicTag::find()->where(['tag_id' => $this->id])->count();
+        $count = (new \yii\db\Query())
+        ->select('count(*)')
+        ->from('so')
+        ->where(['assigned_to' => $this->id])
+        ->andWhere(['or', 
+            [
+                'status_id'=> [1, 2],
+            ]
+        ])           
+        ->scalar();
+       return $count;
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoCreatedCount() // 
+    {
+        //TopicTag::find()->where(['tag_id' => $this->id])->count();
+        $count = (new \yii\db\Query())
+        ->select('count(*)')
+        ->from('so')
+        ->where(['created_by' => $this->id])
+        ->andWhere(['or', 
+            [
+                'status_id'=> [1, 2, 3],
+            ]
+        ])
+        ->scalar();
+       return $count;
+    }
+
+
 }
