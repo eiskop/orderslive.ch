@@ -355,6 +355,4 @@ class User extends \yii\db\ActiveRecord
         ->scalar();
        return $count;
     }
-
-
 }
