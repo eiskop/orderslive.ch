@@ -284,7 +284,9 @@ class User extends \yii\db\ActiveRecord
         $count = (new \yii\db\Query())
         ->select('count(*)')
         ->from('offer')
-        ->where(['assigned_to' => $this->id])->andWhere(['status_id' => 3])
+        ->where(['assigned_to' => $this->id])
+        ->andWhere(['status_id' => 3])
+        ->andWhere(['YEAR(created)' => date('Y')])
         ->scalar();
        return $count;
     }
@@ -302,7 +304,8 @@ class User extends \yii\db\ActiveRecord
             [
                 'status_id'=> [1, 2, 6, 7],
             ]
-        ])          
+        ])
+        ->andWhere(['YEAR(created)' => date('Y')])
         ->scalar();
        return $count;
     }
@@ -315,7 +318,9 @@ class User extends \yii\db\ActiveRecord
         $count = (new \yii\db\Query())
         ->select('count(*)')
         ->from('so')
-        ->where(['assigned_to' => $this->id])->andWhere(['status_id' => 3])
+        ->where(['assigned_to' => $this->id])
+        ->andWhere(['status_id' => 3])
+        ->andWhere(['YEAR(created)' => date('Y')])
         ->scalar();
        return $count;
     }
@@ -333,7 +338,8 @@ class User extends \yii\db\ActiveRecord
             [
                 'status_id'=> [1, 2],
             ]
-        ])           
+        ])         
+        ->andWhere(['YEAR(created)' => date('Y')])  
         ->scalar();
        return $count;
     }
@@ -352,6 +358,7 @@ class User extends \yii\db\ActiveRecord
                 'status_id'=> [1, 2, 3],
             ]
         ])
+        ->andWhere(['YEAR(created)' => date('Y')])
         ->scalar();
        return $count;
     }

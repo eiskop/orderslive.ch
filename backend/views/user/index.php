@@ -25,8 +25,9 @@ $dataProvider->pagination->pageSize = 0;
     <?php
 
         if(Yii::$app->user->identity->username == 'tae') {
-            echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']);
+            echo Html::a('Create User', ['create'], ['class' => 'btn btn-primary']).' ';
         }  
+        echo Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']);       
     ?>
     
 
