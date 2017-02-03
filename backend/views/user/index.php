@@ -49,7 +49,6 @@ $dataProvider->pagination->pageSize = 0;
                 'attribute' => 'offers_taken_no',
                 'label' => 'Offerten<br>geholt',
                 'encodeLabel' => false,
-                'value'=> 'offerFinishedCount',
                 'value'=> function ($data) {
                     return Html::a($data->offerFinishedCount, ['offer/index', 'OfferSearch[assigned_to]' => $data->id, 'OfferSearch[status_id]' => [3]], ['data-pjax' => '0']);
                 },
