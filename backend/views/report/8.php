@@ -95,7 +95,7 @@ echo '<h2>Dauer vom Erhalten bis Offerte</h2>';
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on offer.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
 // Weekly per product group
 //SELECT week(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on offer.product_group_id = product_group.id WHERE status_id=3 and product_group_id = 2 Group by product_group_id, WEEK(updated) ORDER BY datum, name
-$res = $db->createCommand('SELECT offer.id, offer_no, processed_by_id, customer.name, customer_contact, carpenter, customer_order_no, confirmation_no, qty, value, value_net, offer.customer_priority_id, comments, user_assigned_to.last_name as assigned_to, offer.created, user_created_by.last_name as created_by,  offer_received, offer.updated, offer_status.name as status_name, FORMAT((UNIX_TIMESTAMP(offer.updated)-UNIX_TIMESTAMP(offer.offer_received))/60/60/24, 1) as duration  FROM `offer` 
+$res = $db->createCommand('SELECT offer.id, offer_no, processed_by_id, customer.name as customer_name, customer_contact, carpenter, customer_order_no, confirmation_no, qty, value, value_net, offer.customer_priority_id, comments, user_assigned_to.last_name as assigned_to, offer.created, user_created_by.last_name as created_by,  offer_received, offer.updated, offer_status.name as status_name, CAST(((UNIX_TIMESTAMP(offer.updated)-UNIX_TIMESTAMP(offer.offer_received))/60/60/24) as Decimal(5, 1)) as duration  FROM `offer` 
     left join product_group on offer.product_group_id = product_group.id 
     left join customer on offer.customer_id = customer.id 
     left join offer_status on offer.status_id = offer_status.id 
@@ -159,16 +159,13 @@ $daten = array();
                 'contentOptions' => ['style' => 'width:10px'],
             ],
             [
-                'header' => 'Produkt',
-                'attribute' => 'product_group_name',
-            ],            
-            [
                 'header' => 'Prio',
                 'attribute' => 'customer_priority_id',
             ],
             [
                 'header' => 'Kunde',
                 'attribute' => 'customer_name',
+                'value' => 'customer_name',                
             ],
             [
                 'header' => 'Komission',
