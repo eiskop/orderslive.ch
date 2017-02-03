@@ -95,12 +95,13 @@ echo '<h2>Dauer vom Erhalten bis Offerte</h2>';
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on offer.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
 // Weekly per product group
 //SELECT week(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on offer.product_group_id = product_group.id WHERE status_id=3 and product_group_id = 2 Group by product_group_id, WEEK(updated) ORDER BY datum, name
-$res = $db->createCommand('SELECT offer.id, offer_no, processed_by_id, customer.name as customer_name, customer_contact, carpenter, customer_order_no, confirmation_no, qty, value, value_net, offer.customer_priority_id, comments, user_assigned_to.last_name as assigned_to, offer.created, user_created_by.last_name as created_by,  offer_received, offer.updated, offer_status.name as status_name, CAST(((UNIX_TIMESTAMP(offer.updated)-UNIX_TIMESTAMP(offer.offer_received))/60/60/24) as Decimal(5, 1)) as duration  FROM `offer` 
+$res = $db->createCommand('SELECT offer.id, offer_no, processed_by_id, customer.name as customer_name, customer_contact, carpenter, customer_order_no, confirmation_no, qty, value, format(value_net, 2) as value_net, offer.customer_priority_id, comments, user_assigned_to.last_name as assigned_to, offer.created, user_created_by.last_name as created_by, user_updated_by.last_name as updated_by, offer_received, offer.updated, offer_status.name as status_name, CAST(((UNIX_TIMESTAMP(offer.updated)-UNIX_TIMESTAMP(offer.offer_received))/60/60/24) as Decimal(5, 1)) as duration  FROM `offer` 
     left join product_group on offer.product_group_id = product_group.id 
     left join customer on offer.customer_id = customer.id 
     left join offer_status on offer.status_id = offer_status.id 
     left join user as user_assigned_to on offer.assigned_to = user_assigned_to.id 
     left join user as user_created_by on offer.created_by = user_created_by.id 
+    left join user as user_updated_by on offer.updated_by = user_updated_by.id 
 
 WHERE status_id = 7
 ORDER BY duration DESC')->queryAll();
@@ -171,7 +172,6 @@ $daten = array();
                 'header' => 'Komission',
                 'attribute' => 'customer_order_no',
             ],
-
             [
                 'header'=>'Stk.',
                 'attribute'=>'qty',
@@ -179,15 +179,15 @@ $daten = array();
                 'contentOptions' => ['style' => 'text-align: right;'],
             ],
             [
-                'header'=>'Ersteller',
-                'attribute'=>'created_by',
-                'value'=>'created_by'
-            ],     
+                'header' => 'Wert Neto',
+                'attribute' => 'value_net',
+                'contentOptions' => ['style' => 'text-align: right;'],                
+            ],            
             [
                 'header'=>'Zugestellt an',
                 'attribute'=>'assigned_to',
                 'value'=>'assigned_to'
-            ],            
+            ],               
             [
                 'header'=>'Status.',
                 'attribute'=>'status_name',
@@ -200,11 +200,20 @@ $daten = array();
 	            'contentOptions' => ['style' => 'width:100px'],
 			],
             [
+                'header'=>'Ersteller',
+                'attribute'=>'created_by',
+                'value'=>'created_by'
+            ],
+            [
                 'header' => 'Geändert',
                 'attribute' => 'updated',
                 'format' => ['date', 'php:d.m.Y H:i:s'],
                 'contentOptions' => ['style' => 'width:100px'],
             ],			
+            [
+                'header'=>'Geändert von',
+                'attribute'=>'updated_by',
+            ],             
 			[
                 'header' => 'Dauer (Tage)',
                 'attribute' => 'duration',
