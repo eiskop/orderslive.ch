@@ -65,8 +65,13 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
             return $this->redirect(['view', 'id' => $model->id]);
+            $model->password_hash = Yii::$app->security->generatePasswordHash($model->password_hash);
+            //echo var_dump($model->password_hash);
+            //exit;
+            $model->save();
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -89,6 +94,7 @@ class UserController extends Controller
             if ($old_pass != $model->password_hash) {
                 $model->password_hash = Yii::$app->security->generatePasswordHash($model->password_hash);
             }
+
             
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
