@@ -214,5 +214,12 @@ class Offer extends \yii\db\ActiveRecord
        return $this->hasMany(OfferUpload::className(), ['offer_id' => 'id']);
    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusCount($id)
+    {
+        return $this->hasMany(Offer::className(), ['status_id' => $id])->count();
+    }
 
 }
