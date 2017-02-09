@@ -87,18 +87,26 @@ $db = new yii\db\Connection([
     'charset' => 'utf8',
 ]);
 date_default_timezone_set('Europe/Zurich');
-echo '<h2>Augträge erfasst pro Tag</h2>';
+echo '<h2>Augträge erfasst pro Tag (2 Monate)</h2>';
 //
 // aufträge, stk pro tag
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
 // Weekly per product group
 //SELECT week(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 and product_group_id = 2 Group by product_group_id, WEEK(updated) ORDER BY datum, name
-$res = $db->createCommand('SELECT * FROM (SELECT UNIX_TIMESTAMP(order_received) as datum_uts, order_received as datum, WEEK(order_received, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_in, count(*) as orders_in, concat(order_received, product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id != 0 and status_id != 4 Group by product_group_id, order_received ORDER BY datum, name) t1 
+$res = $db->createCommand('SELECT * FROM (SELECT UNIX_TIMESTAMP(order_received) as datum_uts, order_received as datum, WEEK(order_received, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_in, count(*) as orders_in, concat(order_received, product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id != 0 and status_id != 4  AND DATE(so.updated) > DATE(CURDATE() - INTERVAL 2 MONTH) Group by product_group_id, order_received ORDER BY datum, name) t1 
 INNER JOIN
-(SELECT UNIX_TIMESTAMP(updated) as datum_uts, date(updated) as datum, WEEK(updated, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_processed, count(*) as orders_processed, concat(date(so.updated), product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name) t2
+(SELECT UNIX_TIMESTAMP(updated) as datum_uts, date(updated) as datum, WEEK(updated, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_processed, count(*) as orders_processed, concat(date(so.updated), product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 AND DATE(so.updated) > DATE(CURDATE() - INTERVAL 2 MONTH)  Group by product_group_id, Date(updated) ORDER BY datum, name) t2
+ON t1.link = t2.link
+ORDER BY t1.link ASC' )
+            ->queryAll();
+$res_table = $db->createCommand('SELECT * FROM (SELECT UNIX_TIMESTAMP(order_received) as datum_uts, order_received as datum, WEEK(order_received, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_in, count(*) as orders_in, concat(order_received, product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id != 0 and status_id != 4 AND DATE(so.updated) > DATE(CURDATE() - INTERVAL 2 MONTH) Group by product_group_id, order_received ORDER BY datum, name) t1 
+INNER JOIN
+(SELECT UNIX_TIMESTAMP(updated) as datum_uts, date(updated) as datum, WEEK(updated, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_processed, count(*) as orders_processed, concat(date(so.updated), product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 AND DATE(so.updated) > DATE(CURDATE() - INTERVAL 2 MONTH) Group by product_group_id, Date(updated) ORDER BY datum, name) t2
 ON t1.link = t2.link
 ORDER BY t1.link DESC' )
             ->queryAll();
+
+
 
           // echo var_dump($res);
           // exit;
@@ -108,12 +116,18 @@ ORDER BY t1.link DESC' )
 $provider = new ArrayDataProvider([
     'allModels' => $res,
     'pagination' => [
-        'pageSize' => 1000000,
+        'pageSize' => 0,
     ],
     'sort' => [
         'attributes' => ['datum', 'product_group_name'],
     ],
 
+]);
+$provider_table = new ArrayDataProvider([
+    'allModels' => $res_table,
+    'pagination' => [
+        'pageSize' => 0,
+    ],
 ]);
 
 
@@ -212,7 +226,7 @@ echo
     <?= GridView::widget([
     	'summary'=>'', 
     	'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
-        'dataProvider' => $provider,
+        'dataProvider' => $provider_table,
         'rowOptions' => 
 
             function ($model) {
@@ -237,12 +251,6 @@ echo
         ,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-		    [
-		    	'header' => 'Woche',
-	            'attribute' => 'woche',
-	            'contentOptions' => ['style' => 'width:50px; text-align: right;'],
-			],
 		    [
 		    	'header' => 'Datum',
 	            'attribute' => 'datum',
