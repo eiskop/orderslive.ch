@@ -97,7 +97,7 @@ $res = $db->createCommand('SELECT * FROM (SELECT UNIX_TIMESTAMP(order_received) 
 INNER JOIN
 (SELECT UNIX_TIMESTAMP(updated) as datum_uts, date(updated) as datum, WEEK(updated, 3) as woche, product_group.name as product_group_name, Sum(qty) as qty_processed, count(*) as orders_processed, concat(date(so.updated), product_group.name ) as link FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name) t2
 ON t1.link = t2.link
-ORDER BY t1.link ASC' )
+ORDER BY t1.link DESC' )
             ->queryAll();
 
           // echo var_dump($res);
