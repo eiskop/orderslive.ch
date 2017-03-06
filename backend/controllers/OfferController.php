@@ -328,9 +328,13 @@ class OfferController extends Controller
 
 			$modelChange->load(Yii::$app->request->post());
 
-			//lock Offer for editing
-			Offer::updateAll(['locked_by' => Yii::$app->user->id, 'locked'=>date(time())], ['id'=>$model->id]);
-
+			if (((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id)) OR Yii::$app->user->can('admin'))  {
+				//lock Offer for editing
+				Offer::updateAll(['locked_by' => Yii::$app->user->id, 'locked'=>date(time())], ['id'=>$model->id]);
+			}
+			else {
+				return $this->redirect(['index']);
+			}
 
 
 

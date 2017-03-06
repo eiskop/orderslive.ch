@@ -39,12 +39,18 @@ $this->params['breadcrumbs'][] = $this->title;
         
         ?>
         <?php 
-            if ((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR Yii::$app->user->can('admin'))  
+            if (((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id)) OR Yii::$app->user->can('admin'))              
             {
-                echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                if (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id) {
+                    echo Html::a('Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                }
+                else {
+                    echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);    
+                }
+                
             }
             else {
-                echo '<button class="btn btn-primary">Ändern <span class="glyphicon glyphicon-lock"></span></button>';   
+                echo '<button class="btn btn-primary">Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span></button>';   
             }
         
         ?>        

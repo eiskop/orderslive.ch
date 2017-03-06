@@ -187,15 +187,28 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        if ((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR Yii::$app->user->can('admin'))  
-                        {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                        if (Yii::$app->user->can('change-offer')) {
+                            if ($model->locked_by == 0) { //not locked
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('app', 'Update'),                              
+                                ]);
+                        
+                            }
+                            else { // is locked
+                                if ($model->locked_by == Yii::$app->user->id OR Yii::$app->user->can('admin')) {
+                                    return Html::a('<span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span>', $url, [
                                         'title' => Yii::t('app', 'Update'),                              
-                            ]);
-                        }
-                        else {
-                            return '<span class="glyphicon glyphicon-lock"></span>';
-                        }
+                                    ]);
+                                }
+                                else {
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => Yii::t('app', 'Update'),                              
+                                    ]);
+                                }
+                            }
+
+                          //AND $model->locked_by == 0) (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id)) OR Yii::$app->user->can('admin'))    
+                        } 
                     },
                     'delete' => function ($url, $model) {
                         if (Yii::$app->user->can('delete-offer')) 
