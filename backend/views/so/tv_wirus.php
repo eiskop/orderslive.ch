@@ -323,7 +323,7 @@ $rows = $provider->getModels();
 		    	'header' => 'Status',
 	            'attribute' => 'status_name',
 	            'value' => 'status_name',
-	            'contentOptions' => ['style' => 'width:50px'],
+	            'contentOptions' => ['style' => 'width:70px;white-space: nowrap;'],
 			],   
 //        	[
 //		    	'header' => 'Kommentar',
