@@ -39,9 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
         
         ?>
         <?php 
-            if (Yii::$app->user->can('change-offer')) 
+            if ((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR Yii::$app->user->can('admin'))  
             {
                 echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            }
+            else {
+                echo '<button class="btn btn-primary">Ändern <span class="glyphicon glyphicon-lock"></span></button>';   
             }
         
         ?>        
@@ -142,10 +145,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 , $model),
                 
             ],
-            [
+[
                 'attribute'=>'updated_by',
                 'value'=>($model->updatedBy->first_name.' '.$model->updatedBy->last_name),
-            ],  
+            ],                          
+            [
+                'attribute'=>'locked',
+                'value'=> call_user_func (
+                    function ($data) {
+                        if (!is_null($data->locked)) {
+                            return date('d.m.Y H:i:s', strtotime($data->locked));            
+                        }
+                        else {
+                            return ' ';
+                        }
+                        
+                    //date('d.m.Y H:i:s', strtotime($model->updated)),    
+                    }
+                , $model),
+           
+            ],
+            [
+                'attribute'=>'locked_by',
+                'value'=>($model->lockedBy->first_name.' '.$model->lockedBy->last_name),
+            ],              
+            
         ],
     ]) ?>
 

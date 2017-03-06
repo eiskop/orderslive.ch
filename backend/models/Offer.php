@@ -37,6 +37,8 @@ use yii\web\UploadedFile;
  * @property string $created
  * @property integer $updated_by
  * @property string $updated
+ * @property integer $locked_by
+ * @property integer $locked 
  * @property integer $offer_id
  *
  * @property User $processedBy
@@ -72,9 +74,9 @@ class Offer extends \yii\db\ActiveRecord
     {
         return [
             [['processed_by_id', 'customer_id', 'customer_contact', 'customer_order_no', 'status_id', 'offer_received'], 'required'],
-            [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'offer_no', 'qty'], 'integer'],
+            [['processed_by_id', 'product_group_id', 'prio1', 'status_id', 'days_to_process', 'deadline', 'created_by', 'updated_by', 'locked_by', 'offer_no', 'qty'], 'integer'],
             [['value'], 'number'],
-            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles', 'assigned_to'], 'safe'],
+            [['offer_received','customer_id', 'carpenter', 'followup_by_id', 'created', 'updated', 'uploadedFiles', 'assigned_to', 'locked_by', 'locked'], 'safe'],
             [['comments'], 'string'],
             [['offer_wir_id'], 'string', 'max' => 100],
             [['customer_contact'], 'string', 'max' => 150],
@@ -125,9 +127,19 @@ class Offer extends \yii\db\ActiveRecord
             'created' => 'Erstellt am',
             'updated_by' => 'Geändert von',
             'updated' => 'Geändert am',
+            'locked_by' => 'Gesperrt von',
+            'locked' => 'Gesperrt am',            
             'uploadedFiles' => 'Dokumente hinzufügen',
         ];
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLockedBy()
+    {
+        return $this->hasOne(User::className(), ['id' => 'locked_by']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

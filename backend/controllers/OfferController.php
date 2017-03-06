@@ -22,6 +22,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
+use yii\base\ErrorException;
 
 /**
  * OfferController implements the CRUD actions for Offer model.
@@ -319,12 +320,19 @@ class OfferController extends Controller
 
 		if (Yii::$app->user->can('change-offer') OR Yii::$app->user->can('update-offer')) 
 		{
+			
+
 			$model = $this->findModel($id);
 			$modelsOfferItem = $model->offerItems;
 			$modelChange = new Change();
 
-
 			$modelChange->load(Yii::$app->request->post());
+
+			//lock Offer for editing
+			Offer::updateAll(['locked_by' => Yii::$app->user->id, 'locked'=>date(time())], ['id'=>$model->id]);
+
+
+
 
 			if ($model->load(Yii::$app->request->post())) {
 
@@ -466,7 +474,8 @@ class OfferController extends Controller
 							$model->save(false);
 							$modelChange->save(false);
 							$transaction->commit();
-					
+							//lock Offer for editing
+							Offer::updateAll(['locked_by' => 0, 'locked'=>NULL], ['id'=>$model->id]);
 							return $this->redirect(['view', 'id' => $model->id]);
 						}
 					} catch (Exception $e) {

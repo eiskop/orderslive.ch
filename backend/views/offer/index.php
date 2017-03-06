@@ -187,11 +187,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        if (Yii::$app->user->can('change-offer')) 
+                        if ((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR Yii::$app->user->can('admin'))  
                         {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                         'title' => Yii::t('app', 'Update'),                              
                             ]);
+                        }
+                        else {
+                            return '<span class="glyphicon glyphicon-lock"></span>';
                         }
                     },
                     'delete' => function ($url, $model) {
