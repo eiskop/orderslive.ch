@@ -515,7 +515,24 @@ class OfferController extends Controller
 		return $this->redirect(['index']);
 	}
 
+    /**
+     * Lists all So models.
+     * @return mixed
+     */
+    public function actionTvOffer()
+    {
+        $searchModel = new OfferSearch();
 
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//        $dataProvider->sort = ['defaultOrder' => ['deadline' => 'DESC']];        
+
+        $this->layout = "tv_offer";
+
+        return $this->render('tv_offer', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ], false, true);
+    }
 
 	public function actionGetProductDiscount($customer_id, $offer_item_type_id) 
 	{
