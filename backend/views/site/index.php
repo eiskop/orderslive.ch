@@ -29,7 +29,7 @@ $this->title = 'JELD-WEN Orders Live';
                 echo '<a class="btn btn-lg btn-success" href="index.php?r=offer">Offertenliste</a> ';                
                 
             ?>
-            <a class="btn btn-lg btn-success" href="index.php?r=offer/tvoffer">TV Offer</a>
+            <a class="btn btn-lg btn-success" href="index.php?r=offer/tv-offer">TV Offer</a>
         </p>
         <p>
             <?php 
