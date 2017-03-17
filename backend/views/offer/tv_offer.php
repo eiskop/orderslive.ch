@@ -28,7 +28,7 @@ $this->title = 'Offene Offerten';
 //$this->params['breadcrumbs'][] = $this->title;
 
 
-    $offers = Offer::find()->where('status_id != 3 AND status_id != 4 AND status_id != 5')->orderBy('value_net DESC');
+    $offers = Offer::find()->where('status_id != 3 AND status_id != 4 AND status_id != 5');
     $offers2 = Offer::find()->where('status_id = 7 AND DATE(updated) = DATE(NOW())');
     $offers3 = Offer::find()->where('status_id = 7 AND WEEK(updated, 3) = WEEK(NOW(), 3) AND YEAR(updated) = YEAR(NOW())');
 	$offers4 = Offer::find()->where('status_id = 3 AND DATE(updated) = DATE(NOW())');
