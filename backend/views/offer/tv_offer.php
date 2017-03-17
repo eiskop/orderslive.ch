@@ -37,10 +37,8 @@ $this->title = 'Offene Offerten';
     		<tr>
     			<td style="white-space: nowrap;">Offen: </td>
     			<td style="text-align: right; white-space: nowrap;">'.$offers->count().' ('.number_format($offers->sum('value_net'), 0, ', ', ' ').' CHF)</td>
-    			<td rowspan="3" style="padding-left: 5%; text-align: right; font-size:0.7em;">
-    				<img src="../pic/jw_logo_600w.png" >
-    			</td>
-    			<td rowspan="3" style="width: 60%; padding-left: 5%; text-align: right; font-size:0.8em;">'.date('d.m.Y').'<br>KW'.date('W').'<br>'.date('H:i').'</td>
+    			<td rowspan="3" style="padding-left: 5%; text-align: right; font-size:0.7em;"></td>
+    			<td rowspan="3" style="width: 60%; padding-left: 5%; text-align: right; font-size:0.9em;"><img src="../pic/jw_logo_500w.png" ><br>'.date('H:i').' '.date('d.m.Y').' (KW'.date('W').')<br></td>
     		</tr>
     		<tr>
     			<td>Offeriert:</td><td style="text-align: right; white-space: nowrap;">H '.$offers2->count().' ('.number_format($offers2->sum('value_net'), 0, ', ', ' ').' CHF), W '.$offers3->count().' ('.number_format($offers3->sum('value_net'), 0, ', ', ' ').' CHF)</td>
