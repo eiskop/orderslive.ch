@@ -63,27 +63,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 if ($model['prio1'] == '1') {
                     return ['class' => 'info'];
                 } 
-            
-            
 
-                 $prio = CustomerPriority::findOne(['id'=>$model->customer_priority_id]);
-
-               // echo var_dump($prio->days_to_process);
-                $deadline = $model->deadline;
+                $deadline = $model['deadline'];
                 $warning = $deadline-60*60*24;
-                
-                if($deadline > time() and $warning > time() AND $model->status_id != 3 AND $model->status_id != 4) {
+                if($model['status_id'] == 1) { // status being processed
                     return ['class'=>'success'];
                 }
-                elseif ($warning < time() and $deadline > time() AND $model->status_id != 3 AND $model->status_id != 4) {
+                elseif ($model['status_id'] == 2) { // status stand by
                     return ['class'=>'warning'];
                 }
-                elseif ($warning < time() and $deadline < time() AND $model->status_id != 3 AND $model->status_id != 4) {
+                elseif ($model['status_id'] == 3) { // status offer won
+                    return ['class'=>'default'];
+                }                
+                elseif ($model['status_id'] == 4) { // status deleted
+                    return ['class'=>'default'];
+                }                    
+                elseif ($model['status_id'] == 5) { // status offer lost
+                    return ['class'=>'default'];
+                }                                    
+                elseif ($model['status_id'] == 6) { // status followed up 
+                    return ['class'=>'info'];
+                } 
+                elseif ($model['status_id'] == 7) { // status offer made
+                    return ['class'=>'success'];
+                }    
+                elseif ($warning < time() and $deadline < time()) {
                     return ['class'=>'danger']; 
                 }
-                else {
 
-                }
+
             }
         ,   
         'columns' => [

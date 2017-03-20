@@ -92,24 +92,34 @@ $this->params['breadcrumbs'][] = $this->title;
             
             
 
-                 $prio = CustomerPriority::findOne(['id'=>$model->customer_priority_id]);
+                $prio = CustomerPriority::findOne(['id'=>$model->customer_priority_id]);
 
                // echo var_dump($prio->days_to_process);
                 $deadline = $model->deadline;
                 $warning = $deadline-60*60*24;
                 
-                if($deadline > time() and $warning > time() AND $model->status_id != 3 AND $model->status_id != 4) {
+                if ($model['prio1'] == '1') {
+                    return ['class' => 'info'];
+                } 
+
+                $deadline = $model['deadline'];
+                $warning = $deadline-60*60*24;
+                if($model['status_id'] == 1) { // status being processed
                     return ['class'=>'success'];
                 }
-                elseif ($warning < time() and $deadline > time() AND $model->status_id != 3 AND $model->status_id != 4) {
+                elseif ($model['status_id'] == 2) { // status stand by
                     return ['class'=>'warning'];
                 }
+                elseif ($model['status_id'] == 3) { // status complete
+                    return ['class'=>'default'];
+                }                
                 elseif ($warning < time() and $deadline < time() AND $model->status_id != 3 AND $model->status_id != 4) {
                     return ['class'=>'danger']; 
                 }
-                else {
 
-                }
+
+
+
             }
         ,        
         'columns' => [

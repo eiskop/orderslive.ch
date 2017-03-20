@@ -237,17 +237,15 @@ $rows = $provider->getModels();
           //  echo var_dump($customer);
 			//$prio = CustomerPriority::findOne(['id'=>$customer->customer_priority_id]);
 		//	echo var_dump($prio);
-
-               	if ($model['prio1'] == '1') {
-               		return ['class' => 'info'];
-               	} 
-            
-
 			//	$prio = CustomerPriority::findOne(['id'=>$model->customer_priority_id]);
 
 				//echo var_dump($prio->days_to_process);
             	//$deadline = strtotime($model->offer_received)+$prio->days_to_process*60*60*24;
             	//$warning = strtotime($model->offer_received)+$prio->days_to_process*60*60*24-60*60*24;
+
+               	if ($model['prio1'] == '1') {
+               		return ['class' => 'info'];
+               	} 
 
             	$deadline = $model['deadline'];
             	$warning = $deadline-60*60*24;
