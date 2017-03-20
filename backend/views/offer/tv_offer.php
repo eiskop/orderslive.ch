@@ -26,9 +26,9 @@ date_default_timezone_set('Europe/Zurich');
 $this->title = 'Offene Offerten';
 
 //$this->params['breadcrumbs'][] = $this->title;
+ 
 
-
-    $offers = Offer::find()->where('status_id != 3 AND status_id != 4 AND status_id != 5');
+    $offers = Offer::find()->where('status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7');
     $offers2 = Offer::find()->where('status_id = 7 AND DATE(updated) = DATE(NOW())');
     $offers3 = Offer::find()->where('status_id = 7 AND WEEK(updated, 3) = WEEK(NOW(), 3) AND YEAR(updated) = YEAR(NOW())');
 	$offers4 = Offer::find()->where('status_id = 3 AND DATE(updated) = DATE(NOW())');
@@ -123,68 +123,68 @@ $db = new yii\db\Connection([
 ]);
 date_default_timezone_set('Europe/Zurich');
 
-$posts = $db->createCommand('SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 1 as ordering FROM offer 
+$posts = $db->createCommand('SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 1 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 1 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1
+							WHERE prio1 = 1 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7 
 								UNION 
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 2 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 2 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1
+							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4
 								UNION 
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 3 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 3 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1
+							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty < 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7
 								UNION
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 4 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 4 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1
+							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7
 								UNION
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 5 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 5 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1					
+							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty < 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7				
 								UNION
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 6 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 6 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty >= 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1					
+							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty >= 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7					
 								UNION
-							SELECT offer.id, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 7 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 7 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty <= 30 AND status_id != 3 AND status_id != 4 and offer.product_group_id = 1					
+							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty <= 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7					
 															
 							ORDER BY ordering ASC, deadline ASC, qty DESC' )
             ->queryAll();
@@ -269,8 +269,8 @@ $rows = $provider->getModels();
         'columns' => [
 
 		    [
-		    	'header' => 'ID',
-	            'attribute' => 'id',
+		    	'header' => 'OffertNr',
+	            'attribute' => 'offer_no',
 	            'contentOptions' => ['style' => 'width:2%'],
 			],
             //'product_group_id',
