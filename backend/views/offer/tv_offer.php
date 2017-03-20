@@ -34,7 +34,7 @@ $this->title = 'Offene Offerten';
 	$offers4 = Offer::find()->where('status_id = 3 AND DATE(updated) = DATE(NOW())');
     $offers5 = Offer::find()->where('status_id = 3 AND WEEK(updated, 3) = WEEK(NOW(), 3) AND YEAR(updated) = YEAR(NOW())');    
     echo '<table class="table" style="font-size:1.3em; width: 100%;">
-    		<tr>
+    		<tr> 
     			<td style="white-space: nowrap;">Offen: </td>
     			<td style="text-align: right; white-space: nowrap;">'.$offers->count().' ('.number_format($offers->sum('value_net'), 0, ', ', ' ').' CHF)</td>
     			<td rowspan="3" style="padding-left: 5%; text-align: right; font-size:0.7em;"></td>
@@ -139,7 +139,7 @@ $posts = $db->createCommand('SELECT offer.id, offer.offer_no, offer_received, cu
 								offer.assigned_to = user.id
 								LEFT JOIN so_status ON 
 								offer.status_id = so_status.id
-							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4
+							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7 
 								UNION 
 							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 3 as ordering FROM offer 
 								LEFT JOIN customer ON
