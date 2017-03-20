@@ -123,67 +123,67 @@ $db = new yii\db\Connection([
 ]);
 date_default_timezone_set('Europe/Zurich');
 
-$posts = $db->createCommand('SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 1 as ordering FROM offer 
+$posts = $db->createCommand('SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 1 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 1 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7 
 								UNION 
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 2 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 2 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7 
 								UNION 
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 3 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 3 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty < 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7
 								UNION
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 4 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 4 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7
 								UNION
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 5 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 5 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty < 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7				
 								UNION
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 6 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 6 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty >= 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7					
 								UNION
-							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, so_status.name as status_name, user.username as assigned_to, deadline, prio1, 7 as ordering FROM offer 
+							SELECT offer.id, offer.offer_no, offer_received, customer.name as customer_name, customer_order_no, confirmation_no, qty, comments, value_net, offer.customer_priority_id, offer_status.name as status_name, status_id,  user.username as assigned_to, deadline, prio1, 7 as ordering FROM offer 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN user ON 
 								offer.assigned_to = user.id
-								LEFT JOIN so_status ON 
-								offer.status_id = so_status.id
+								LEFT JOIN offer_status ON 
+								offer.status_id = offer_status.id
 							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty <= 30 AND  status_id != 3 AND status_id != 4 AND status_id != 5 AND status_id != 7					
 															
 							ORDER BY ordering ASC, deadline ASC, qty DESC' )
@@ -238,10 +238,9 @@ $rows = $provider->getModels();
 			//$prio = CustomerPriority::findOne(['id'=>$customer->customer_priority_id]);
 		//	echo var_dump($prio);
 
-          		if ($model['prio1'] == '1') {
+               	if ($model['prio1'] == '1') {
                		return ['class' => 'info'];
                	} 
-            
             
 
 			//	$prio = CustomerPriority::findOne(['id'=>$model->customer_priority_id]);
@@ -252,10 +251,10 @@ $rows = $provider->getModels();
 
             	$deadline = $model['deadline'];
             	$warning = $deadline-60*60*24;
-                if($deadline > time() and $warning > time()) {
+                if($model['status_id'] == 1) { // status being processed
                 	return ['class'=>'success'];
                 }
-                elseif ($warning < time() and $deadline > time()) {
+                elseif ($model['status_id'] == 2) { // status stand by
 					return ['class'=>'warning'];
                 }
                 elseif ($warning < time() and $deadline < time()) {
