@@ -307,7 +307,7 @@ $rows = $provider->getModels();
 		    	'header' => 'CHF',
 	            'attribute' => 'value_net',
 	            'format' => ['decimal', 0],
-	            'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+	            'contentOptions' => ['style' => 'width:50px; text-align: right; white-space: nowrap;'],
 			],              
             // 'value',
            	[
