@@ -105,10 +105,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Url::to(['customer-discount/view', 'id'=>$model->id]);
                     }
                     if ($action === 'update') {
-                        return Url::to(['customer-discount//update', 'id'=>$model->id]);
+                        return Url::to(['customer-discount/update', 'id'=>$model->id]);
                     }
                     if ($action === 'delete') {
-                        return Url::to(['customer-discount//delete', 'id'=>$model->id]);
+                        return Url::to(['customer-discount/delete', 'id'=>$model->id]);
                     }                    
                 }
             ],
