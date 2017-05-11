@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Offer;
+use backend\models\User;
 use backend\models\OfferStatus;
 
 
@@ -60,8 +61,8 @@ class OfferSearch extends Offer
             return $dataProvider;
         }
         $query->joinWith('customer');
-        //$query->joinWith('followupBy');
         $query->joinWith('assignedTo');
+        $query->joinWith('followupBy');
         $query->joinWith('status');
 //        $query->joinWith('offerStatus');
         // grid filtering conditions
@@ -87,11 +88,11 @@ class OfferSearch extends Offer
         $query->andFilterWhere(['offer.offer_no'=>$this->offer_no])
             ->andFilterWhere(['like', 'offer.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
-            ->andFilterWhere(['like', 'customer.name', $this->carpenter])
+            ->andFilterWhere(['like', 'LOWER(carpenter)', strtolower($this->carpenter)])
             ->andFilterWhere(['offer.customer_priority_id' => $this->customer_priority_id])
             ->andFilterWhere(['offer.status_id' => $this->status_id])
-            ->andFilterWhere(['user.id' => $this->followup_by_id])
-            ->andFilterWhere(['user.id' => $this->assigned_to]);  
+            ->andFilterWhere(['user_followup_by_id.id' => $this->followup_by_id])
+            ->andFilterWhere(['user_assigned_to.id' => $this->assigned_to]);  
 
 /*       $query->andFilterWhere(['like', 'customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'confirmation_no', $this->confirmation_no])

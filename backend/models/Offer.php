@@ -161,7 +161,9 @@ class Offer extends \yii\db\ActiveRecord
      */
     public function getFollowupBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'followup_by_id']);
+        //return $this->hasOne(User::className(), ['id' => 'followup_by_id']);
+        return $this->hasOne(User::className(), ['id' => 'followup_by_id'])
+        ->from(['user_followup_by_id' => User::tableName()]);        
     }
 
     /**
@@ -169,7 +171,9 @@ class Offer extends \yii\db\ActiveRecord
      */
     public function getAssignedTo()
     {
-        return $this->hasOne(User::className(), ['id' => 'assigned_to']);
+        //return $this->hasOne(User::className(), ['id' => 'assigned_to']);
+       return $this->hasOne(User::className(), ['id' => 'assigned_to'])
+        ->from(['user_assigned_to' => User::tableName()]);          
     }
 
     /**
@@ -233,5 +237,6 @@ class Offer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Offer::className(), ['status_id' => $id])->count();
     }
+    
 
 }
