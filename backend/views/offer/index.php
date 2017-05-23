@@ -60,36 +60,36 @@ $this->params['breadcrumbs'][] = $this->title;
             //$prio = CustomerPriority::findOne(['id'=>$customer->customer_priority_id]);
         //  echo var_dump($prio);
 
-                if ($model['prio1'] == '1') {
-                    return ['class' => 'info'];
-                } 
+               // if ($model['prio1'] == '1') {
+               //     return ['class' => 'info'];
+              //  } 
 
                 $deadline = $model['deadline'];
                 $warning = $deadline-60*60*24;
                 if($model['status_id'] == 1) { // status being processed
-                    return ['class'=>'success'];
+                    return ['class'=>'active'];
                 }
                 elseif ($model['status_id'] == 2) { // status stand by
-                    return ['class'=>'warning'];
+                    return ['class'=>'default'];
                 }
                 elseif ($model['status_id'] == 3) { // status offer won
-                    return ['class'=>'default'];
+                    return ['class'=>'success'];
                 }                
                 elseif ($model['status_id'] == 4) { // status deleted
                     return ['class'=>'default'];
                 }                    
                 elseif ($model['status_id'] == 5) { // status offer lost
-                    return ['class'=>'default'];
+                    return ['class'=>'danger'];
                 }                                    
                 elseif ($model['status_id'] == 6) { // status followed up 
                     return ['class'=>'info'];
                 } 
                 elseif ($model['status_id'] == 7) { // status offer made
-                    return ['class'=>'success'];
+                    return ['class'=>'warning'];
                 }    
-                elseif ($warning < time() and $deadline < time()) {
-                    return ['class'=>'danger']; 
-                }
+//                elseif ($warning < time() and $deadline < time()) {
+//                    return ['class'=>'danger']; 
+//                }
 
 
             }
