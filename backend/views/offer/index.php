@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'tableOptions' => ['class' => 'table table-bordered'],
         'pager' => [
             'firstPageLabel' => '<<<',
             'lastPageLabel' => '>>>',
