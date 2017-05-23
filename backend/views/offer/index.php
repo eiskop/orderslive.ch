@@ -20,19 +20,34 @@ $this->title = 'Offerten';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="offer-index">
+<?php 
+    $offer_statuses = OfferStatus::find()->where('active = 1')->all();
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
+?>
+
+    <?php echo '<p><div style="display:inline; vertical-align: middle;" class="h1">'.Html::encode($this->title).'</div> 
+    <div class=" pull-right"><table class="table table-bordered" style="display:inline; border-color:white;">';
+    foreach ($offer_statuses as $k=>$v) {
+        echo '<tr style="display:inline-block;" class="'.$v['class'].'"><td style="font-size:0.9em;">'.$v['name'].'</td></tr>';   
+    }
+    echo '
+    </table></div><p>';
+    ?>
+
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php
+        
             if (Yii::$app->user->can('create-offer')) 
             {
                 echo Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
             } 
         ?>
-        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>     
-        
+        <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>    
+
+
 
     </p>
 <?php Pjax::begin(); ?>    
