@@ -8,6 +8,7 @@ use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use backend\models\Offer;
 use backend\models\OfferStatus;
+use backend\models\OfferStatusLog;
 use backend\models\OfferItem;
 use backend\models\OfferItemType;
 use backend\models\SelectMenu;
@@ -15,6 +16,7 @@ use backend\models\OfferUpload;
 use backend\models\OfferUploadSearch;
 use backend\models\Customer;
 use backend\models\CustomerDiscount;
+use backend\models\User;
 
 
 /* @var $this yii\web\View */
@@ -34,8 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             if (Yii::$app->user->can('create-offer')) 
             {
-                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']);
+                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
             }
+         //   if (Yii::$app->user->can('create-offerstatuslog')) 
+        //    {
+                echo Html::a('Nachfassen', ['offer-status-log/create', 'offer_id'=>$model->id, 'customer_id'=>$model->customer_id, 'status_id'=>$model->status_id], ['class' => 'btn btn-success']);
+          //  }            
         
         ?>
         <?php 
@@ -180,7 +186,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 <?php Pjax::begin(); ?> 
-        <h2>Positionen für Offerte #<?= $model->offer_no ?></h2>
+        <h2>Offertpositionen</h2>
         <hr />
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -242,7 +248,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php Pjax::begin(); ?> 
 
-    <h2>Dateien</h2>
+   <h2>Dateien</h2>
         <hr />
            
 
@@ -331,72 +337,95 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php Pjax::begin(); ?> 
 <?php
-   $duration_sum = 0;
-    if (!empty($dataProvider2->getModels())) {
-        foreach ($dataProvider2->getModels() as $key => $val) {
-            $duration_sum += $val->duration_min;
-        }
-    }
 ?>
-    <h2>Änderungen für Offerte #<?= $model->offer_no.' - '.$duration_sum.' Minuten' ?></h2>
+    <h2>Nachfassung</h2>
         <hr />
            
 
-        <?= GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider2,
-        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],        
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+       //     ['class' => 'yii\grid\SerialColumn'],
+            'contact_date:date',
             [
-                'attribute'=>'created',
-                'format' => ['date', 'php:d.m.y H:i'],
+                'attribute'=>'followup_by_id',
+                'value'=>'followupBy.last_name',
+                'filter'=>Html::activeDropDownList($searchModel2, 'followup_by_id', ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->asArray()->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), ['class'=>'', 'prompt' => 'Alle']),                
+            ],  
+
+            'customer_contact',
+            'topics:ntext',
+            [
+                'attribute' => 'status_id',
+                'value' => 'status.name',
+                'label' => 'Status',
             ],
+            'next_steps:ntext',
+            'next_followup_date:date',
+            // 'status_id',
+            // 'comments:ntext',
             [
-                'attribute'=>'change_time',
-                'value'=> function($data) {
-                    if (!is_null($data->change_time)) {
-                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                        return $values[$data->change_time];
+                'attribute'=>'assigned_to',
+                'value'=>'assignedTo.last_name',
+                'filter'=>Html::activeDropDownList($searchModel2, 'assigned_to', ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->asArray()->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), ['class'=>'', 'prompt' => 'Alle']),                
+            ],  
+            //'created_by',
+            //'created',
+            // 'updated_by',
+            // 'updated',
+
+           [  
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['style' => 'width:50px;'],
+                'header'=>'',
+                'template' => '{view} {update}',
+                'buttons' => 
+                [
+
+                    //view button
+                    'view' => function ($url, $modelOfferStatusLog) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('app', 'View'),                              
+                                 //  'data-pjax' => 'w0',
+                                    'data-pjax' => '0',
+                        ]);
+                    },
+                    'update' => function ($url, $modelOfferStatusLog) {
+                        if (Yii::$app->user->can('change-offerstatuslog')) 
+                        {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => Yii::t('app', 'Update'),                              
+                            ]);
+                        }
+                    },
+                    'delete' => function ($url, $modelOfferStatusLog) {
+                        if (Yii::$app->user->can('delete-offerstatuslog')) 
+                        {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'title' => Yii::t('app', 'Delete'),
+                                        'data-confirm' => 'Are you sure you want to delete this item?',
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
+
+                            ]);
+                        }
+                    },                                           
+                ],
+                'urlCreator' => function ($action, $modelOfferStatusLog, $key, $index) {
+                    if ($action === 'view') {
+                        return Url::to(['offer-status-log/view', 'id'=>$modelOfferStatusLog->id]);
                     }
-                },
-            ],
-            [
-                'attribute'=>'change_type',
-                'value'=> function($data) {
-                    if (!is_null($data->change_type)) {
-                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                        return $values[$data->change_type];
+                    if ($action === 'update') {
+                        return Url::to(['offer-status-log/update', 'id'=>$modelOfferStatusLog->id]);
                     }
-                    
-                },
-            ],
-            [
-                'attribute'=>'change_reason',
-                'value'=> function($data) {
-                    if (!is_null($data->change_reason)) {
-                        $values = ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name');
-                        return $values[$data->change_reason];
-                    }
-                    
-                },
-            ],
-            [
-                'attribute'=>'duration_min',
-                'value'=>'duration_min',
-                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
-            ],
-            [
-                'attribute'=>'responsible',
-                'value'=>'responsible0.username',
-            ],
-            'measure',
-            'comment',
-            [
-                'attribute'=>'created_by',
-                'value'=>'createdBy.username',
-            ],
+                    if ($action === 'delete') {
+                        return Url::to(['offer-status-log/delete', 'id'=>$modelOfferStatusLog->id]);
+                    }                    
+                }
+            ],  
         ],
-    ]); ?>
+    ]); ?>    
     <?php Pjax::end(); ?>
 </div>
 

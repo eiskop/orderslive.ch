@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'offer.offer_no',
+            'offer_no',
             [
                 'attribute'=>'followup_by_id',
                 'value'=>($model->followupBy->first_name.' '.$model->followupBy->last_name),
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'updated',
                 'value'=> call_user_func (
                     function ($data) {
-                        if ($data->updated != '0000-00-00 00:00:00') {
+                        if ($data->updated != '0000-00-00 00:00:00' AND !is_null($data->updated)) {
                             return date('d.m.Y H:i:s', strtotime($data->updated));            
                         }
                         else {

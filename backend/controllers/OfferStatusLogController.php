@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use backend\models\Offer;
 use backend\models\OfferStatusLog;
 use backend\models\OfferStatusLogSearch;
 use yii\web\Controller;
@@ -64,18 +65,38 @@ class OfferStatusLogController extends Controller
     public function actionCreate()
     {
         $model = new OfferStatusLog();
-
         if ($model->load(Yii::$app->request->post())) {
             $model->created = date('Y-m-d H:i:s');
             $model->created_by = Yii::$app->user->id;
+            $model->offer_id = $_GET['offer_id'];
+            $model->customer_id = $_GET['customer_id'];
+            $model->status_id = $_GET['status_id'];
+
+
+            if ($model->next_followup_date == '') {
+                $model->next_followup_date = NULL;
+            }
+            if ($model->assigned_to == '') {
+                $model->assigned_to = 0;
+            }
+
             if (isset($model->contact_date)) {
                 $model->contact_date = date('Y-m-d',strtotime($model->contact_date));    
             }
             if (isset($model->next_followup_date)) {
                 $model->next_followup_date = date('Y-m-d',strtotime($model->next_followup_date));    
             }
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->validate()) {
+                $model->save();    
+            }
+            else {
+                return $this->render('create', [
+                'model' => $model,
+            ]);
+            }
+                
+                
+            return $this->redirect(['offer/view', 'id' => $model->offer_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -94,17 +115,30 @@ class OfferStatusLogController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->updated = date('Y-m-d H:i:s');
+            $model->updated = date('Y-m-d H:i:s', time());
             $model->updated_by = Yii::$app->user->id;
+            $model->status_id = Offer::find()->select(['status_id'])->where(['id'=>$model->offer_id])->one()->status_id;
+
+
             if (isset($model->contact_date)) {
                 $model->contact_date = date('Y-m-d',strtotime($model->contact_date));    
             }
             if (isset($model->next_followup_date)) {
                 $model->next_followup_date = date('Y-m-d',strtotime($model->next_followup_date));    
             }
-            $model->save();
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            $valid = $model->validate();
+            if (!$valid) {
+              return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+            else {
+                $model->save();    
+            }
+            
+
+            return $this->redirect(['offer/view', 'id' => $model->offer_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = 'Ändern';
     <?= $this->render('_form', [
         'model' => $model,
         'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
-        'modelChange' => $modelChange    
+        'modelOfferStatusLog' => $modelOfferStatusLog    
     ]) ?>
 
 </div>

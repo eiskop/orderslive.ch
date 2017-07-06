@@ -286,65 +286,6 @@ use wbraganca\dynamicform\DynamicFormWidget;
             
             ?>
 </div>
-<div class="table">
-    <h2>Informationen zur Änderung</h2>
-    <div class="row">
-        <div class="col-md-4">                
-            <?= $form->field($modelChange, 'change_type')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_type'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
-                'prompt'=>'Select ',
-                'onchange'=>'
-                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
-                    $("select#select_menu-id").html(data);
-                });'
-
-            ]) ?>
-        </div>
-        <div class="col-md-4">                
-            <?= $form->field($modelChange, 'change_time')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_time'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
-                'prompt'=>'Select ',
-                'onchange'=>'
-                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
-                    $("select#select_menu-id").html(data);
-                });'
-
-            ]) ?>
-        </div>            
-        <div class="col-md-4">                
-            <?= $form->field($modelChange, 'change_reason')->dropDownList(ArrayHelper::map(SelectMenu::find()->where(['model_name' => 'offer'])->andWhere(['select_name' => 'change_reason'])->andWhere(['status'=>1])->orderBy('option_name')->all(), 'id', 'option_name'), [
-                'prompt'=>'Select ',
-                'onchange'=>'
-                $.post("index.php?r=select_menu/index&id='.'"+$(this).val(), function (data) {
-                    $("select#select_menu-id").html(data);
-                });'
-
-            ]) ?>
-        </div>               
-    </div>
-   <div class="row">
-        <div class="col-md-6">                
-            <?= $form->field($modelChange, 'responsible')->dropDownList(ArrayHelper::map(User::find()->where(['active'=>1, 'show_in_lists'=>1])->orderBy(['last_name' => SORT_ASC])->all(), 'id', 'last_name'), [
-                'prompt'=>'Select ',
-                'onchange'=>'
-                $.post("index.php?r=user/index&id='.'"+$(this).val(), function (data) {
-                    $("select#user-id").html(data);
-                });'
-
-            ]) ?>
-        </div>
-        <div class="col-md-6">                
-            <?= $form->field($modelChange, "duration_min")->textInput(['maxlength' => true]) ?>
-        </div>            
-    </div>    
-    <div class="row">
-        <div class="col-md-6">                
-                <?= $form->field($modelChange, 'measure')->textArea(['rows' => '3']) ?>
-        </div>                       
-        <div class="col-md-6">
-            <?= $form->field($modelChange, 'comment')->textArea(['rows' => '3']) ?>
-        </div>
-    </div>  
-</div>
-
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Speichern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>'customer.name',
                 'contentOptions' => ['style' => 'width:300px'],
             ],
-            'offer.offer_no',
+            'offer_no',
             [
                 'attribute'=>'followup_by_id',
                 'value'=>'followupBy.last_name',

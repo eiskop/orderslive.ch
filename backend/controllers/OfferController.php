@@ -7,6 +7,8 @@ use backend\models\Offer;
 use backend\models\OfferSearch;
 use backend\models\OfferItem;
 use backend\models\OfferItemSearch;
+use backend\models\OfferStatusLog;
+use backend\models\OfferStatusLogSearch;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
 use backend\models\CustomerDiscount;
@@ -73,9 +75,9 @@ class OfferController extends Controller
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$dataProvider->query->where('offer_id = '.$id);
 
-		$searchModel2 = new ChangeSearch();
+		$searchModel2 = new OfferStatusLogSearch();
 		$dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
-		$dataProvider2->query->where(['change_object'=>'offer'])->andWhere(['change_object_id' => $id])->orderBy(['created'=>SORT_DESC])->all();		
+		$dataProvider2->query->where(['offer_id' => $id])->orderBy(['contact_date'=>SORT_DESC])->all();		
 
 		$searchModel3 = new OfferUploadSearch();
 		$dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
@@ -111,7 +113,8 @@ class OfferController extends Controller
 
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
-			$modelChange = new Change();
+			$modelOfferStatusLog = new OfferStatusLog();
+
 
 			if ($model->load(Yii::$app->request->post())) {
 
@@ -266,7 +269,7 @@ class OfferController extends Controller
 					            	$modelUpload->save();
 
 					            	//END: Save file Data to DB
-				            	}
+				            	} 
 				            }
 			             	
 				         //   if ($model->upload($model->id)) {
@@ -277,9 +280,8 @@ class OfferController extends Controller
 		            	
 							//END: upload files
 
-							$modelChange->save(false);
+							$modelOfferStatusLog->save(false);
 							$transaction->commit();
-
 
 
 							return $this->redirect(['view', 'id' => $model->id]);
@@ -294,7 +296,7 @@ class OfferController extends Controller
 				return $this->render('create', [
 					'model' => $model,
 					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
-					'modelChange' => $modelChange,                   
+					'modelOfferStatusLog' => $modelOfferStatusLog,                   
 				]);
 			}
 		}
@@ -324,9 +326,10 @@ class OfferController extends Controller
 
 			$model = $this->findModel($id);
 			$modelsOfferItem = $model->offerItems;
-			$modelChange = new Change();
+			$modelOfferStatusLog = new OfferStatusLog();
+			$modelChange = New Change();
 
-			$modelChange->load(Yii::$app->request->post());
+			$modelOfferStatusLog->load(Yii::$app->request->post());
 
 			if (((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id)) OR Yii::$app->user->can('admin'))  {
 				//lock Offer for editing
@@ -412,10 +415,28 @@ class OfferController extends Controller
 					$model->carpenter = 0;
 				}
 
-				$modelChange->created_by = Yii::$app->user->id;
-				$modelChange->created = date('Y-m-d H:i:s');
+				$modelOfferStatusLog->created_by = Yii::$app->user->id;
+				$modelOfferStatusLog->created = date('Y-m-d H:i:s');
+				$modelOfferStatusLog->offer_id = $model->id;
+				$modelOfferStatusLog->offer_no = $model->offer_no;
+				$modelOfferStatusLog->customer_id = $model->customer_id;
+				$modelOfferStatusLog->status_id = $model->status_id;
+				$modelOfferStatusLog->created = date('Y-m-d H:i:s');
+	            $modelOfferStatusLog->created_by = Yii::$app->user->id;
+
 				$modelChange->change_object = 'offer';
 				$modelChange->change_object_id = $model->id;
+            	$modelChange->created = date('Y-m-d H:i:s');
+            	$modelChange->created_by = Yii::$app->user->id;
+
+
+	            if (isset($modelOfferStatusLog->contact_date)) {
+	                $modelOfferStatusLog->contact_date = date('Y-m-d',strtotime($modelOfferStatusLog->contact_date));    
+	            }
+	            if (isset($modelOfferStatusLog->next_followup_date)) {
+	                $modelOfferStatusLog->next_followup_date = date('Y-m-d',strtotime($modelOfferStatusLog->next_followup_date));    
+	            }
+
 
 
 				// validate all models
@@ -425,6 +446,8 @@ class OfferController extends Controller
 				if ($valid) {
 
 					
+
+
 					$transaction = \Yii::$app->db->beginTransaction();
 					try {
 						if ($flag = $model->save(false)) {
@@ -475,8 +498,9 @@ class OfferController extends Controller
 						
 						}
 						if ($flag) {
-							$model->save(false);
 							$modelChange->save(false);
+							$model->save(false);
+							
 							$transaction->commit();
 							//lock Offer for editing
 							Offer::updateAll(['locked_by' => 0, 'locked'=>NULL], ['id'=>$model->id]);
@@ -491,7 +515,7 @@ class OfferController extends Controller
 				return $this->render('update', [
 						'model' => $model,
 						'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
-						'modelChange' => $modelChange,
+						'modelOfferStatusLog' => $modelOfferStatusLog,
 			
 					]
 				);

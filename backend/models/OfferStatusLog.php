@@ -47,16 +47,16 @@ class OfferStatusLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[  'contact_date', 'topics', 'next_steps', 'next_followup_date'], 'required'],
-            [['contact_date', 'next_followup_date', 'created', 'updated', 'offer_id', 'customer_contact', 'status_id', 'comments', 'created', 'followup_by_id','status_id', 'assigned_to', 'offer_id', 'created_by', 'updated_by', 'customer_id'], 'safe'],
+            [['contact_date', 'topics', 'followup_by_id','customer_contact'], 'required'],
+            [['contact_date', 'next_followup_date', 'created', 'updated', 'offer_id', 'customer_contact', 'status_id', 'comments', 'created', 'followup_by_id','status_id', 'assigned_to', 'offer_id', 'created_by', 'updated_by', 'customer_id','next_steps', 'next_followup_date'], 'safe'],
             [['topics', 'next_steps', 'comments'], 'string'],
             [['customer_contact'], 'string', 'max' => 255],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['followup_by_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['followup_by_id' => 'id']],
-            //[['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Offer::className(), 'targetAttribute' => ['status_id' => 'status_id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OfferStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
-            [['offer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Offer::className(), 'targetAttribute' => ['offer_id' => 'status_id']],
+            [['offer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Offer::className(), 'targetAttribute' => ['offer_id' => 'id']],
         ];
     }
 
