@@ -44,7 +44,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
             $model->offer_received = date('d-m-Y', time());
         }
     ?>
-
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Speichern' : 'Speichern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
   
     <div class="table"> 
         <div class="row">
@@ -288,7 +290,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Hinzufügen' : 'Speichern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Speichern' : 'Speichern', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
