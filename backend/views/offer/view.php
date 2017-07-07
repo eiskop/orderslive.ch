@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'updated',
                 'value'=> call_user_func (
                     function ($data) {
-                        if ($data->updated != '0000-00-00 00:00:00') {
+                        if ($data->updated != '0000-00-00 00:00:00' AND $data->updated != '1970-01-01 01:00:00' AND !is_null($data->updated)) {
                             return date('d.m.Y H:i:s', strtotime($data->updated));            
                         }
                         else {
