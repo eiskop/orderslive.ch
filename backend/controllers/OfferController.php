@@ -113,7 +113,6 @@ class OfferController extends Controller
 
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
-			$modelOfferStatusLog = new OfferStatusLog();
 
 
 			if ($model->load(Yii::$app->request->post())) {
@@ -280,7 +279,6 @@ class OfferController extends Controller
 		            	
 							//END: upload files
 
-							$modelOfferStatusLog->save(false);
 							$transaction->commit();
 
 
@@ -295,8 +293,7 @@ class OfferController extends Controller
 			} else {
 				return $this->render('create', [
 					'model' => $model,
-					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,
-					'modelOfferStatusLog' => $modelOfferStatusLog,                   
+					'modelsOfferItem' => (empty($modelsOfferItem)) ? [new OfferItem] : $modelsOfferItem,                  
 				]);
 			}
 		}
