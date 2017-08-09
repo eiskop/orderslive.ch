@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'offer_received',
                     'value'=>'offer_received',
                     'contentOptions' => ['style' => 'width:80px; text-align: right;'],
-                    'format' => ['date', 'php:d.m.y'],
+                    'format' => ['date', 'php:d.m.Y'],
                 ],            
                 [
                     'attribute'=>'customer_id',
