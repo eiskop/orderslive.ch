@@ -26,7 +26,11 @@
         "kartik-v/yii2-mpdf": "*",
         "wbraganca/yii2-dynamicform": "*",
         "perminder-klair/yii2-dropzone": "dev-master",
-        "kartik-v/yii2-datecontrol": "dev-master"
+        "kartik-v/yii2-datecontrol": "dev-master",
+        "arturoliveira/yii2-excelview": "*",
+        "kartik-v/yii2-export": "@dev",
+        "kartik-v/yii2-markdown": "@dev",
+        "kartik-v/yii2-widgets": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

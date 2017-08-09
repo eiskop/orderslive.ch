@@ -12,6 +12,7 @@ use backend\models\Offer;
 use backend\models\OfferStatus;
 use backend\models\CustomerPriority;
 use dosamigos\datepicker\DatePicker;
+use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OfferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -48,10 +49,74 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>    
 
 
-
     </p>
-<?php Pjax::begin(); ?>    
-    <?= GridView::widget([
+        <?php 
+            echo '<div class="pull-right ">'.ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,            
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute'=>'offer_no',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+                ],
+                [
+                    'attribute'=>'offer_received',
+                    'value'=>'offer_received',
+                    'contentOptions' => ['style' => 'width:80px; text-align: right;'],
+                    'format' => ['date', 'php:d.m.y'],
+                ],            
+                [
+                    'attribute'=>'customer_id',
+                    'value'=>'customer.name',
+                    'contentOptions' => ['style' => 'width:300px'],
+                ],
+                'customer_order_no',
+                [
+                    'attribute'=>'carpenter',
+                    'value'=>'carpenter',
+                    'contentOptions' => ['style' => 'width:300px'],
+                ],
+                [
+                    'attribute'=>'qty',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+                ],
+                [
+                    'attribute'=>'assigned_to',
+                    'value'=>'assignedTo.last_name',
+                ],              
+                [
+                    'attribute'=>'followup_by_id',
+                    'value'=>'followupBy.last_name',
+                ],        
+                [
+                    'attribute'=>'value',
+                    'value'=>'value',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
+                    'format'=>['decimal', '2'],
+                ],  
+                [
+                    'attribute'=>'value_net',
+                    'value'=>'value_net',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
+                    'format'=>['decimal', '2'],
+                ],  
+                [
+                    'attribute'=>'customer_priority_id',
+                    'value'=>'customerPriority.id',
+                ],   
+                [
+                    'attribute'=>'status_id',
+                    'value'=>'status.name',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],                
+                ],     
+            ],
+        ]); 
+            echo '</div>';
+        ?>
+<?php Pjax::begin(); ?>   
+
+    <?=  GridView::widget([
         'dataProvider' => $dataProvider,
         'tableOptions' => ['class' => 'table table-bordered'],
         'pager' => [
