@@ -13,6 +13,7 @@ use backend\models\OfferStatus;
 use backend\models\CustomerPriority;
 use dosamigos\datepicker\DatePicker;
 use kartik\export\ExportMenu;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OfferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -53,7 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             echo '<div class="pull-right ">'.ExportMenu::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,            
+            'filterModel' => $searchModel,
+            'formatter' => [
+                'class' => 'yii\i18n\Formatter',
+                'thousandSeparator' => '',
+                'decimalSeparator' => '.',
+                //'currencyCode' => 'CHF'
+            ],            
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
@@ -69,13 +76,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute'=>'customer_id',
                     'value'=>'customer.name',
-                    'contentOptions' => ['style' => 'width:300px'],
+                    'contentOptions' => ['style' => 'width:100px'],
                 ],
-                'customer_order_no',
+                [
+                    'attribute'=>'customer_order_no',
+                    'value'=>'customer_order_no',
+                    'contentOptions' => ['style' => 'width:100px'],
+                ],
                 [
                     'attribute'=>'carpenter',
                     'value'=>'carpenter',
-                    'contentOptions' => ['style' => 'width:300px'],
+                    'contentOptions' => ['style' => 'width:100px'],
                 ],
                 [
                     'attribute'=>'qty',
