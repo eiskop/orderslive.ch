@@ -51,7 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     </p>
-        <?php 
+       
+<?php Pjax::begin(); ?>   
+
+     <?php 
+     //export filter 
             echo '<div class="pull-right ">'.ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -134,8 +138,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); 
             echo '</div>';
+//END: export filter 
         ?>
-<?php Pjax::begin(); ?>   
+
 
     <?=  GridView::widget([
         'dataProvider' => $dataProvider,
