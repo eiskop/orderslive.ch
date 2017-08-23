@@ -10,6 +10,7 @@ use backend\models\Customer;
 use backend\models\CustomerPriority;
 use backend\models\SoStatus;
 use backend\models\So;
+use backend\models\SelectMenu;
 use common\models\User;
 use kartik\select2\Select2;
 use dosamigos\datepicker\DatePicker;
@@ -124,7 +125,14 @@ use kartik\typeahead\Typeahead;
                                 ]); 
                             ?>
                         </td> 
-
+                        <td style="padding-right: 2%;"><?= $form->field($model, 'product_type')->dropDownList(ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name'), [
+                                'prompt'=>'Select ',
+                                'onchange'=>'
+                                $.post("index.php?r=select-menu/index&id='.'"+$(this).val(), function (data) {
+                                    $("select#product-group-id").html(data);
+                                });'
+                            ]) ?>
+                        </td>
 
                         <td style="padding-right: 2%;"><?= $form->field($model, 'qty')->textInput() ?></td>             
                     </tr>

@@ -21,7 +21,7 @@ class SoSearch extends So
     {
         return [
             [['id', 'days_to_process', 'qty'], 'integer'],
-            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no'], 'safe'],
+            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no', 'product_type'], 'safe'],
             [['value'], 'number'],
         ];
     }

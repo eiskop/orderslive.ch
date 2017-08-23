@@ -14,6 +14,7 @@ use common\models\User;
  * @property string $customer_order_no
  * @property string $confirmation_no
  * @property string $surface
+ * @property integer $product_type
  * @property integer $prio1 
  * @property integer $status_id
  * @property integer $qty 
@@ -54,10 +55,10 @@ class So extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received'], 'required'],
-            [['id', 'deadline', 'prio1'], 'integer'],
+            [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received', 'product_type'], 'required'],
+            [['id', 'deadline', 'prio1', 'product_type'], 'integer'],
             [['value'], 'number'],
-            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no'], 'safe'],
+            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no', 'product_type'], 'safe'],
             [['customer_order_no', 'confirmation_no', 'surface'], 'string', 'max' => 30],
             [['comments'], 'string'],
             //[['customer_priority_id'], 'string', 'max' => 1]
@@ -80,6 +81,7 @@ class So extends \yii\db\ActiveRecord
             'customer_priority_id' => 'Prio',
             'prio1' => 'Prio. 1.',
             'surface' => 'Oberfläche',
+            'product_type' => 'Artikel',
             'qty' => 'Menge',
             'status_id' => 'Status',
             'value' => 'Wert',

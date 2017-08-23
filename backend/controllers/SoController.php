@@ -6,6 +6,7 @@ use Yii;
 use backend\models\So;
 use backend\models\SoSearch;
 use backend\models\SoItem;
+use backend\models\SelectMenu;
 use backend\models\User;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
@@ -176,7 +177,7 @@ class SoController extends Controller
      */
     public function actionUpdate($id)
     {
-     
+
 
         if (Yii::$app->user->can('change-so') OR Yii::$app->user->can('update-so')) 
         {
@@ -184,7 +185,7 @@ class SoController extends Controller
 
 
             if ($model->load(Yii::$app->request->post())) {
-
+   
                 $model->updated = date('Y-m-d H:i:s');
                 $model->updated_by = Yii::$app->user->id;
                 if ($model->assigned_to != TRUE) {
@@ -204,11 +205,7 @@ class SoController extends Controller
                     }
                 }
                 $model->deadline += $count_weekend*60*60*24;
-
                 
-
-
-
                 $model->save(false);
 
                 return $this->redirect(['index']);

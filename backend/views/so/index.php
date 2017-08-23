@@ -27,7 +27,9 @@ use backend\models\So;
 use backend\models\SoStatus;
 use backend\models\CustomerPriority;
 use backend\models\ProductGroup;
+use backend\models\SelectMenu;
 use dosamigos\datepicker\DatePicker;
+use kartik\export\ExportMenu;
 
 
 /* @var $this yii\web\View */
@@ -59,6 +61,81 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php Pjax::begin(); ?>
+
+     <?php 
+     //export filter 
+            echo '<div class="pull-right ">'.ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'exportConfig' => [
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_PDF => false,
+                ExportMenu::FORMAT_EXCEL => false,
+            ],
+            'formatter' => [
+                'class' => 'yii\i18n\Formatter',
+                'thousandSeparator' => '',
+                'decimalSeparator' => '.',
+                //'currencyCode' => 'CHF'
+            ],            
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute'=>'id',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+                ],
+                [
+                    'attribute'=>'product_group_id',
+                    'value'=>'productGroup.name',
+                ],
+                [
+                    'attribute'=>'order_received',
+                    'value'=>'order_received',
+                    'contentOptions' => ['style' => 'width:80px; text-align: right;'],
+                    'format' => ['date', 'php:d.m.y'],
+                ],
+                [
+                    'attribute'=>'customer_id',
+                    'value'=>'customer.name',
+                    'contentOptions' => ['style' => 'width:300px'],
+                ],
+                'customer_order_no',
+                'confirmation_no',
+                'offer_no',            
+                'surface',
+                'product_type',
+                [
+                    'attribute'=>'qty',
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+                ],
+
+                
+                [
+                    'attribute'=>'created_by',
+                    'value'=>'createdBy.username',
+                ],
+                [
+                    'attribute'=>'customer_priority_id',
+                    'value'=>'customerPriority.id',
+                ],
+                [
+                    'attribute'=>'status_id',
+                    'value'=>'soStatus.name',
+                ],
+                [
+                    'attribute'=>'assigned_to',
+                    'value'=>'assignedTo.username',
+                ],            
+                [
+                    'attribute'=>'DLZ_Tage',
+                    'value'=>'dLZ',
+                    'contentOptions'=>['style'=>'text-align: right;'],
+                ],    
+            ],
+        ]); 
+            echo '</div>';
+//END: export filter 
+        ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -164,6 +241,18 @@ $this->params['breadcrumbs'][] = $this->title;
 // quantity from so_items table 
 
             'surface',
+            [
+                'attribute'=>'product_type',
+                'filter'=>Html::activeDropDownList($searchModel, 'product_group_id', ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name'), ['class'=>'form-control', 'prompt' => 'Alle']),
+
+                'value'=> function ($data) {
+                    if ($data->product_type != 0) {
+                        $res = ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name');
+                        return $res[$data->product_type];
+                    }
+                },
+                'contentOptions' => ['style' => 'width:50px'],
+            ],
             [
                 'attribute'=>'qty',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
