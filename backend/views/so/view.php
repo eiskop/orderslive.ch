@@ -7,6 +7,7 @@ use backend\models\ProductGroup;
 use backend\models\Customer;
 use backend\models\CustomerPriority;
 use backend\models\SoStatus;
+use backend\models\SelectMenu;
 use common\models\User;
 
 /* @var $this yii\web\View */
@@ -66,6 +67,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'customer_order_no',
             'confirmation_no',
             'surface',
+            [
+                'attribute'=>'product_type',
+                'value'=>call_user_func(function ($data) {
+                                if ($data->product_type != 0) {
+                                    $res = ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name');
+                                    return $res[$data->product_type];
+                                }
+                                else {
+                                    return " ";                        
+                                }
+                            }, $model),
+            ],                 
             [
                 'attribute'=>'status_id',
                 'value'=>$model->soStatus->name,
