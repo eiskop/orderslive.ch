@@ -243,7 +243,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'surface',
             [
                 'attribute'=>'product_type',
-                'filter'=>Html::activeDropDownList($searchModel, 'product_group_id', ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name'), ['class'=>'form-control', 'prompt' => 'Alle']),
+                'filter'=>Html::activeDropDownList($searchModel, 'product_type', ArrayHelper::map(SelectMenu::find()->asArray()->where(['model_name'=>'so', 'select_name'=>'product_type'])->all(), 'id', 'option_name'), ['class'=>'form-control', 'prompt' => 'Alle']),
 
                 'value'=> function ($data) {
                     if ($data->product_type != 0) {

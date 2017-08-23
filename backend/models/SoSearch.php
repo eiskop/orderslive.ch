@@ -20,7 +20,7 @@ class SoSearch extends So
     public function rules()
     {
         return [
-            [['id', 'days_to_process', 'qty'], 'integer'],
+            [['id', 'days_to_process', 'qty', 'product_type'], 'integer'],
             [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no', 'product_type'], 'safe'],
             [['value'], 'number'],
         ];
@@ -63,7 +63,7 @@ class SoSearch extends So
         $query->joinWith('updatedBy');
         $query->joinWith('soStatus');
 
-        $query->andFilterWhere([
+  /*      $query->andFilterWhere([
             'so.id' => $this->id,
            // 'product_group_id' => $this->product_group_id,
             //'customer_id' => $this->customer_id,
@@ -77,10 +77,11 @@ class SoSearch extends So
             'so.updated' => $this->updated,
             'so.assigned_to' => $this->assigned_to,
         ]);
-
+*/
         $query->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'so.confirmation_no', $this->confirmation_no])
             ->andFilterWhere(['like', 'so.surface', $this->surface])
+            ->andFilterWhere(['=', 'so.product_type', $this->product_type])
             ->andFilterWhere(['so.status_id' => $this->status_id])
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
