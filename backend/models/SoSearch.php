@@ -78,7 +78,8 @@ class SoSearch extends So
             'so.assigned_to' => $this->assigned_to,
         ]);
 */
-        $query->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
+        $query->andFilterWhere(['like', 'so.id', $this->id])
+            ->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'so.confirmation_no', $this->confirmation_no])
             ->andFilterWhere(['like', 'so.surface', $this->surface])
             ->andFilterWhere(['=', 'so.product_type', $this->product_type])
