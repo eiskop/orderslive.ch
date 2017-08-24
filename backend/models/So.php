@@ -55,7 +55,7 @@ class So extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received', 'product_type'], 'required'],
+            [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received'], 'required'],
             [['id', 'deadline', 'prio1', 'product_type'], 'integer'],
             [['value'], 'number'],
             [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no', 'product_type'], 'safe'],
