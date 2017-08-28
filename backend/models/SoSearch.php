@@ -84,6 +84,7 @@ class SoSearch extends So
             ->andFilterWhere(['like', 'so.surface', $this->surface])
             ->andFilterWhere(['=', 'so.product_type', $this->product_type])
             ->andFilterWhere(['so.status_id' => $this->status_id])
+            ->andFilterWhere(['like', 'order_received', $this->order_received])
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
