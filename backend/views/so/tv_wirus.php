@@ -117,7 +117,7 @@ $db = new yii\db\Connection([
     'charset' => 'utf8', 
 ]);
 
-$posts = $db->createCommand('SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 1 as ordering FROM so 
+$posts = $db->createCommand('SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 1 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -128,7 +128,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 1 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2
 								UNION 
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 2 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 2 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -139,7 +139,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2
 								UNION 
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 3 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 3 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -150,7 +150,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 4 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 4 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -161,7 +161,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 5 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 5 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -172,7 +172,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline <= (UNIX_TIMESTAMP(NOW())+60*60*24) AND deadline > UNIX_TIMESTAMP(NOW()) AND qty < 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2					
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 6 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 6 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
@@ -183,7 +183,7 @@ $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_n
 								so.status_id = so_status.id
 							WHERE prio1 = 0 AND deadline > (UNIX_TIMESTAMP(NOW())+60*60*24) AND qty >= 30 AND status_id != 3 AND status_id != 4 and so.product_group_id = 2					
 								UNION
-							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, 7 as ordering FROM so 
+							SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id, so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 7 as ordering FROM so 
 								LEFT JOIN customer ON
 								customer_id = customer.id
 								LEFT JOIN product_group ON
