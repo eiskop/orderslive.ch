@@ -12,7 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 if (isset($_GET['id']) AND $_GET['id'] != '' AND $_GET['id'] != FALSE) {
 	echo '<h3 class="bg-success">Auftrag mit ID '.$_GET['id'].' wurde hinzugefügt!</h3>';	
 }
-
+if ($model->requested_delivery_year != TRUE ){
+	$model->requested_delivery_year = date('Y', time());
+}
+if ($model->requested_delivery_week != TRUE ){
+	$model->requested_delivery_week = date('W', time());
+}
 ?>
 <div class="so-create">
 

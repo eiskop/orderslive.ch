@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 
-    <?php Pjax::begin(); ?>
+    <?php //Pjax::begin(); ?>
 
      <?php 
      //export filter 
@@ -108,7 +108,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'qty',
                     'contentOptions' => ['style' => 'width:50px; text-align: right;'],
                 ],
-
+                [
+                    'attribute'=>'requested_delivery_year',
+                    'value'=>function($data) {
+                        if ($data['requested_delivery_year'] != 0) {
+                            return $data['requested_delivery_year'].'-'.$data['requested_delivery_week'];    
+                        }
+                        else {
+                            return "";
+                        }
+                        
+                    },
+                    'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+                ],
                 
                 [
                     'attribute'=>'created_by',
@@ -257,6 +269,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'qty',
                 'contentOptions' => ['style' => 'width:50px; text-align: right;'],
             ],
+            [
+                'label' => 'Wunschtermin',
+                'attribute'=>'requested_delivery_year',
+
+                'value'=>function($data) {
+                    if ($data['requested_delivery_year'] != 0) {
+                        return $data['requested_delivery_year'].'-'.$data['requested_delivery_week'];    
+                    }
+                    else {
+                        return "";
+                    }
+                },
+                'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+            ],
             
             // 'value',
             
@@ -339,6 +365,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
+    <?php //Pjax::end(); ?>
 
 </div>

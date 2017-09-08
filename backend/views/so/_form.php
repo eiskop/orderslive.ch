@@ -57,6 +57,7 @@ use kartik\typeahead\Typeahead;
         }
         //END: for redirecting to form with a predefined customer_id         
 
+
     ?>
 
 
@@ -175,8 +176,11 @@ use kartik\typeahead\Typeahead;
                                 });'
 
                             ]) ?>
-                        </td>                        
-                        <td style="font-size: 1.5em; vertical-align: bottom; text-align: center; padding-left: 2%; width: 30%;"><?= $form->field($model, 'prio1')->checkBox(['label' => 'Prio.1.', 'uncheck' => '0', 'checked' => '1']) ?></td>           
+                        </td>                                   
+                        <td style="padding-left: 2%; padding-right: 2%;"><?= $form->field($model, 'requested_delivery_year')->textInput(['maxlength' => 4]) ?></td>           
+                        <td style="padding-left: 2%; padding-right: 2%;"><?= $form->field($model, 'requested_delivery_week')->textInput(['maxlength' => 2]) ?></td>           
+                        <td style="font-size: 1.5em; vertical-align: bottom; text-align: center; padding-left: 2%; width: 15%;"><?= $form->field($model, 'prio1')->checkBox(['label' => 'Prio.1.', 'uncheck' => '0', 'checked' => '1']) ?></td>
+
                     </tr>
                 </table>
 

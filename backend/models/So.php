@@ -20,6 +20,8 @@ use common\models\User;
  * @property integer $qty 
  * @property double $value
  * @property string $order_received
+ * @property string $requested_delivery_year
+ * @property string $requested_delivery_week
  * @property string $customer_priority_id
  * @property integer $days_to_process
  * @property integer $assigned_to
@@ -56,9 +58,9 @@ class So extends \yii\db\ActiveRecord
     {
         return [
             [['customer_id', 'customer_order_no', 'surface', 'qty', 'status_id', 'order_received'], 'required'],
-            [['id', 'deadline', 'prio1', 'product_type'], 'integer'],
+            [['id', 'deadline', 'prio1', 'product_type', 'requested_delivery_week'], 'integer'],
             [['value'], 'number'],
-            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no', 'product_type'], 'safe'],
+            [['product_group_id', 'customer_id', 'created_by', 'updated_by', 'assigned_to', 'order_received', 'created', 'updated', 'confirmation_no', 'value', 'created_by', 'created', 'updated_by', 'updated', 'customer_priority_id', 'deadline', 'offer_no', 'product_type', 'requested_delivery', 'requested_delivery_year'], 'safe'],
             [['customer_order_no', 'confirmation_no', 'surface'], 'string', 'max' => 30],
             [['comments'], 'string'],
             //[['customer_priority_id'], 'string', 'max' => 1]
@@ -86,6 +88,9 @@ class So extends \yii\db\ActiveRecord
             'status_id' => 'Status',
             'value' => 'Wert',
             'order_received' => 'Eingang',
+            'requested_delivery_year' => 'W.termin Jahr',
+            'requested_delivery_week' => 'W.termin Woche',
+            'requested_delivery' => 'W.termin', // combined field from requested_delivery_year and week 
             'deadline' => 'Termin für Erfasung',
             'comments' => 'Kommentar',
             'assigned_to' => 'Zugeteilt an',

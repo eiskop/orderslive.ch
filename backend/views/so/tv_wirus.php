@@ -311,6 +311,15 @@ $rows = $provider->getModels();
 	            'attribute' => 'assigned_to',
 	            'contentOptions' => ['style' => 'width:50px'],
 			],   
+           	[
+		    	'header' => 'W.termin',
+	            'attribute' => function ($data) {
+	            	if ($data['requested_delivery'][0] != 0) {
+	            		return $data['requested_delivery'];
+	            	}
+	            },
+	            'contentOptions' => ['style' => 'width:50px; text-align: right;'],
+			],			
             [
                 'header'=>'Prio',
                 'attribute'=>'customer_priority_id',

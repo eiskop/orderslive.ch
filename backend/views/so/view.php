@@ -85,6 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],              
             'value',
             'order_received:date',
+            'requested_delivery_year',
+            'requested_delivery_week',
             'customer_priority_id',
             'days_to_process',
             'deadline:date',

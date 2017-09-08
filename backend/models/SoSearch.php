@@ -20,8 +20,8 @@ class SoSearch extends So
     public function rules()
     {
         return [
-            [['id', 'days_to_process', 'qty', 'product_type'], 'integer'],
-            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no', 'product_type'], 'safe'],
+            [['id', 'days_to_process', 'qty', 'product_type', 'requested_delivery_week'], 'integer'],
+            [['product_group_id', 'customer_order_no', 'confirmation_no', 'surface', 'status_id', 'order_received', 'customer_priority_id', 'created', 'customer_id', 'updated', 'created_by', 'updated_by', 'assigned_to', 'offer_no', 'product_type', 'requested_delivery_year'], 'safe'],
             [['value'], 'number'],
         ];
     }
@@ -78,6 +78,7 @@ class SoSearch extends So
             'so.assigned_to' => $this->assigned_to,
         ]);
 */
+
         $query->andFilterWhere(['like', 'so.id', $this->id])
             ->andFilterWhere(['like', 'so.customer_order_no', $this->customer_order_no])
             ->andFilterWhere(['like', 'so.confirmation_no', $this->confirmation_no])
@@ -87,6 +88,7 @@ class SoSearch extends So
             ->andFilterWhere(['like', 'order_received', $this->order_received])
             ->andFilterWhere(['like', 'so.customer_priority_id', $this->customer_priority_id])
             ->andFilterWhere(['like', 'so.product_group_id', $this->product_group_id])
+            ->andFilterWhere(['like', 'CONCAT(requested_delivery_year, "-", requested_delivery_week)', $this->requested_delivery_year])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
             ->andFilterWhere(['like', 'so.created_by', $this->created_by])
             ->andFilterWhere(['like', 'so.assigned_to', $this->assigned_to]);
