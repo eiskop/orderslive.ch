@@ -113,11 +113,12 @@ foreach ($orders3 as $order) {
 */
 
 $db = new yii\db\Connection([
-    'dsn' => 'mysql:host=localhost;dbname=orderslive_dev',
-    'username' => 'root',
-    'password' => 'tuhatjatuline',
-    'charset' => 'utf8',
+    'dsn' => 'mysql:host=localhost;dbname=orderslive',
+    'username' => 'orderslive',
+    'password' => 'KqPKFye73MPSsWF7',
+    'charset' => 'utf8', 
 ]);
+
 date_default_timezone_set('Europe/Zurich');
 
 $posts = $db->createCommand('SELECT so.id, product_group.name as product_group_name, order_received, customer.name as customer_name, customer_order_no, confirmation_no, surface, qty, comments, so.customer_priority_id , so_status.name as status_name, status_id, user.username as assigned_to, deadline, prio1, CONCAT(requested_delivery_year, "-", requested_delivery_week) as requested_delivery, 1 as ordering FROM so 
