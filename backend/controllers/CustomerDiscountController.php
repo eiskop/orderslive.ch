@@ -39,7 +39,7 @@ class CustomerDiscountController extends Controller
     {
         $searchModel = new CustomerDiscountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->orderBy(['customer.name'=>SORT_ASC])->all();   
+        $dataProvider->sort = ['defaultOrder' => ['id' => 'DESC']];        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -66,21 +66,28 @@ class CustomerDiscountController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CustomerDiscount();
+        if (Yii::$app->user->can('create-customerdiscount')) 
+        {
+            $model = new CustomerDiscount();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->created = date('Y-m-d H:i:s');
-            $model->created_by = Yii::$app->user->id;
-        //                echo var_dump($model->valid_from);
-      //      echo var_dump(date('Y-m-d', strtotime($model->valid_from)));
-    //            exit;
-            $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
-            $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->created = date('Y-m-d H:i:s');
+                $model->created_by = Yii::$app->user->id;
+            //                echo var_dump($model->valid_from);
+          //      echo var_dump(date('Y-m-d', strtotime($model->valid_from)));
+        //            exit;
+                $model->valid_from = date('Y-m-d', strtotime($model->valid_from));
+                $model->save(false);
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+        else {
+echo 'faaaaaaaaaaaak';
+exit;
         }
     }
 
