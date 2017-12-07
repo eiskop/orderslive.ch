@@ -95,7 +95,7 @@ echo '<h2>Unbestätigte Aufträge - Kellpax</h2>';
 //SELECT date(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 Group by product_group_id, Date(updated) ORDER BY datum, name
 // Weekly per product group
 //SELECT week(updated) as datum, product_group.name, Sum(qty) as qty, count(*) as aufträge FROM `so` left join product_group on so.product_group_id = product_group.id WHERE status_id=3 and product_group_id = 2 Group by product_group_id, WEEK(updated) ORDER BY datum, name
-$res = $db->createCommand('SELECT so.id, date(so.created) as created, UNIX_TIMESTAMP(order_received) as datum_uts, order_received, product_group.name as product_group_name, qty, concat(order_received, product_group.name ) as link, customer_id, customer_order_no, customer.name as customer_name, so_status.name, confirmation_no, surface, value, prio1, customer.customer_priority_id, user.username as assigned_to, so_status.name as status_name FROM `so` 
+$res = $db->createCommand('SELECT so.id, date(so.created) as created, UNIX_TIMESTAMP(order_received) as datum_uts, order_received, product_group.name as product_group_name, qty, concat(order_received, product_group.name ) as link, customer_id, customer_order_no, customer.name as customer_name, so_status.name, confirmation_no, surface, value, prio1, requested_delivery_week, requested_delivery_year, customer.customer_priority_id, user.username as assigned_to, so_status.name as status_name FROM `so` 
     left join product_group on so.product_group_id = product_group.id 
     left join customer on so.customer_id = customer.id 
     left join so_status on so.status_id = so_status.id 
@@ -214,6 +214,19 @@ $daten = array();
                 'value'=>'qty',
                 'contentOptions' => ['style' => 'text-align: right;'],
             ],
+            [
+                'header'=>'Wunschtermin',
+                'attribute'=>'requested_delivery_year',
+                'value'=> function($data) {
+                    if ($data['requested_delivery_year'] != 0) {
+                        return $data['requested_delivery_year'].'-'.$data['requested_delivery_week'];    
+                    }
+                    else {
+                        return "";
+                    }
+                },
+                'contentOptions' => ['style' => 'text-align: right;'],
+            ], 
             [
                 'header'=>'Zugestellt an',
                 'attribute'=>'assigned_to',
