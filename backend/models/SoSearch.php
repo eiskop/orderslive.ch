@@ -91,7 +91,7 @@ class SoSearch extends So
             ->andFilterWhere(['like', 'CONCAT(requested_delivery_year, "-", requested_delivery_week)', $this->requested_delivery_year])
             ->andFilterWhere(['like', 'customer.name', $this->customer_id])
             ->andFilterWhere(['like', 'so.created_by', $this->created_by])
-            ->andFilterWhere(['like', 'so.assigned_to', $this->assigned_to]);
+            ->andFilterWhere(['=', 'so.assigned_to', $this->assigned_to]);
 
         return $dataProvider;
     }
