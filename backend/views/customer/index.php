@@ -11,6 +11,8 @@ use backend\models\SoSearch;
 use backend\models\Offer;
 use backend\models\OfferItemType;
 use backend\models\OfferSearch;
+use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CustomerSearch */
@@ -63,6 +65,146 @@ echo '<pre>', var_dump($res), '</pre>';
         
 
     </p>
+     <?php 
+     //export filter 
+            echo '<div class="pull-right ">'.ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'exportConfig' => [
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_PDF => false,
+                ExportMenu::FORMAT_EXCEL => false,
+            ],
+            'formatter' => [
+                'class' => 'yii\i18n\Formatter',
+                'thousandSeparator' => '',
+                'decimalSeparator' => '.',
+                //'currencyCode' => 'CHF'
+            ],            
+            'columns' => 
+            [
+                ['class' => 'yii\grid\SerialColumn'],
+                'id',
+                [
+                    'attribute' => 'name',
+                    'value' => 'name',
+                    'contentOptions' => ['style' => 'width:300px;'], 
+                ],
+                [
+                    'attribute'=>'customer_group_id',
+                    'value'=>'customerGroup.name',
+                    'contentOptions' => ['style' => 'width:300px;'], 
+
+                ],
+                'customer_priority_id',
+                //'contact',
+                [
+                    'attribute' => 'street',
+                    'value' => 'street',
+                    'contentOptions' => ['style' => 'width:300px;'], 
+                ],            
+                'zip_code',
+                //'city',
+                'province',
+                // 'fax_no',
+                // 'tel_no',
+                // 'created',
+                // 'created_by',
+                // 'updated',
+                // 'updated_by',
+                [
+                    'attribute'=>'Kellpax Rabatt (%)',
+                    'value'=>
+                        function ($data) {
+                           foreach ($data->customerDiscount as $k=>$v) {
+                                if ($v['offer_item_type_id'] == 1) {
+                                    
+                                    return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
+                                }
+                            }
+                        },
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    'format' => 'raw',             
+                ],
+                [
+                    'attribute'=>'Wirus Rabatt (%)',
+                    'value'=>
+                        function ($data) {
+                           foreach ($data->customerDiscount as $k=>$v) {
+                                if ($v['offer_item_type_id'] == 2) {
+                                    return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
+                                }
+                            }
+                        },
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    'format' => 'raw', 
+                ], 
+                [
+                    'attribute'=>'Moralt Rabatt (%)',
+                    'value'=>
+                        function ($data) {
+                           foreach ($data->customerDiscount as $k=>$v) {
+                                if ($v['offer_item_type_id'] == 3) {
+                                    return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
+                                }
+                            }
+                        },
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    'format' => 'raw', 
+                ],
+                [
+                    'attribute'=>'BOS Rabatt (%)',
+                    'value'=>
+                        function ($data) {
+                           foreach ($data->customerDiscount as $k=>$v) {
+                                if ($v['offer_item_type_id'] == 4) {
+                                    return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
+                                }
+                            }
+                        },
+                    'format' => 'raw',                     
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    
+                ],
+                [
+                    'attribute'=>'DANA Rabatt (%)',
+                    'value'=>
+                        function ($data) {
+                           foreach ($data->customerDiscount as $k=>$v) {
+                                if ($v['offer_item_type_id'] == 5) {
+                                    return Html::a($v['base_discount_perc'], ['customer-discount/index', 'CustomerDiscountSearch[customer_id]' => $data->name, 'CustomerDiscountSearch[offer_item_type_id]' => $data->customerDiscount[$k]->offerItemType->name]);
+                                }
+                            }
+                        },
+                    'format' => 'raw',   
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    
+                ],  
+                [
+                    'attribute'=>'A',
+                    'value'=>function ($data) {
+                        return Html::a(So::find()->where(['customer_id'=>$data->id])->count(), ['so/index', 'SoSearch[customer_id]' => $data->name]);
+                    },
+                    'format' => 'raw',                    
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+                    
+                ],
+                [
+                    'attribute'=>'O',
+                    'value'=>function ($data) {
+                        return Html::a(Offer::find()->where(['customer_id'=>$data->id])->count(), ['offer/index', 'OfferSearch[customer_id]' => $data->name]);
+                    },
+                    'format' => 'raw',
+                    'contentOptions' => ['style' => 'text-align: right;'], 
+
+                ],            
+                
+            ],
+        ]); 
+            echo '</div>';
+//END: export filter 
+        ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
