@@ -106,6 +106,7 @@ echo '<pre>', var_dump($res), '</pre>';
                 'zip_code',
                 //'city',
                 'province',
+                'ifas_account',                
                 // 'fax_no',
                 // 'tel_no',
                 // 'created',
@@ -235,6 +236,8 @@ echo '<pre>', var_dump($res), '</pre>';
             'zip_code',
             //'city',
             'province',
+            'ifas_account',   
+
             // 'fax_no',
             // 'tel_no',
             // 'created',

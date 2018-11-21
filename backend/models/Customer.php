@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
  * @property string $province
  * @property string $fax_no
  * @property string $tel_no
+ * @property integer $ifas_account
  * @property integer $active
  * @property integer $created
  * @property integer $created_by
@@ -60,6 +61,7 @@ class Customer extends \yii\db\ActiveRecord
             [['street'], 'string', 'max' => 255],
             [['zip_code'], 'string', 'max' => 20],
             [['fax_no'], 'string', 'max' => 40],
+            [['ifas_account'], 'integer', 'max' => 6],
             [['uploadedFiles'], 'file', 'skipOnEmpty' => true, 'maxFiles' => 10],
         ];
     }
@@ -81,6 +83,7 @@ class Customer extends \yii\db\ActiveRecord
             'province' => 'Canton',
             'fax_no' => 'Fax No',
             'tel_no' => 'Tel No',
+            'ifas_account' => 'IFAS Konto',
             'region' => 'Region',            
             'created' => Yii::t('app', 'Erstellt'),
             'created_by' => Yii::t('app', 'Ersteller'),

@@ -102,6 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'province',
                         'fax_no',
                         'tel_no',
+                        'ifas_account',
                         'created:datetime',
                         [
                             'attribute'=>'created_by',

@@ -70,6 +70,7 @@ use yii\helpers\ArrayHelper;
                 <div class="col-sm-4"><?= $form->field($model, 'contact')->textInput(['maxlength' => true]) ?></div>
                 <div class="col-sm-2"><?= $form->field($model, 'tel_no')->textInput(['maxlength' => true]) ?></div>
                 <div class="col-sm-2"><?= $form->field($model, 'fax_no')->textInput(['maxlength' => true]) ?></div>
+                <div class="col-sm-1"><?= $form->field($model, 'ifas_account')->textInput(['maxlength' => 6]) ?></div>
             </div>
         </div>
     <div class="form-group">
