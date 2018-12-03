@@ -18,7 +18,7 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['id', 'customer_group_id', 'created', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'customer_group_id', 'created', 'created_by', 'updated_by', 'ifas_account'], 'integer'],
             [['name', 'customer_priority_id', 'contact', 'street', 'zip_code', 'city', 'province', 'fax_no', 'tel_no', 'updated'], 'safe'],
         ];
     }
@@ -45,7 +45,9 @@ class CustomerSearch extends Customer
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['customer.name'=>SORT_ASC]]
         ]);
+        
 
         $this->load($params);
 
@@ -72,6 +74,7 @@ class CustomerSearch extends Customer
             ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'province', $this->province])
             ->andFilterWhere(['like', 'fax_no', $this->fax_no])
+            ->andFilterWhere(['like', 'ifas_account', $this->ifas_account])
             ->andFilterWhere(['like', 'tel_no', $this->tel_no]);
 
         return $dataProvider;

@@ -45,7 +45,7 @@ class CustomerController extends Controller
     {
         $searchModel = new CustomerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->orderBy(['customer.name'=>SORT_ASC])->all();   
+        $dataProvider->query->all();   
         if (Yii::$app->user->can('delete-customer')) {
             $dataProvider->query->andWhere('customer.active > -1');
         }
