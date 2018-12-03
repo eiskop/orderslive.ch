@@ -45,7 +45,7 @@ class CustomerSearch extends Customer
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['customer.name'=>SORT_ASC]]
+            'sort' => ['defaultOrder' => ['name'=>SORT_ASC]]
         ]);
         
 
