@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Datei hochladen'), ['create'], ['class' => 'btn btn-success']) ?>
+     <!--   <? /*Html::a(Yii::t('app', 'Datei hochladen'), ['create'], ['class' => 'btn btn-success']) */?> -->
         <?= Html::a(Yii::t('app', 'Filter rücksetzen'), ['index'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Kunden', ['customer/index'], ['class' => 'btn btn-primary']) ?>
 
@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:20px; text-align: right;'],    
             ],
             
+
 
             [
                 'attribute' => 'customer_id',
@@ -97,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update} {delete}',
+                'template' => '{view}',
                 'buttons' => 
                 [
 

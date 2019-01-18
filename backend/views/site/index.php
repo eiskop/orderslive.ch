@@ -23,7 +23,7 @@ $this->title = 'JELD-WEN Orders Live';
             <?php 
                 if (Yii::$app->user->can('create-offer')) 
                 {
-                   echo '<a class="btn btn-lg btn-success" href="index.php?r=offer/create">Offerte hinzufügen</a> ';
+       //            echo '<a class="btn btn-lg btn-success" href="index.php?r=offer/create">Offerte hinzufügen</a> ';
                 }
 
                 echo '<a class="btn btn-lg btn-success" href="index.php?r=offer">Offertenliste</a> ';                

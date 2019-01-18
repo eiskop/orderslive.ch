@@ -22,17 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
             if (Yii::$app->user->can('change-customerupload')) 
             {
-                echo Html::a(Yii::t('app', 'Ändern'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+           //     echo Html::a(Yii::t('app', 'Ändern'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
             }        
             if (Yii::$app->user->can('delete-customerupload')) 
             {
-                echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
+             /*   echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => 'Bist du sicher, dass du diese Datei löschen willst?',
                         'method' => 'post',
                     ],
-                ]).' ';
+                ]).' ';*/
             }
 
          ?>

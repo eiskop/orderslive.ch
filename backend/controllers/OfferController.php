@@ -113,7 +113,7 @@ class OfferController extends Controller
 
 			$model = new Offer();
 			$modelsOfferItem = [new OfferItem];
-
+return $this->redirect(['view', 'id' => $model->id]);
 
 			if ($model->load(Yii::$app->request->post())) {
 
@@ -322,6 +322,8 @@ class OfferController extends Controller
 			
 
 			$model = $this->findModel($id);
+
+return $this->redirect(['view', 'id' => $model->id]);			
 			$modelsOfferItem = $model->offerItems;
 			$modelOfferStatusLog = new OfferStatusLog();
 			$modelChange = New Change();
@@ -531,7 +533,8 @@ class OfferController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->findModel($id)->delete();
+		
+//	$this->findModel($id)->delete();
 
 		return $this->redirect(['index']);
 	}

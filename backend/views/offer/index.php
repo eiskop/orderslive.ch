@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
         
             if (Yii::$app->user->can('create-offer')) 
             {
-                echo Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
+     //           echo Html::a('Offerte hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
             } 
         ?>
         <?= Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']) ?>    
@@ -294,7 +294,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view}',
                 'buttons' => 
                 [
 

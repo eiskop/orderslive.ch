@@ -21,17 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             if (Yii::$app->user->can('create-customerdiscount')) 
             {
-                echo Html::a(Yii::t('app', 'Ändern'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+      //          echo Html::a(Yii::t('app', 'Ändern'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
             }
             if (Yii::$app->user->can('delete-customerdiscount')) 
             {
-                echo Html::a(Yii::t('app', 'Löschen'), ['delete', 'id' => $model->id], [
+ /*               echo Html::a(Yii::t('app', 'Löschen'), ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => Yii::t('app', 'Bist du sicher dass du diesen Kondition löschen willst?'),
                         'method' => 'post',
                     ],
-                ]).' ';
+                ]).' ';*/
             }        
         ?>        
 

@@ -8,7 +8,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use backend\models\Customer;
-use backend\models\CustomerUpload;
+use backend\models\CustomedrUpload;
 use backend\models\Offer;
 use backend\models\OfferStatus;
 use backend\models\So;
@@ -37,25 +37,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
             if (Yii::$app->user->can('change-so') OR Yii::$app->user->can('update-so')) 
             {
-                echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
+                //echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']).' ';
             }         
             if (Yii::$app->user->can('create-so')) 
             {
-                echo Html::a('Neuer Auftrag', ['so/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+                //echo Html::a('Neuer Auftrag', ['so/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
             }  
             if (Yii::$app->user->can('create-offer')) 
             {
-                echo Html::a('Neue Offerte', ['offer/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+                //echo Html::a('Neue Offerte', ['offer/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
             } 
             if (Yii::$app->user->can('create-customerupload')) 
             {
-                echo Html::a('Neue Datei', ['customer-upload/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+                //echo Html::a('Neue Datei', ['customer-upload/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
             }
             if (Yii::$app->user->can('create-customerdiscount')) 
             {
-                echo Html::a('Neue Kondition', ['customer-discount/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
+                //echo Html::a('Neue Kondition', ['customer-discount/create', 'customer_id' => $model->id], ['class' => 'btn btn-success']).' ';
             }             
-            if (Yii::$app->user->can('delete-so')) 
+            /*if (Yii::$app->user->can('delete-so')) 
             {
                 echo Html::a('Stornieren', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]).' '; 
 
-            }           
+            } */          
 
 
 
@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\ActionColumn',
                             'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                             'header'=>'',
-                            'template' => '{view} {update} {delete}',
+                            'template' => '{view} ',
                             'buttons' => 
                             [
 
@@ -247,7 +247,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'yii\grid\ActionColumn',
                             'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                             'header'=>'',
-                            'template' => '{view} {update} {delete}',
+                            'template' => '{view} ',
                             'buttons' => 
                             [
 
@@ -410,7 +410,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:70px; text-align: center;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view} ',
                 'buttons' => 
                 [
 

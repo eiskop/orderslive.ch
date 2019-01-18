@@ -56,7 +56,7 @@ echo '<pre>', var_dump($res), '</pre>';
         <?php // echo $this->render('_search', ['model' => $searchModel]); 
             if (Yii::$app->user->can('create-customer')) 
             {
-                echo Html::a('Kunde erfassen', ['create'], ['class' => 'btn btn-success']).' ';
+       //         echo Html::a('Kunde erfassen', ['create'], ['class' => 'btn btn-success']).' ';
             }
             echo Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']).' ';           
             echo Html::a('Kundendateien', ['customer-upload/index'], ['class' => 'btn btn-primary']).' ';
@@ -334,7 +334,7 @@ echo '<pre>', var_dump($res), '</pre>';
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view}',
                 'buttons' => 
                 [
 

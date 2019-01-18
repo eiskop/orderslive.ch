@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php // echo $this->render('_search', ['model' => $searchModel]); 
             if (Yii::$app->user->can('create-customerdiscount')) 
             {
-                echo Html::a('Kondition erfassen', ['create'], ['class' => 'btn btn-success']).' ';
+      //          echo Html::a('Kondition erfassen', ['create'], ['class' => 'btn btn-success']).' ';
             }
             echo Html::a('Filter rücksetzen', ['index'], ['class' => 'btn btn-success']).' ';           
             echo Html::a('Kunden', ['customer/index'], ['class' => 'btn btn-primary']).' ';
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view} ',
                 'buttons' => 
                 [
 

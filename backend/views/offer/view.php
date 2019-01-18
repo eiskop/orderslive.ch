@@ -36,11 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             if (Yii::$app->user->can('create-offer')) 
             {
-                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
+//                echo Html::a('Offerte Hinzufügen', ['create'], ['class' => 'btn btn-success']).' ';
             }
          //   if (Yii::$app->user->can('create-offerstatuslog')) 
         //    {
-                echo Html::a('Nachfassen', ['offer-status-log/create', 'offer_id'=>$model->id, 'customer_id'=>$model->customer_id, 'status_id'=>$model->status_id], ['class' => 'btn btn-success']);
+//                echo Html::a('Nachfassen', ['offer-status-log/create', 'offer_id'=>$model->id, 'customer_id'=>$model->customer_id, 'status_id'=>$model->status_id], ['class' => 'btn btn-success']);
           //  }            
         
         ?>
@@ -48,28 +48,28 @@ $this->params['breadcrumbs'][] = $this->title;
             if (((Yii::$app->user->can('change-offer') AND $model->locked_by == 0) OR (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id)) OR Yii::$app->user->can('admin'))              
             {
                 if (Yii::$app->user->can('change-offer') AND $model->locked_by == Yii::$app->user->id) {
-                    echo Html::a('Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+//                    echo Html::a('Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
                 }
                 else {
-                    echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);    
+//                    echo Html::a('Ändern', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);    
                 }
                 
             }
             else {
-                echo '<button class="btn btn-primary">Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span></button>';   
+//                echo '<button class="btn btn-primary">Ändern <span class="glyphicon glyphicon-lock" style="color: gold;" title="'.$model->lockedBy->username.' '.date('d.m.Y H:i', $model->locked).'"></span></button>';   
             }
         
         ?>        
         <?php 
             if (Yii::$app->user->can('delete-offer')) 
             {
-                echo Html::a('Löschen', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
-                        'method' => 'post',
-                    ],
-                ]);
+ //               echo Html::a('Löschen', ['delete', 'id' => $model->id], [
+ //                   'class' => 'btn btn-danger',
+ //                   'data' => [
+ //                       'confirm' => 'Bist du sicher, dass du diese Offerte löschen willst?',
+ //                       'method' => 'post',
+ //                   ],
+ //               ]);
             }
         
         ?>
@@ -281,7 +281,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view}',
                 'buttons' => 
                 [
 
@@ -379,7 +379,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:50px;'],
                 'header'=>'',
-                'template' => '{view} {update}',
+                'template' => '{view} ',
                 'buttons' => 
                 [
 
